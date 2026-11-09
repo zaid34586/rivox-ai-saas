@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Loader2, Plus, Upload, Download, FileText, AlertCircle, CheckCircle, Trash2, Edit, Eye } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { cn } from '@/lib/utils'
+import { calculateSmartScore, type ScoreBreakdown } from '@/lib/scoring'
 
 interface Product {
   id: string
@@ -83,10 +84,28 @@ export default function ProductsPage() {
   const [csvFile, setCsvFile] = useState<File | null>(null)
   const [csvPreview, setCsvPreview] = useState<any[]>([])
   const [importing, setImporting] = useState(false)
+  const [scoreBreakdown, setScoreBreakdown] = useState<ScoreBreakdown | null>(null)
 
   useEffect(() => {
     fetchProducts()
   }, [])
+
+  // Auto-calculate smart score when scoring fields change
+  useEffect(() => {
+    if (showModal) {
+      calculateScore()
+    }
+  }, [
+    showModal,
+    formData.commission_rate,
+    formData.commission_type,
+    formData.gravity_score,
+    formData.trend_score,
+    formData.rating,
+    formData.review_count,
+    formData.price,
+    formData.original_price,
+  ])
 
   const fetchProducts = async () => {
     let supabase: ReturnType<typeof createClient> | null = null
@@ -116,6 +135,22 @@ export default function ProductsPage() {
     return Object.keys(errors).length === 0
   }
 
+  const calculateScore = () => {
+    const inputs = {
+      commission_rate: formData.commission_rate,
+      commission_type: formData.commission_type as 'percentage' | 'fixed',
+      gravity_score: formData.gravity_score ? parseFloat(String(formData.gravity_score)) : null,
+      trend_score: formData.trend_score ? parseFloat(String(formData.trend_score)) : null,
+      rating: formData.rating ? parseFloat(String(formData.rating)) : null,
+      review_count: formData.review_count ? parseInt(String(formData.review_count)) : null,
+      price: formData.price ? parseFloat(String(formData.price)) : null,
+      original_price: formData.original_price ? parseFloat(String(formData.original_price)) : null,
+    }
+    const result = calculateSmartScore(inputs)
+    setScoreBreakdown(result)
+    return result.total
+  }
+
   const resetForm = () => {
     setFormData({
       name: '',
@@ -134,6 +169,7 @@ export default function ProductsPage() {
       trend_score: '',
     })
     setFormErrors({})
+    setScoreBreakdown(null)
     setEditingProduct(null)
   }
 
@@ -172,6 +208,7 @@ export default function ProductsPage() {
       review_count: formData.review_count ? parseInt(formData.review_count) : null,
       gravity_score: formData.gravity_score ? parseFloat(formData.gravity_score) : null,
       trend_score: formData.trend_score ? parseFloat(formData.trend_score) : null,
+      smart_score: calculateScore(),
       status: 'active' as const,
     }
 
@@ -237,6 +274,8 @@ export default function ProductsPage() {
       gravity_score: product.gravity_score?.toString() || '',
       trend_score: product.trend_score?.toString() || '',
     })
+    // Calculate score for existing product
+    setTimeout(() => calculateScore(), 0)
     setShowModal(true)
   }
 
@@ -676,6 +715,59 @@ export default function ProductsPage() {
                     />
                   </div>
                 </div>
+
+                {/* Smart Score Breakdown */}
+                {scoreBreakdown && (
+                  <Card className="border-primary/50 bg-primary/5 mt-4">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="flex items-center justify-between text-base">
+                        <span className="flex items-center gap-2">
+                          <span className="h-5 w-5" />
+                          Smart Score Analysis
+                        </span>
+                        <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+                          scoreBreakdown.total >= 80 ? 'bg-emerald-100 text-emerald-700' :
+                          scoreBreakdown.total >= 60 ? 'bg-blue-100 text-blue-700' :
+                          scoreBreakdown.total >= 40 ? 'bg-amber-100 text-amber-700' :
+                          'bg-red-100 text-red-700'
+                        }`}>
+                          {scoreBreakdown.total}/100
+                        </span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div className="flex justify-between py-1 border-b border-border/50">
+                          <span className="text-muted-foreground">Commission (25%)</span>
+                          <span className="font-medium">{scoreBreakdown.commission}</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-border/50">
+                          <span className="text-muted-foreground">Gravity (25%)</span>
+                          <span className="font-medium">{scoreBreakdown.gravity}</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-border/50">
+                          <span className="text-muted-foreground">Trend (20%)</span>
+                          <span className="font-medium">{scoreBreakdown.trend}</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-border/50">
+                          <span className="text-muted-foreground">Social Proof (15%)</span>
+                          <span className="font-medium">{scoreBreakdown.social_proof}</span>
+                        </div>
+                        <div className="flex justify-between py-1 border-b border-border/50">
+                          <span className="text-muted-foreground">Price Advantage (15%)</span>
+                          <span className="font-medium">{scoreBreakdown.price_advantage}</span>
+                        </div>
+                        <div className="flex justify-between py-1 font-semibold text-lg">
+                          <span>Total</span>
+                          <span className={`text-primary ${scoreBreakdown.total >= 80 ? 'text-emerald-600' : ''}`}>
+                            {scoreBreakdown.total}/100
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
               </form>
             </CardContent>
             <CardFooter className="flex justify-end gap-2">
