@@ -9,13 +9,9 @@ const Select = SelectPrimitive.Root
 const SelectGroup = SelectPrimitive.Group
 const SelectValue = SelectPrimitive.Value
 
-interface SelectTriggerProps extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
-  error?: boolean
-}
-
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
-  SelectTriggerProps
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> & { error?: boolean }
 >(({ className, error, children, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}

@@ -5,6 +5,7 @@ import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { cn } from "@/lib/utils"
 
 const Tabs = TabsPrimitive.Root
+
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
@@ -12,7 +13,8 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex h-10 items-center justify-center gap-1 rounded-lg bg-surface p-1 text-muted-foreground",
+      "tabs inline-flex items-center justify-center gap-1",
+      "bg-surface border border-border p-1 rounded-lg",
       className
     )}
     {...props}
@@ -27,13 +29,12 @@ const TabsTrigger = React.forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center gap-2 px-4 py-1.5 text-sm font-medium",
+      "tab inline-flex items-center justify-center gap-2",
+      "px-4 py-2 text-sm font-medium",
       "rounded-md transition-all duration-200 ease-out",
-      "focus:outline-none focus-visible:ring-2 focus:ring-ring focus:ring-offset-2",
-      "data-[state=active]:bg-background text-foreground shadow-sm",
-      "data-[state=inactive]:text-muted-foreground hover:text-foreground",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
       "disabled:pointer-events-none disabled:opacity-50",
-      "whitespace-nowrap"
+      className
     )}
     {...props}
   />
@@ -47,7 +48,8 @@ const TabsContent = React.forwardRef<
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
-      "mt-4 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus:ring-ring focus:ring-offset-2",
+      "mt-4 ring-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "animate-in fade-in-0",
       className
     )}
     {...props}
