@@ -163,6 +163,52 @@
   --container-2xl: 1400px;
 }
 
+/* ===== Light Mode Overrides ===== */
+.light {
+  /* Light theme — warm porcelain base */
+  --color-bg: 38 45% 96%;           /* #F5F0E8 - Warm porcelain */
+  --color-bg-elevated: 0 0% 100%;   /* #FFFFFF - Pure white */
+  --color-bg-hover: 38 35% 92%;     /* #EBE4D8 - Warm hover */
+  
+  --color-fg: 220 25% 8%;           /* #0D0F11 - Deep charcoal text */
+  --color-fg-muted: 220 15% 40%;    /* #4E5A6E - Muted text */
+  --color-fg-subtle: 220 10% 55%;   /* #7A8A9A - Subtle text */
+  
+  --color-primary: 158 85% 38%;     /* #0DB86B - Emerald (slightly darker for light bg) */
+  --color-primary-hover: 158 85% 32%; /* #0A9F5B */
+  --color-primary-soft: 158 60% 93%;  /* #D4F5E3 */
+  --color-primary-fg: 0 0% 100%;     /* #FFFFFF */
+  
+  --color-accent: 38 95% 48%;       /* #E6941A - Amber (darker for light bg) */
+  --color-accent-hover: 38 95% 42%; /* #D6841A */
+  --color-accent-soft: 38 70% 94%;   /* #FDF4E6 */
+  --color-accent-fg: 30 40% 10%;     /* #261F0A */
+  
+  --color-success: 142 76% 32%;      /* #0E9B71 */
+  --color-success-soft: 142 50% 94%;  /* #D1FAE5 */
+  --color-success-fg: 142 50% 10%;
+  
+  --color-warning: 38 95% 48%;       /* #E6941A */
+  --color-warning-soft: 38 60% 94%;
+  --color-warning-fg: 30 40% 10%;
+  
+  --color-error: 0 84% 56%;          /* #DC3939 */
+  --color-error-soft: 0 50% 94%;     /* #FEF2F2 */
+  --color-error-fg: 0 60% 12%;
+  
+  --color-info: 199 89% 44%;         /* #06A8C8 */
+  --color-info-soft: 199 50% 94%;
+  --color-info-fg: 199 50% 10%;
+  
+  --color-border: 38 25% 85%;        /* #DCD5C9 */
+  --color-border-hover: 38 25% 78%;   /* #CBC2B4 */
+  --color-border-strong: 38 25% 70%;  /* #B8AD9F */
+  
+  --color-surface: 0 0% 100%;        /* #FFFFFF */
+  --color-surface-hover: 38 35% 92%; /* #EBE4D8 */
+  --color-surface-pressed: 38 30% 88%; /* #E0D8C8 */
+}
+
 /* ===== Dark Mode Overrides (minimal - system is dark-first) ===== */
 .dark {
   /* Already dark-first, minimal overrides needed */

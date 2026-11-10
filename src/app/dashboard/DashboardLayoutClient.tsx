@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { TeamSwitcher } from '@/components/team-switcher'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 import {
   LayoutDashboard,
   Package,
@@ -189,6 +190,7 @@ export default function DashboardLayoutClient({
           <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-4">
               <TeamSwitcher />
+              <ThemeToggle />
               <h1 className="text-xl font-semibold truncate">
                 {navigation.find(item => pathname === item.href || pathname.startsWith(item.href + '/'))?.name || 'Dashboard'}
               </h1>

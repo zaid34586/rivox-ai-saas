@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { QueryProvider } from '@/lib/query-client'
 import './globals.css'
 
 const geistSans = Geist({
@@ -52,7 +53,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <body className="min-h-screen bg-background font-sans">{children}</body>
+      <body className="min-h-screen bg-background font-sans">
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   )
 }
