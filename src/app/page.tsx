@@ -25,37 +25,31 @@ const features = [
     icon: ShoppingBag,
     title: 'Smart Product Finder',
     desc: 'AI scans Amazon, Flipkart, ClickBank + more to find high-commission, low-competition products with real demand.',
-    gradient: 'from-emerald-500 to-teal-600',
   },
   {
     icon: Video,
     title: 'UGC Ad Studio',
     desc: 'Generate 10+ ad variants per product — hooks, scripts, images, videos with voiceovers. All optimized for Reels/Shorts/Pins.',
-    gradient: 'from-violet-500 to-purple-600',
   },
   {
     icon: Smartphone,
     title: 'Auto-Post to Social',
     desc: 'Schedule and auto-publish to Instagram, YouTube Shorts, Pinterest, X. Best-time AI, warmup limits, compliance built-in.',
-    gradient: 'from-blue-500 to-cyan-600',
   },
   {
     icon: BarChart3,
     title: 'Real Commission Tracking',
     desc: 'Short links with sub-IDs, click tracking, conversion attribution, EPC calculations, payout forecasts — live dashboard.',
-    gradient: 'from-amber-500 to-orange-600',
   },
   {
     icon: Zap,
     title: 'AI Optimizer',
     desc: 'Auto-pause losers (100 clicks, 0 sales), scale winners with lookalike variants, daily mission briefings, trend jump alerts.',
-    gradient: 'from-rose-500 to-pink-600',
   },
   {
     icon: Shield,
     title: 'Ban-Proof Autopilot',
     desc: 'Official APIs only, gradual warmup, duplicate detection, account health monitoring, approval gates — sleep peacefully.',
-    gradient: 'from-indigo-500 to-blue-600',
   },
 ]
 
@@ -78,17 +72,17 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Announcement Bar */}
-      <div className="bg-primary/10 border-b border-primary/20 text-center text-sm py-2 px-4 text-primary-foreground">
-        <span className="font-medium">🚀 Early Access Open</span> — Join 500+ affiliates automating their business.{' '}
-        <a href="#waitlist" className="underline hover:no-underline">Get Access →</a>
+      <div className="bg-primary text-primary-foreground text-center text-sm py-2 px-4">
+        <span className="font-medium">Early Access Open</span> — Join 500+ affiliates automating their business.{' '}
+        <a href="#waitlist" className="underline underline-offset-2 hover:no-underline font-medium">Get Access →</a>
       </div>
 
       {/* Navigation */}
       <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <nav className="mx-auto max-w-7xl flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600">
-              <Zap className="h-5 w-5 text-white" />
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+              <Zap className="h-5 w-5 text-gold" aria-hidden="true" />
             </div>
             <span className="text-xl font-bold tracking-tight">AffiPilot</span>
           </div>
@@ -102,8 +96,8 @@ export default function Home() {
 
           <div className="hidden md:flex md:items-center md:gap-3">
             <a href="/auth/login" className="text-sm font-medium transition-colors hover:text-primary">Sign In</a>
-            <Button asChild size="sm">
-              <a href="/auth/signup">Get Started Free</a>
+            <Button size="sm" onClick={() => window.location.href = '/auth/signup'}>
+              Get Started Free
             </Button>
           </div>
         </nav>
@@ -114,18 +108,22 @@ export default function Home() {
         <section className="relative overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-3xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-6">
+              <p className="eyebrow mb-6 flex items-center justify-center gap-2">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
                 </span>
                 AI Affiliate Autopilot — Now in Early Access
-              </div>
+              </p>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.03em] text-foreground mb-6">
                 Affiliate Marketing on{' '}
-                <span className="bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 bg-clip-text text-transparent">
+                <span className="relative whitespace-nowrap text-primary">
                   Autopilot
+                  <span
+                    aria-hidden="true"
+                    className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-gradient-to-r from-gold via-gold to-gold/30"
+                  />
                 </span>
               </h1>
 
@@ -135,18 +133,18 @@ export default function Home() {
               </p>
 
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button size="lg" className="w-full sm:w-auto gap-2" asChild>
-                  <a href="/auth/signup">Start Free — No Credit Card</a>
+                <Button size="lg" className="w-full sm:w-auto" onClick={() => window.location.href = '/auth/signup'}>
+                  Start Free — No Credit Card
                 </Button>
-                <Button variant="outline" size="lg" className="w-full sm:w-auto" asChild>
-                  <a href="#how-it-works">See How It Works</a>
+                <Button variant="outline" size="lg" className="w-full sm:w-auto" onClick={() => window.location.href = '#how-it-works'}>
+                  See How It Works
                 </Button>
               </div>
 
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-emerald-500" /> No card required</span>
-                <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-emerald-500" /> 14-day free trial</span>
-                <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-emerald-500" /> Cancel anytime</span>
+                <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-primary" /> No card required</span>
+                <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-primary" /> 14-day free trial</span>
+                <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-primary" /> Cancel anytime</span>
               </div>
             </div>
 
@@ -179,7 +177,7 @@ export default function Home() {
                       <span className="font-bold text-foreground">₹12,450</span>
                     </div>
                     <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full" style={{ width: '73%' }} />
+                      <div className="h-full bg-gradient-to-r from-gold to-gold/70 rounded-full" style={{ width: '73%' }} />
                     </div>
                     <div className="grid grid-cols-4 gap-2 text-xs">
                       {['Clicks: 1,234', 'Sales: 47', 'EPC: ₹10.1', 'CTR: 3.2%'].map((item, i) => (
@@ -216,9 +214,7 @@ export default function Home() {
               {features.map((feature) => (
                 <Card key={feature.title} className="group hover:shadow-xl transition-all duration-300 border-border/50">
                   <CardHeader>
-                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br text-white"
-                      style={{ background: `linear-gradient(135deg, ${feature.gradient.split(' ')[0]}, ${feature.gradient.split(' ')[2]})` }}
-                    >
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-primary/20 bg-primary text-primary-foreground">
                       <feature.icon className="h-6 w-6" />
                     </div>
                     <CardTitle className="text-lg">{feature.title}</CardTitle>
@@ -243,7 +239,7 @@ export default function Home() {
             </div>
 
             <div className="relative">
-              <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/50 via-transparent to-primary/50 -translate-x-1/2 hidden lg:block" />
+              <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/30 via-transparent to-primary/30 -translate-x-1/2 hidden lg:block" />
 
               <div className="space-y-8">
                 {steps.map((step, index) => (
@@ -277,16 +273,17 @@ export default function Home() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {[
-                { icon: Globe, name: 'Pinterest', formats: ['Pins', 'Video Pins'], color: 'from-red-500 to-rose-500' },
-                { icon: Video, name: 'YouTube Shorts', formats: ['Shorts', 'Community'], color: 'from-red-600 to-red-500' },
-                { icon: Smartphone, name: 'Instagram', formats: ['Reels', 'Stories', 'Posts'], color: 'from-purple-500 via-pink-500 to-orange-500' },
-                { icon: Target, name: 'X (Twitter)', formats: ['Posts', 'Threads'], color: 'from-sky-500 to-blue-500' },
-                { icon: Users, name: 'Facebook', formats: ['Posts', 'Reels', 'Groups'], color: 'from-blue-600 to-blue-500' },
-                { icon: TrendingUp, name: 'TikTok', formats: ['Videos', 'Stories'], color: 'from-pink-500 to-violet-500' },
+                { icon: Globe, name: 'Pinterest', formats: ['Pins', 'Video Pins'], color: '#E60023' },
+                { icon: Video, name: 'YouTube Shorts', formats: ['Shorts', 'Community'], color: '#FF0000' },
+                { icon: Smartphone, name: 'Instagram', formats: ['Reels', 'Stories', 'Posts'], color: '#C13584' },
+                { icon: Target, name: 'X (Twitter)', formats: ['Posts', 'Threads'], color: '#0F1419' },
+                { icon: Users, name: 'Facebook', formats: ['Posts', 'Reels', 'Groups'], color: '#1877F2' },
+                { icon: TrendingUp, name: 'TikTok', formats: ['Videos', 'Stories'], color: '#111111' },
               ].map((platform) => (
                 <Card key={platform.name} className="group hover:shadow-lg transition-all duration-300 text-center p-6 border-border/50">
-                  <div className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl text-white"
-                    style={{ background: `linear-gradient(135deg, ${platform.color.split(' ')[0]}, ${platform.color.split(' ')[platform.color.split(' ').length - 1]})` }}
+                  <div
+                    className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl text-white"
+                    style={{ background: platform.color }}
                   >
                     <platform.icon className="h-7 w-7" />
                   </div>
@@ -338,9 +335,9 @@ export default function Home() {
                   popular: false,
                 },
               ].map((plan) => (
-                <Card key={plan.name} className={`relative flex flex-col ${plan.popular ? 'border-primary/50 shadow-lg' : 'border-border/50'}`}>
+                <Card key={plan.name} className={`relative flex flex-col ${plan.popular ? 'border-gold/60 shadow-lift' : 'border-border/50'}`}>
                   {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-full">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-gold to-[#D9A335] px-3 py-1 text-xs font-semibold tracking-wide text-[#1A1206] shadow-md">
                       Most Popular
                     </div>
                   )}
@@ -356,7 +353,7 @@ export default function Home() {
                     <ul className="space-y-3 mb-6 flex-1">
                       {plan.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />
+                          <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                           <span>{feature}</span>
                         </li>
                       ))}
@@ -364,9 +361,9 @@ export default function Home() {
                     <Button
                       className="w-full"
                       variant={plan.popular ? 'default' : 'outline'}
-                      asChild
+                      onClick={() => window.location.href = '/auth/signup'}
                     >
-                      <a href="/auth/signup">{plan.cta}</a>
+                      {plan.cta}
                     </Button>
                   </CardContent>
                 </Card>
@@ -378,7 +375,7 @@ export default function Home() {
         {/* Waitlist / CTA */}
         <section id="waitlist" className="py-20 sm:py-24 lg:py-28 border-t border-border/50">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl bg-gradient-to-br from-primary/20 via-background to-teal-500/20 p-8 md:p-16 text-center">
+            <div className="rounded-3xl border border-border/50 bg-gradient-to-br from-primary/10 via-background to-gold/15 p-8 md:p-16 text-center shadow-lift">
               <div className="mx-auto max-w-2xl">
                 <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-6">
                   <Sparkles className="h-4 w-4" />
@@ -414,9 +411,9 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600">
-                  <Zap className="h-5 w-5 text-white" />
+              <div className="flex items-center gap-2.5 mb-4">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+                  <Zap className="h-5 w-5 text-gold" aria-hidden="true" />
                 </div>
                 <span className="text-xl font-bold">AffiPilot</span>
               </div>

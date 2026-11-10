@@ -33,8 +33,9 @@ export async function POST(request: NextRequest) {
     const country = 'Unknown' // Use GeoIP service in production
     const utm = extractUtmParams(url || request.headers.get('referer') || '')
 
-    // Record click event
-    const { data: click, error } = await supabase
+    // Record click event (no .select(): anonymous visitors have no SELECT
+    // RLS grant on rows they insert — INSERT-only policy in migration 004)
+    const { error } = await supabase
       .from('click_events')
       .insert({
         link_id,
@@ -52,8 +53,6 @@ export async function POST(request: NextRequest) {
         utm_content: utm.utm_content,
         utm_term: utm.utm_term,
       })
-      .select()
-      .single()
 
     if (error) {
       console.error('Click record error:', error)
@@ -63,7 +62,7 @@ export async function POST(request: NextRequest) {
     // Increment link click count
     await supabase.rpc('increment_clicks', { link_id })
 
-    return NextResponse.json({ success: true, click_id: click.id })
+    return NextResponse.json({ success: true, link_id })
   } catch (error) {
     console.error('Click tracking error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
@@ -123,22 +122,25 @@ export async function GET(request: NextRequest) {
     startDate.setDate(startDate.getDate() - days)
     
     const { data: clicks, error: clicksError } = await supabase
-      .from('click_events')
-      .select('*')
-      .in('link_id', linkIds)
-      .gte('created_at', startDate.toISOString())
-      .order('created_at', { ascending: true })
+      .rpc('get_clicks_for_analytics', {
+        p_link_ids: linkIds,
+        p_start_date: startDate.toISOString()
+      })
 
     if (clicksError) {
       return NextResponse.json({ error: clicksError.message }, { status: 500 })
     }
 
     // Get commissions for EPC calculation
-    const { data: commissions } = await supabase
-      .from('commissions')
-      .select('amount, link_id')
-      .in('link_id', linkIds)
-      .gte('sale_date', startDate.toISOString())
+    const { data: commissions, error: commissionsError } = await supabase
+      .rpc('get_commissions_for_analytics', {
+        p_link_ids: linkIds,
+        p_start_date: startDate.toISOString()
+      })
+
+    if (commissionsError) {
+      return NextResponse.json({ error: commissionsError.message }, { status: 500 })
+    }
 
     // Calculate summary using analytics lib
     const { calculateClickSummary } = await import('@/lib/analytics')

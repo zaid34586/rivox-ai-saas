@@ -33,6 +33,11 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# sensitive local files
+.supabase-keys.json
+.test-session.json
+.supabase-db-password.txt
+
 # vercel
 .vercel
 

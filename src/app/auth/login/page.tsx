@@ -46,8 +46,8 @@ function LoginPageContent() {
     <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4 py-12">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600">
-            <LogIn className="h-7 w-7 text-white" />
+          <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
+            <LogIn className="h-7 w-7 text-gold" />
           </div>
           <CardTitle className="text-2xl">Welcome back</CardTitle>
           <CardDescription>Sign in to your AffiPilot dashboard</CardDescription>

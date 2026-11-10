@@ -1,24 +1,47 @@
-'use client'
+"use client"
 
-import * as React from 'react'
-import { cn } from '@/lib/utils'
+import * as React from "react"
+import { cn } from "@/lib/utils"
 
-export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  error?: boolean
+  label?: string
+  hint?: string
+}
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, ...props }, ref) => {
-    return (
+function Textarea({ className, error, label, hint, id, ...rest }: TextareaProps) {
+  const textareaId = id || React.useId()
+  
+  // Extract custom props
+  const textareaProps = rest as Omit<TextareaProps, "error" | "label" | "hint" | "id" | "className">
+  
+  return (
+    <div className="w-full">
+      {label && (
+        <label htmlFor={textareaId} className="label">
+          {label}
+        </label>
+      )}
       <textarea
-        className={cn(
-          'flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-          className
-        )}
-        ref={ref}
-        {...props}
+        id={textareaId}
+        className={cn("input min-h-[100px] resize-y", error && "input-error", className)}
+        aria-invalid={error}
+        aria-describedby={error ? `${textareaId}-error` : undefined}
+        {...textareaProps}
       />
-    )
-  }
-)
-Textarea.displayName = 'Textarea'
+      {error && (
+        <p id={`${textareaId}-error`} className="mt-1.5 text-sm text-error" role="alert">
+          {error}
+        </p>
+      )}
+      {hint && !error && (
+        <p id={`${textareaId}-hint`} className="mt-1.5 text-sm text-muted-foreground">
+          {hint}
+        </p>
+      )}
+    </div>
+  )
+}
+Textarea.displayName = "Textarea"
 
 export { Textarea }

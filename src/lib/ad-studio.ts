@@ -1,5 +1,6 @@
 /**
  * Ad Studio — AI Ad Generation Types & Prompts
+ * Now fetches hooks from database (ad_hooks table)
  */
 
 export interface AdHook {
@@ -36,6 +37,10 @@ export interface AdVariant {
   quality_score: number
   status: 'draft' | 'pending_approval' | 'approved' | 'rejected' | 'scheduled' | 'published' | 'failed'
   created_at: string
+  ai_generated?: boolean
+  image_url?: string | null
+  video_url?: string | null
+  voice_url?: string | null
 }
 
 export interface ProductForAd {
@@ -55,6 +60,7 @@ export interface ProductForAd {
   smartScore: number
 }
 
+// Static fallback hooks (used when DB not available)
 export const AD_HOOKS: AdHook[] = [
   // Curiosity hooks
   {

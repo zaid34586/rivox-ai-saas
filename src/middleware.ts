@@ -33,13 +33,27 @@ export async function middleware(request: NextRequest) {
   const isPublicPath = publicPaths.some(path => pathname.startsWith(path))
   const isRootPath = pathname === '/'
 
+  // /go/<code> — anonymous visitors open short tracking links
+  const isGoPath = pathname.startsWith('/go/')
+
   // Redirect authenticated users away from auth pages
   if (session && isPublicPath) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
-  // Redirect unauthenticated users to login
-  if (!session && !isPublicPath && !isRootPath) {
+  // API routes: return JSON 401 (never redirect — clients expect JSON).
+  // /api/clicks POST is a public beacon (anonymous click recording);
+  // its own handler enforces auth where needed (GET requires user).
+  if (pathname.startsWith('/api')) {
+    const isPublicApi = pathname === '/api/clicks'
+    if (!session && !isPublicApi && !isPublicPath) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    return NextResponse.next()
+  }
+
+  // Redirect unauthenticated users to login (pages only)
+  if (!session && !isPublicPath && !isRootPath && !isGoPath) {
     const loginUrl = new URL('/auth/login', request.url)
     loginUrl.searchParams.set('redirect', pathname)
     return NextResponse.redirect(loginUrl)

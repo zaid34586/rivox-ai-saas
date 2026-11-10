@@ -327,10 +327,10 @@ export default function EarningsPage() {
   }
 
   const statCards = [
-    { name: 'Total Earnings', value: summary ? formatCurrency(summary.total) : '—', icon: DollarSign, color: 'bg-emerald-500', change: summary && summary.lastMonth > 0 ? `${((summary.thisMonth - summary.lastMonth) / summary.lastMonth * 100).toFixed(1)}% vs last month` : '' },
-    { name: 'Pending', value: summary ? formatCurrency(summary.pending) : '—', icon: Clock, color: 'bg-amber-500' },
-    { name: 'Approved', value: summary ? formatCurrency(summary.approved) : '—', icon: CheckCircle, color: 'bg-blue-500' },
-    { name: 'Paid', value: summary ? formatCurrency(summary.paid) : '—', icon: TrendingUp, color: 'bg-violet-500' },
+    { name: 'Total Earnings', value: summary ? formatCurrency(summary.total) : '—', icon: DollarSign, color: 'bg-gold', change: summary && summary.lastMonth > 0 ? `${((summary.thisMonth - summary.lastMonth) / summary.lastMonth * 100).toFixed(1)}% vs last month` : '' },
+    { name: 'Pending', value: summary ? formatCurrency(summary.pending) : '—', icon: Clock, color: 'bg-gold' },
+    { name: 'Approved', value: summary ? formatCurrency(summary.approved) : '—', icon: CheckCircle, color: 'bg-primary' },
+    { name: 'Paid', value: summary ? formatCurrency(summary.paid) : '—', icon: TrendingUp, color: 'bg-primary' },
   ]
 
   return (
@@ -436,7 +436,7 @@ export default function EarningsPage() {
                     <div className="flex-1 text-xs text-muted-foreground">{item.date}</div>
                     <div className="flex items-end h-full flex-1">
                       <div 
-                        className="w-full bg-emerald-500 rounded-t transition-all"
+                        className="w-full bg-gold rounded-t transition-all"
                         style={{ height: `${height}%` }}
                       />
                     </div>
@@ -522,14 +522,14 @@ export default function EarningsPage() {
           <CardContent>
             {summary && (
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 rounded-lg bg-emerald-50">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-gold-soft border border-gold/20">
                   <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                      <TrendingUp className="h-4 w-4 text-emerald-600" />
+                    <div className="h-8 w-8 rounded-full bg-gold/20 flex items-center justify-center">
+                      <TrendingUp className="h-4 w-4 text-gold-deep" />
                     </div>
                     <span className="font-medium">This Month</span>
                   </div>
-                  <span className="font-bold text-emerald-700">{formatCurrency(summary.thisMonth)}</span>
+                  <span className="font-bold text-gold-deep num">{formatCurrency(summary.thisMonth)}</span>
                 </div>
                 <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                   <div className="flex items-center gap-2">

@@ -92,22 +92,30 @@ export default function AnalyticsPage() {
     const linkIds = (links as LinkWithProduct[] | null)?.map(l => l.id) || []
 
     if (linkIds.length > 0) {
-      // Get clicks
-      const { data: clicks } = await supabase
-        .from('click_events')
-        .select('*')
-        .in('link_id', linkIds)
-        .gte('created_at', startDate.toISOString())
+      // Get clicks via RPC
+      const { data: clicks, error: clicksError } = await supabase
+        .rpc('get_clicks_for_analytics', {
+          p_link_ids: linkIds,
+          p_start_date: startDate.toISOString()
+        })
 
-      // Get commissions
-      const { data: commissions } = await supabase
-        .from('commissions')
-        .select('amount, link_id')
-        .in('link_id', linkIds)
-        .gte('sale_date', startDate.toISOString())
+      if (clicksError) {
+        console.error('Clicks RPC error:', clicksError)
+      }
 
-      const clicksData = clicks as ClickEvent[] | null
-      const commissionsData = commissions as CommissionEvent[] | null
+      // Get commissions via RPC
+      const { data: commissions, error: commissionsError } = await supabase
+        .rpc('get_commissions_for_analytics', {
+          p_link_ids: linkIds,
+          p_start_date: startDate.toISOString()
+        })
+
+      if (commissionsError) {
+        console.error('Commissions RPC error:', commissionsError)
+      }
+
+      const clicksData = (clicks as ClickEvent[] | null) || []
+      const commissionsData = (commissions as CommissionEvent[] | null) || []
 
       // Calculate summary manually (since we can't import server lib in client)
       const totalClicks = clicksData?.length || 0
@@ -200,19 +208,19 @@ export default function AnalyticsPage() {
       name: 'Total Clicks',
       value: summary ? formatNumber(summary.totalClicks) : '—',
       icon: MousePointer,
-      color: 'bg-blue-500',
+      color: 'bg-primary',
     },
     {
       name: 'Unique Visitors',
       value: summary ? formatNumber(summary.uniqueClicks) : '—',
       icon: Globe,
-      color: 'bg-emerald-500',
+      color: 'bg-primary',
     },
     {
       name: 'EPC (Earnings/Click)',
       value: summary ? formatCurrency(summary.epc) : '—',
       icon: DollarSign,
-      color: 'bg-amber-500',
+      color: 'bg-gold',
     },
     {
       name: 'Conversion Rate',
@@ -220,7 +228,7 @@ export default function AnalyticsPage() {
         ? ((topLinks.reduce((sum: number, l: Link) => sum + l.commission_earned, 0) / summary.totalClicks) * 100).toFixed(2) + '%'
         : '—',
       icon: TrendingUp,
-      color: 'bg-violet-500',
+      color: 'bg-primary',
     },
   ]
 
@@ -337,7 +345,7 @@ export default function AnalyticsPage() {
                     </div>
                     <div className="text-right">
                       <p className="font-bold">{link.clicks} clicks</p>
-                      <p className="text-sm text-emerald-600">{formatCurrency(link.commission_earned)}</p>
+                      <p className="text-sm text-gold-deep num">{formatCurrency(link.commission_earned)}</p>
                     </div>
                   </div>
                 ))}

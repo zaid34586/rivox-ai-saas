@@ -101,7 +101,7 @@ export default function DashboardPage() {
       name: 'Products',
       value: stats.totalProducts,
       icon: ShoppingBag,
-      color: 'bg-emerald-500',
+      color: 'bg-primary',
       href: '/dashboard/products',
       change: '+2 this week',
     },
@@ -109,7 +109,7 @@ export default function DashboardPage() {
       name: 'Ad Creatives',
       value: stats.totalAds,
       icon: Video,
-      color: 'bg-violet-500',
+      color: 'bg-primary',
       href: '/dashboard/ads',
       change: '+5 this week',
     },
@@ -117,7 +117,7 @@ export default function DashboardPage() {
       name: 'Total Clicks',
       value: formatNumber(stats.totalClicks),
       icon: MousePointer,
-      color: 'bg-blue-500',
+      color: 'bg-primary',
       href: '/dashboard/analytics',
       change: '+12% vs last week',
     },
@@ -125,26 +125,26 @@ export default function DashboardPage() {
       name: 'Total Earnings',
       value: formatCurrency(stats.totalCommission),
       icon: DollarSign,
-      color: 'bg-amber-500',
+      color: 'bg-gold',
       href: '/dashboard/analytics',
       change: formatCurrency(stats.approvedCommission) + ' approved',
     },
   ]
 
   const quickActions = [
-    { name: 'Add Product', href: '/dashboard/products?add=true', icon: Plus, color: 'bg-emerald-500' },
-    { name: 'Create Ads', href: '/dashboard/ads?create=true', icon: Video, color: 'bg-violet-500' },
-    { name: 'View Calendar', href: '/dashboard/calendar', icon: Target, color: 'bg-blue-500' },
-    { name: 'Run Autopilot', href: '/dashboard/autopilot', icon: Zap, color: 'bg-amber-500' },
+    { name: 'Add Product', href: '/dashboard/products?add=true', icon: Plus, color: 'bg-primary' },
+    { name: 'Create Ads', href: '/dashboard/ads?create=true', icon: Video, color: 'bg-primary' },
+    { name: 'View Calendar', href: '/dashboard/calendar', icon: Target, color: 'bg-primary' },
+    { name: 'Run Autopilot', href: '/dashboard/autopilot', icon: Zap, color: 'bg-gold' },
   ]
 
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="rounded-2xl bg-gradient-to-br from-primary/10 via-background to-teal-500/10 p-6 sm:p-8 border border-border/50">
+      <div className="rounded-2xl bg-gradient-to-br from-primary/10 via-background to-gold/10 p-6 sm:p-8 border border-border/50 shadow-lift">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Welcome back! 👋</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Welcome back</h1>
             <p className="mt-1 text-muted-foreground">
               Here&apos;s what&apos;s happening with your affiliate autopilot today.
             </p>
@@ -190,7 +190,7 @@ export default function DashboardPage() {
         <Card className="lg:col-span-1 border-border/50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-amber-500" />
+              <Zap className="h-5 w-5 text-gold" />
               Quick Actions
             </CardTitle>
           </CardHeader>
@@ -219,26 +219,26 @@ export default function DashboardPage() {
         <Card className="lg:col-span-2 border-border/50">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-emerald-500" />
+              <DollarSign className="h-5 w-5 text-gold" />
               Earnings Overview
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-3 gap-4">
-              <div className="rounded-lg bg-emerald-50 p-4 border border-emerald-100">
-                <div className="text-sm text-emerald-700">Pending</div>
-                <div className="text-2xl font-bold text-emerald-900">{formatCurrency(stats.pendingCommission)}</div>
-                <div className="text-xs text-emerald-600">Awaiting approval</div>
-              </div>
-              <div className="rounded-lg bg-blue-50 p-4 border border-blue-100">
-                <div className="text-sm text-blue-700">Approved</div>
-                <div className="text-2xl font-bold text-blue-900">{formatCurrency(stats.approvedCommission)}</div>
-                <div className="text-xs text-blue-600">Ready for payout</div>
+              <div className="rounded-lg bg-gold-soft p-4 border border-gold/20">
+                <div className="text-sm text-gold-deep">Pending</div>
+                <div className="text-2xl font-bold text-gold-deep num">{formatCurrency(stats.pendingCommission)}</div>
+                <div className="text-xs text-gold/80">Awaiting approval</div>
               </div>
               <div className="rounded-lg bg-primary/10 p-4 border border-primary/20">
-                <div className="text-sm text-primary">Total</div>
-                <div className="text-2xl font-bold text-primary">{formatCurrency(stats.totalCommission)}</div>
-                <div className="text-xs text-primary/80">All time earnings</div>
+                <div className="text-sm text-primary">Approved</div>
+                <div className="text-2xl font-bold text-primary num">{formatCurrency(stats.approvedCommission)}</div>
+                <div className="text-xs text-primary/80">Ready for payout</div>
+              </div>
+              <div className="rounded-lg bg-gold-soft p-4 border border-gold/20">
+                <div className="text-sm text-gold-deep">Total</div>
+                <div className="text-2xl font-bold text-gold-deep num">{formatCurrency(stats.totalCommission)}</div>
+                <div className="text-xs text-gold/80">All time earnings</div>
               </div>
             </div>
           </CardContent>

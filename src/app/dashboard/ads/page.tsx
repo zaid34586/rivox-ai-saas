@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -62,6 +62,13 @@ export default function AdsPage() {
   const [previewVariant, setPreviewVariant] = useState<AdVariant | null>(null)
   const [statusFilter, setStatusFilter] = useState<'all' | 'draft' | 'pending_approval' | 'approved' | 'rejected'>('all')
   const [platformFilter, setPlatformFilter] = useState<string>('all')
+  
+  // AI Generation options
+  const [useAI, setUseAI] = useState(true)
+  const [generateImage, setGenerateImage] = useState(true)
+  const [generateVideo, setGenerateVideo] = useState(false)
+  const [generateVoice, setGenerateVoice] = useState(false)
+  const [aiAvailable, setAiAvailable] = useState(false)
 
   useEffect(() => {
     fetchProducts()
@@ -97,6 +104,14 @@ export default function AdsPage() {
     setLoading(false)
   }
 
+  // Check AI availability on mount
+  useEffect(() => {
+    fetch('/api/ads')
+      .then(res => res.json())
+      .then(data => setAiAvailable(data.ai_available || false))
+      .catch(() => setAiAvailable(false))
+  }, [])
+
   const handleGenerate = async () => {
     if (!selectedProduct) return
     
@@ -114,6 +129,10 @@ export default function AdsPage() {
         hook_ids: selectedHooks.length > 0 ? selectedHooks : undefined,
         platforms: selectedPlatforms,
         count: variantCount,
+        use_ai: useAI,
+        generate_image: generateImage,
+        generate_video: generateVideo,
+        generate_voice: generateVoice,
       }),
     })
 
@@ -125,7 +144,7 @@ export default function AdsPage() {
       return
     }
 
-    alert(`Generated ${data.count} ad variants!`)
+    alert(`Generated ${data.count} ad variants! ${data.ai_enabled ? '(AI-powered)' : '(Template-based)'}`)
     fetchVariants()
     setActiveTab('library')
   }
@@ -344,6 +363,101 @@ export default function AdsPage() {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* AI Generation Options */}
+              {aiAvailable && (
+                <Card className="border-primary/50 bg-primary/5">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Brain className="h-5 w-5" />
+                      AI Generation Options
+                    </CardTitle>
+                    <CardDescription>Enable real AI generation for media (requires API keys in .env)</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="font-medium">AI-Powered Generation</Label>
+                        <p className="text-sm text-muted-foreground">Use GPT-4o for scripts, Flux for images, Runway for video</p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={useAI}
+                          onChange={e => setUseAI(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-ring peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                      </label>
+                    </div>
+
+                    {useAI && (
+                      <div className="grid gap-3 md:grid-cols-3 pt-2 border-t border-border/50">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={generateImage}
+                            onChange={e => setGenerateImage(e.target.checked)}
+                            className="h-4 w-4 rounded border-input bg-background text-primary focus:ring-2 focus:ring-ring"
+                          />
+                          <div>
+                            <span className="font-medium">Images (Flux)</span>
+                            <p className="text-xs text-muted-foreground">~$0.003 each</p>
+                          </div>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={generateVideo}
+                            onChange={e => setGenerateVideo(e.target.checked)}
+                            className="h-4 w-4 rounded border-input bg-background text-primary focus:ring-2 focus:ring-ring"
+                          />
+                          <div>
+                            <span className="font-medium">Video (Runway/Kling)</span>
+                            <p className="text-xs text-muted-foreground">~$0.50 per 30s</p>
+                          </div>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={generateVoice}
+                            onChange={e => setGenerateVoice(e.target.checked)}
+                            className="h-4 w-4 rounded border-input bg-background text-primary focus:ring-2 focus:ring-ring"
+                          />
+                          <div>
+                            <span className="font-medium">Voice (ElevenLabs)</span>
+                            <p className="text-xs text-muted-foreground">~$0.018 per 1k chars</p>
+                          </div>
+                        </label>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+
+              {!aiAvailable && (
+                <Card className="border-amber/50 bg-amber/5">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-3">
+                      <Brain className="h-6 w-6 text-amber-500" />
+                      <div>
+                        <h4 className="font-semibold">AI Generation Unavailable</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Add API keys to <code>.env.local</code> to enable real AI generation:
+                        </p>
+                        <ul className="mt-2 text-xs text-muted-foreground space-y-1 font-mono">
+                          <li>OPENAI_API_KEY=sk-... (for scripts & platform content)</li>
+                          <li>REPLICATE_API_TOKEN=r8_... (for images & video)</li>
+                          <li>ELEVENLABS_API_KEY=... (for voiceovers)</li>
+                        </ul>
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          Currently using template-based generation (fast, free, no API keys needed)
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               {/* Generate Button */}
               <Button 
