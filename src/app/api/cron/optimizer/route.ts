@@ -62,8 +62,23 @@ export async function GET(request: NextRequest) {
     }
 
     if (action === 'optimizer_eval' || action === 'all') {
-      // Evaluate optimizer rules (placeholder - actual logic in app)
-      results.optimizer_eval = 'evaluated'
+      // Evaluate optimizer rules for all users
+      let evaluated = 0
+      let actionsExecuted = 0
+      for (const user of users.users) {
+        try {
+          const { data, error } = await supabase.rpc('evaluate_optimizer_rules', {
+            target_user_id: user.id
+          })
+          if (!error && data) {
+            evaluated++
+            actionsExecuted += data.filter((a: any) => a.triggered && a.action_status === 'executed').length
+          }
+        } catch (e) {
+          console.error(`Optimizer eval failed for ${user.id}:`, e)
+        }
+      }
+      results.optimizer_eval = { users_evaluated: evaluated, actions_executed: actionsExecuted }
     }
 
     return NextResponse.json({ success: true, ...results })
