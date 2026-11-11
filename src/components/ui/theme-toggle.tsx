@@ -1,44 +1,56 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useSyncExternalStore } from 'react'
 import { Moon, Sun, Monitor } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 type Theme = 'light' | 'dark' | 'system'
 
-export function ThemeToggle({ className }: { className?: string }) {
-  const [theme, setTheme] = useState<Theme>('system')
-  const [mounted, setMounted] = useState(false)
+const THEME_KEY = 'theme'
+const THEME_CHANGE_EVENT = 'affipilot:theme-change'
 
-  useEffect(() => {
-    setMounted(true)
-    const saved = localStorage.getItem('theme') as Theme | null
-    if (saved) setTheme(saved)
-  }, [])
+/** Persist a theme choice and notify every subscriber (same tab + others). */
+function saveTheme(theme: Theme) {
+  localStorage.setItem(THEME_KEY, theme)
+  window.dispatchEvent(new Event(THEME_CHANGE_EVENT))
+}
 
-  useEffect(() => {
-    if (!mounted) return
-    localStorage.setItem('theme', theme)
-    
-    const root = document.documentElement
-    root.classList.remove('light', 'dark')
-    
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      root.classList.add(systemTheme)
-    } else {
-      root.classList.add(theme)
-    }
-  }, [theme, mounted])
+function readTheme(): Theme {
+  return (localStorage.getItem(THEME_KEY) as Theme | null) || 'dark'
+}
 
-  if (!mounted) {
-    return (
-      <Button variant="ghost" size="icon" className={cn("h-9 w-9", className)} disabled>
-        <Monitor className="h-4 w-4 animate-pulse" />
-      </Button>
-    )
+function subscribeToTheme(onChange: () => void) {
+  window.addEventListener('storage', onChange)
+  window.addEventListener(THEME_CHANGE_EVENT, onChange)
+  return () => {
+    window.removeEventListener('storage', onChange)
+    window.removeEventListener(THEME_CHANGE_EVENT, onChange)
   }
+}
+
+/** Dark is the product default on the server and before a choice is saved. */
+const serverTheme = 'dark' as const
+
+function applyThemeClass(theme: Theme) {
+  const root = document.documentElement
+  root.classList.remove('light', 'dark')
+
+  if (theme === 'system') {
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    root.classList.add(systemTheme)
+  } else {
+    root.classList.add(theme)
+  }
+}
+
+export function ThemeToggle({ className }: { className?: string }) {
+  // Dark is the product default; users can cycle to light/system.
+  const theme = useSyncExternalStore(subscribeToTheme, readTheme, () => serverTheme)
+
+  useEffect(() => {
+    applyThemeClass(theme)
+  }, [theme])
 
   const themes: { value: Theme; label: string; icon: React.ReactNode }[] = [
     { value: 'light', label: 'Light', icon: <Sun className="h-4 w-4" /> },
@@ -54,7 +66,7 @@ export function ThemeToggle({ className }: { className?: string }) {
         className={cn("h-9 w-9 relative", className)}
         onClick={() => {
           const currentIndex = themes.findIndex(t => t.value === theme)
-          setTheme(themes[(currentIndex + 1) % themes.length].value)
+          saveTheme(themes[(currentIndex + 1) % themes.length].value)
         }}
         aria-label={`Current theme: ${theme}. Click to cycle.`}
       >
@@ -87,28 +99,10 @@ export function ThemeToggle({ className }: { className?: string }) {
 
 // Theme provider wrapper for app directory
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false)
-
   useEffect(() => {
-    setMounted(true)
-    // Apply saved theme immediately
-    const saved = localStorage.getItem('theme') as 'light' | 'dark' | 'system' | null
-    const theme = saved || 'system'
-    
-    const root = document.documentElement
-    root.classList.remove('light', 'dark')
-    
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      root.classList.add(systemTheme)
-    } else {
-      root.classList.add(theme)
-    }
+    const saved = localStorage.getItem(THEME_KEY) as 'light' | 'dark' | 'system' | null
+    applyThemeClass(saved || 'dark')
   }, [])
-
-  if (!mounted) {
-    return <>{children}</>
-  }
 
   return <>{children}</>
 }

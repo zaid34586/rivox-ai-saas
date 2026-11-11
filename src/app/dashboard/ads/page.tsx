@@ -436,7 +436,7 @@ export default function AdsPage() {
               )}
 
               {!aiAvailable && (
-                <Card className="border-amber/50 bg-amber/5">
+                <Card className="border-warning/50 bg-warning/5">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3">
                       <Brain className="h-6 w-6 text-amber-500" />

@@ -694,7 +694,7 @@ export default function TeamPageClient({
                   <p className="text-2xl font-bold">{invitations.length}</p>
                 </div>
               </div>
-              <div className="mt-4 p-4 rounded-lg bg-amber/5 border border-amber/20">
+              <div className="mt-4 p-4 rounded-lg bg-warning/5 border border-warning/20">
                 <p className="text-sm text-amber-700">
                   Plan upgrades and billing management coming soon.
                 </p>

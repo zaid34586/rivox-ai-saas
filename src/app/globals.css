@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Radix dialog/dropdown/select/tabs enter-exit animations (animate-in,
+   fade-in-0, zoom-in-95, slide-in-from-*). */
+@plugin "tailwindcss-animate";
+
 /*
   ============================================================
   Tailwind v4 theme tokens
@@ -37,6 +41,8 @@
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-fg));
   --color-primary-soft: hsl(var(--primary-soft));
+  --color-primary-hover: hsl(var(--primary-hover));
+  --color-primary-pressed: hsl(var(--primary-pressed));
 
   /* Neutral interactive accent (sidebar/menu hover) */
   --color-accent: hsl(var(--surface-hover));
@@ -62,6 +68,9 @@
   --color-gold: hsl(var(--accent));
   --color-gold-soft: hsl(var(--accent-soft));
   --color-gold-deep: hsl(var(--gold-deep));
+  --color-gold-hover: hsl(var(--accent-hover));
+  --color-gold-pressed: hsl(var(--accent-pressed));
+  --color-gold-foreground: hsl(var(--accent-fg));
 
   /* Explicit surfaces */
   --color-surface: hsl(var(--surface));
@@ -72,6 +81,7 @@
   /* Elevation */
   --shadow-lift: var(--lift);
   --shadow-glow: var(--glow);
+  --shadow-gold: 0 0 0 1px hsl(var(--accent) / 0.3), 0 8px 28px hsl(var(--accent) / 0.2);
 }
 
 /*
@@ -475,31 +485,32 @@
   .aspect-square { aspect-ratio: 1 / 1; }
   .aspect-video { aspect-ratio: 16 / 9; }
   .aspect-portrait { aspect-ratio: 3 / 4; }
-  
-  /* Animation helpers */
-  .animate-in {
-    animation: animate-in var(--duration-base) var(--ease-out) forwards;
-  }
-  
-  .animate-out {
-    animation: animate-out var(--duration-fast) var(--ease-in-out) forwards;
-  }
+
+  /* Enter/exit animations for dialogs, dropdowns, selects and tabs come
+     from the `tailwindcss-animate` plugin (@plugin above), which provides
+     .animate-in/.animate-out plus fade/zoom/slide helper utilities. */
 }
 
 /* ===== Keyframe Animations ===== */
-@keyframes animate-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes animate-out {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-8px); }
-}
-
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Fade-in used by PageSkeleton and the exported fadeInStyle helper.
+   Declared as a real utility so variants (hover:*, etc.) also work. */
+@utility animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* Invalid-field styling for Input/Select. A `@utility` (not a component
+   class) so variants like `aria-invalid:input-error` generate correctly. */
+@utility input-error {
+  border-color: hsl(var(--error));
+
+  &:focus {
+    box-shadow: 0 0 0 3px hsl(var(--error) / 0.15);
+  }
 }
 
 @keyframes slide-up {
@@ -817,15 +828,7 @@ body {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  
-  .input-error {
-    border-color: hsl(var(--error));
-  }
-  
-  .input-error:focus {
-    box-shadow: 0 0 0 3px hsl(var(--error) / 0.15);
-  }
-  
+
   /* Label */
   .label {
     display: block;

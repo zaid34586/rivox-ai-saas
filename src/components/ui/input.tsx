@@ -4,14 +4,16 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  error?: boolean
+  /** `true` marks the field invalid; a string also renders as the message. */
+  error?: boolean | string
   label?: string
   hint?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, error, label, hint, id, ...props }, ref) => {
-    const inputId = id || React.useId()
+    const autoId = React.useId()
+    const inputId = id || autoId
     
     return (
       <div className="w-full">
@@ -25,11 +27,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           className={cn("input", error && "input-error", className)}
           ref={ref}
-          aria-invalid={error}
-          aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={typeof error === 'string' ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
           {...props}
         />
-        {error && (
+        {typeof error === 'string' && (
           <p id={`${inputId}-error`} className="mt-1.5 text-sm text-error" role="alert">
             {error}
           </p>

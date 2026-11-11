@@ -1,7 +1,12 @@
 import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
+/**
+ * Class name helper: clsx for conditionals + tailwind-merge so a later
+ * class (usually a caller override) reliably beats an earlier default.
+ */
 export function cn(...inputs: ClassValue[]) {
-  return clsx(inputs)
+  return twMerge(clsx(inputs))
 }
 
 export function generateShortCode(length = 8): string {

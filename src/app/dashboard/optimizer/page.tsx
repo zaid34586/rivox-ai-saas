@@ -399,7 +399,7 @@ export default function OptimizerPage() {
 
           {/* Budget Warnings */}
           {overPacingBudgets > 0 && (
-            <Card className="border-border/50 border-amber/20">
+            <Card className="border-border/50 border-warning/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <AlertTriangle className="h-5 w-5 text-amber-500" />
@@ -409,7 +409,7 @@ export default function OptimizerPage() {
               <CardContent>
                 <div className="space-y-2">
                   {budgets.filter(b => b.pace_status === 'over_pacing' || b.pace_status === 'exhausted').map(budget => (
-                    <div key={budget.id} className="flex items-center justify-between p-3 rounded-lg bg-amber/5 border border-amber/20">
+                    <div key={budget.id} className="flex items-center justify-between p-3 rounded-lg bg-warning/5 border border-warning/20">
                       <div>
                         <p className="font-medium">{budget.scope_type === 'global' ? 'Global Budget' : `${budget.scope_type}: ${budget.scope_id}`}</p>
                         <p className="text-sm text-muted-foreground">
@@ -756,7 +756,7 @@ export default function OptimizerPage() {
           ) : (
             <div className="space-y-4">
               {budgets.map(budget => (
-                <Card key={budget.id} className={cn('border-border/50', budget.pace_status === 'over_pacing' || budget.pace_status === 'exhausted' ? 'border-amber/30' : '')}>
+                <Card key={budget.id} className={cn('border-border/50', budget.pace_status === 'over_pacing' || budget.pace_status === 'exhausted' ? 'border-warning/30' : '')}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex-1">

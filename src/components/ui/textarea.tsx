@@ -4,14 +4,16 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  error?: boolean
+  /** `true` marks the field invalid; a string also renders as the message. */
+  error?: boolean | string
   label?: string
   hint?: string
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, error, label, hint, id, ...props }, ref) => {
-    const textareaId = id || React.useId()
+    const autoId = React.useId()
+    const textareaId = id || autoId
     
     return (
       <div className="w-full">
@@ -24,11 +26,11 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={textareaId}
           className={cn("input min-h-[100px] resize-y", error && "input-error", className)}
           ref={ref}
-          aria-invalid={error}
-          aria-describedby={error ? `${textareaId}-error` : undefined}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={typeof error === 'string' ? `${textareaId}-error` : undefined}
           {...props}
         />
-        {error && (
+        {typeof error === 'string' && (
           <p id={`${textareaId}-error`} className="mt-1.5 text-sm text-error" role="alert">
             {error}
           </p>

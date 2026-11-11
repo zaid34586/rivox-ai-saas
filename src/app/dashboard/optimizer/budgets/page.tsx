@@ -178,7 +178,7 @@ export default function BudgetsPage() {
       ) : (
         <div className="space-y-4">
           {budgets.map(budget => (
-            <Card key={budget.id} className={cn('border-border/50', budget.pace_status === 'over_pacing' || budget.pace_status === 'exhausted' ? 'border-amber/30' : '')}>
+            <Card key={budget.id} className={cn('border-border/50', budget.pace_status === 'over_pacing' || budget.pace_status === 'exhausted' ? 'border-warning/30' : '')}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1">
