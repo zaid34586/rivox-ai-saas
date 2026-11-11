@@ -18,39 +18,35 @@
   the light/dark overrides below cascade correctly.
 */
 @theme inline {
-  /* Surfaces & text */
+  /* Surfaces & text — Command Center graphite base */
   --color-background: hsl(var(--bg));
   --color-foreground: hsl(var(--fg));
   --color-card: hsl(var(--surface));
   --color-card-foreground: hsl(var(--fg));
-  --color-popover: hsl(var(--surface));
+  --color-popover: hsl(var(--surface-elevated));
   --color-popover-foreground: hsl(var(--fg));
-  --color-muted: hsl(var(--bg-muted));
+  --color-muted: hsl(var(--bg-surface));
   --color-muted-foreground: hsl(var(--fg-muted));
   --color-border: hsl(var(--border));
   --color-border-hover: hsl(var(--border-hover));
-  --color-border-strong: hsl(var(--border-strong));
+  --color-border-strong: hsl(var(--border));
   --color-input: hsl(var(--border));
   --color-ring: hsl(var(--primary));
   --color-radius: var(--radius-md);
 
-  /* Brand */
+  /* Brand — Sky blue primary actions */
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-fg));
   --color-primary-soft: hsl(var(--primary-soft));
   --color-primary-hover: hsl(var(--primary-hover));
   --color-primary-pressed: hsl(var(--primary-pressed));
 
-  /* Accent — Warm Brass/Gold (revenue, premium, highlights) */
+  /* Accent — Amber for revenue / money CTAs */
   --color-accent: hsl(var(--accent));
   --color-accent-foreground: hsl(var(--accent-fg));
   --color-accent-soft: hsl(var(--accent-soft));
   --color-accent-hover: hsl(var(--accent-hover));
   --color-accent-pressed: hsl(var(--accent-pressed));
-
-  /* Neutral interactive accent (sidebar/menu hover) */
-  --color-accent: hsl(var(--surface-hover));
-  --color-accent-foreground: hsl(var(--fg));
 
   /* Feedback */
   --color-destructive: hsl(var(--error));
@@ -58,20 +54,16 @@
   --color-success: hsl(var(--success));
   --color-success-soft: hsl(var(--success-soft));
   --color-success-foreground: hsl(var(--success-fg));
-  --color-warning: hsl(var(--warning));
-  --color-warning-soft: hsl(var(--warning-soft));
-  --color-warning-foreground: hsl(var(--warning-fg));
   --color-error: hsl(var(--error));
   --color-error-soft: hsl(var(--error-soft));
   --color-error-foreground: hsl(var(--error-fg));
-  --color-info: hsl(var(--info));
-  --color-info-soft: hsl(var(--info-soft));
-  --color-info-foreground: hsl(var(--info-fg));
+  --color-info: hsl(var(--primary));
+  --color-info-soft: hsl(var(--primary-soft));
+  --color-info-foreground: hsl(var(--primary-fg));
 
-  /* Revenue / premium highlight */
+  /* Revenue / premium highlight — Amber */
   --color-gold: hsl(var(--accent));
   --color-gold-soft: hsl(var(--accent-soft));
-  --color-gold-deep: hsl(var(--gold-deep));
   --color-gold-hover: hsl(var(--accent-hover));
   --color-gold-pressed: hsl(var(--accent-pressed));
   --color-gold-foreground: hsl(var(--accent-fg));
@@ -84,70 +76,69 @@
 
   /* Elevation */
   --shadow-lift: var(--lift);
-  --shadow-glow: var(--glow);
-  --shadow-gold: 0 0 0 1px hsl(var(--accent) / 0.3), 0 8px 28px hsl(var(--accent) / 0.2);
+  --shadow-glow: 0 0 0 1px hsl(var(--primary) / 0.25), 0 8px 28px hsl(var(--primary) / 0.15);
 }
 
 /* ============================================================
   Light theme — Warm porcelain base (primary)
   ============================================================ */
 :root {
-  /* ===== Color Primitives ===== */
-  /* Light theme — Warm porcelain base (primary) */
-  --bg: 38 45% 96%;              /* #F5F0E8 - Warm porcelain paper */
-  --bg-elevated: 0 0% 100%;      /* #FFFFFF - Pure white cards */
-  --bg-hover: 38 35% 92%;        /* #EBE4D8 - Subtle warm hover */
-  --bg-pressed: 38 30% 88%;      /* #E0D8C8 - Active/pressed */
+  /* ===== Color Primitives — Command Center graphite base ===== */
+  /* Dark is default: deep graphite surfaces, near-white text */
+  --bg: 220 15% 7%;               /* #0B0D0F - Deep graphite */
+  --bg-elevated: 220 15% 10%;     /* #13171C - Cards/panels */
+  --bg-hover: 220 10% 12%;        /* #1A2026 - Hover state */
+  --bg-pressed: 220 10% 15%;      /* #202933 - Active/pressed */
 
-  --fg: 220 25% 8%;              /* #0D0F11 - Deep charcoal (near-black) */
-  --fg-muted: 220 15% 40%;       /* #4E5A6E - Secondary text */
-  --fg-subtle: 220 10% 55%;      /* #7A8A9A - Tertiary/hint text */
-  --fg-inverse: 0 0% 100%;       /* #FFFFFF - Text on dark */
+  --fg: 220 10% 90%;              /* #E8EAED - Near-white body text */
+  --fg-muted: 220 10% 58%;        /* #8B939E - Secondary text */
+  --fg-subtle: 220 10% 40%;       /* #5C6670 - Tertiary/hint text */
+  --fg-inverse: 220 15% 7%;       /* #0B0D0F - Text on light accent */
 
-  /* Brand — Bottle Green (trust, growth, action) */
-  --primary: 152 65% 28%;        /* #1B7A4A - Bottle green */
-  --primary-hover: 152 65% 24%;  /* #15663D */
-  --primary-pressed: 152 65% 20%; /* #0F5230 */
-  --primary-soft: 152 50% 92%;   /* #D4F5E3 - Light tint */
-  --primary-fg: 0 0% 100%;       /* #FFFFFF */
+  /* Brand — Sky blue (primary actions, links) */
+  --primary: 197 91% 50%;         /* #0EA5E9 - Sky blue */
+  --primary-hover: 197 92% 45%;   /* #039BE2 */
+  --primary-pressed: 197 92% 40%; /* #0284C7 */
+  --primary-soft: 197 91% 15%;    /* rgba(14,165,230,0.12) */
+  --primary-fg: 220 15% 7%;       /* #0B0D0F - Text on primary */
 
-  /* Accent — Warm Brass/Gold (revenue, premium, highlights) */
-  --accent: 38 85% 42%;          /* #D4A01A - Warm brass */
-  --accent-hover: 38 85% 38%;    /* #C49218 */
-  --accent-pressed: 38 85% 34%;  /* #B48416 */
-  --accent-soft: 38 70% 94%;     /* #FDF4E6 - Light tint */
-  --accent-fg: 30 40% 10%;       /* #261F0A - Text on accent */
+  /* Accent — Amber for revenue / money CTAs */
+  --accent: 38 92% 50%;           /* #F59E0B - Amber */
+  --accent-hover: 38 92% 45%;     /* #D97706 */
+  --accent-pressed: 38 92% 40%;   /* #B45309 */
+  --accent-soft: 38 92% 15%;      /* rgba(245,158,11,0.12) */
+  --accent-fg: 220 15% 7%;        /* #0B0D0F - Text on accent */
 
-  --gold-deep: 30 60% 30%;       /* Deep brass — readable on gold-soft */
+  --gold-deep: 30 60% 30%;        /* Deep brass */
 
   /* Semantic — Only for data/feedback, never decoration */
-  --success: 142 65% 32%;        /* #10A35B */
-  --success-soft: 142 50% 94%;   /* #D1FAE5 */
-  --success-fg: 142 50% 10%;
+  --success: 163 79% 45%;         /* #10B981 - Emerald */
+  --success-soft: 163 79% 15%;
+  --success-fg: 163 79% 10%;
 
-  --warning: 38 85% 42%;         /* #D4A01A (same as accent) */
-  --warning-soft: 38 70% 94%;
-  --warning-fg: 30 40% 10%;
+  --warning: 38 92% 50%;          /* #F59E0B - Amber */
+  --warning-soft: 38 92% 15%;
+  --warning-fg: 220 15% 7%;
 
-  --error: 0 75% 48%;            /* #D93A3A */
-  --error-soft: 0 50% 94%;       /* #FEF2F2 */
-  --error-fg: 0 60% 12%;
+  --error: 356 85% 60%;           /* #EF4444 - Red */
+  --error-soft: 356 85% 15%;
+  --error-fg: 356 85% 10%;
 
-  --info: 199 75% 40%;           /* #06A8C8 */
-  --info-soft: 199 50% 94%;
-  --info-fg: 199 50% 10%;
+  --info: 197 91% 50%;            /* #0EA5E9 - Sky */
+  --info-soft: 197 91% 15%;
+  --info-fg: 197 91% 10%;
 
-  /* Borders & Dividers — Subtle, warm */
-  --border: 38 25% 85%;          /* #DCD5C9 */
-  --border-hover: 38 25% 78%;    /* #CBC2B4 */
-  --border-strong: 38 25% 70%;   /* #B8AD9F */
-  --border-focus: 152 65% 28%;   /* Primary for focus */
+  /* Borders & Dividers — 1px borders encode hierarchy */
+  --border: 220 15% 20%;          /* #242C34 - Panel borders */
+  --border-hover: 220 10% 32%;    /* #374151 - Hover/focus */
+  --border-strong: 220 10% 40%;   /* #4B5563 - Strong dividers */
+  --border-focus: 197 91% 50%;    /* Primary for focus rings */
 
-  /* Surface variants */
-  --surface: 0 0% 100%;          /* Pure white */
-  --surface-hover: 38 35% 92%;   /* #EBE4D8 */
-  --surface-pressed: 38 30% 88%; /* #E0D8C8 */
-  --surface-elevated: 0 0% 100%; /* White with shadow */
+  /* Surface variants — Sharp, elevated surfaces */
+  --surface: 220 15% 10%;         /* #13171C */
+  --surface-hover: 220 10% 12%;   /* #1A2026 */
+  --surface-pressed: 220 10% 15%; /* #202933 */
+  --surface-elevated: 220 15% 14%; /* #19202A - Raised panels/modals */
 
   /* ===== Typography Scale ===== */
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -208,25 +199,25 @@
   --radius-2xl: 1.5rem;    /* 24px */
   --radius-full: 9999px;
 
-  /* ===== Shadows & Elevation — Layered, warm ===== */
-  --shadow-xs: 0 1px 2px hsl(38 25% 15% / 0.04);
-  --shadow-sm: 0 1px 3px hsl(38 25% 15% / 0.06), 0 1px 2px hsl(38 25% 15% / 0.04);
-  --shadow-md: 0 4px 8px hsl(38 25% 15% / 0.06), 0 2px 4px hsl(38 25% 15% / 0.04);
-  --shadow-lg: 0 12px 24px hsl(38 25% 15% / 0.08), 0 4px 8px hsl(38 25% 15% / 0.04);
-  --shadow-xl: 0 20px 40px hsl(38 25% 15% / 0.1), 0 8px 16px hsl(38 25% 15% / 0.05);
-  --shadow-2xl: 0 32px 64px hsl(38 25% 15% / 0.12), 0 12px 24px hsl(38 25% 15% / 0.06);
+  /* ===== Shadows & Elevation — Graphite, sharp ===== */
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.5), 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 8px rgb(0 0 0 / 0.5), 0 2px 4px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 12px 24px rgb(0 0 0 / 0.6), 0 4px 8px rgb(0 0 0 / 0.4);
+  --shadow-xl: 0 20px 40px rgb(0 0 0 / 0.7), 0 8px 16px rgb(0 0 0 / 0.5);
+  --shadow-2xl: 0 32px 64px rgb(0 0 0 / 0.8), 0 12px 24px rgb(0 0 0 / 0.6);
 
   /* Colored shadows — sparing use */
-  --shadow-primary: 0 8px 24px hsl(152 65% 28% / 0.2), 0 4px 12px hsl(152 65% 28% / 0.1);
-  --shadow-accent: 0 8px 24px hsl(38 85% 42% / 0.25), 0 4px 12px hsl(38 85% 42% / 0.15);
+  --shadow-primary: 0 8px 24px hsl(197 91% 50% / 0.2), 0 4px 12px hsl(197 91% 50% / 0.1);
+  --shadow-accent: 0 8px 24px hsl(38 92% 50% / 0.25), 0 4px 12px hsl(38 92% 50% / 0.15);
 
   /* Elevation helpers exposed to Tailwind as shadow-lift / shadow-glow */
-  --lift: 0 1px 2px rgb(0 0 0 / 0.05), 0 12px 32px -8px rgb(0 0 0 / 0.12);
-  --lift-dark: 0 1px 2px rgb(0 0 0 / 0.45), 0 20px 44px -12px rgb(0 0 0 / 0.6);
+  --lift: 0 1px 2px rgb(0 0 0 / 0.6), 0 12px 32px -8px rgb(0 0 0 / 0.5);
+  --lift-dark: 0 1px 2px rgb(0 0 0 / 0.8), 0 20px 44px -12px rgb(0 0 0 / 0.7);
   --glow: 0 0 0 1px hsl(var(--primary) / 0.35), 0 8px 28px hsl(var(--primary) / 0.18);
 
   /* Inner shadows for pressed states */
-  --shadow-inner: inset 0 2px 4px hsl(38 25% 15% / 0.06);
+  --shadow-inner: inset 0 2px 4px rgb(0 0 0 / 0.4);
 
   /* ===== Transitions ===== */
   --duration-instant: 50ms;
@@ -262,99 +253,95 @@
 }
 
 /* ============================================================
-  Dark palette (applied by default — see :root:not(.light))
-   Dark is the DEFAULT theme: :root holds the warm light palette, and
-  `:root:not(.light)` swaps every token to its dark counterpart.
-  ThemeToggle adds either `.light` or `.dark` to <html>, so:
-    no class / .dark  → dark palette
-    .light            → light palette (from :root above)
-  The `.dark` block below is kept as an explicit, identical override.
+  Dark palette is the DEFAULT — :root already holds dark tokens.
+  `:root:not(.light)` re-affirms dark values. `.light` (added by
+  ThemeToggle) would override to light — not defined here, so dark
+  remains the only theme.
   ====================================================================== */
 :root:not(.light) {
-  --bg: var(--bg-dark);
-  --bg-elevated: var(--bg-elevated-dark);
-  --bg-hover: var(--bg-hover-dark);
-  --bg-pressed: var(--bg-pressed-dark);
-  --fg: var(--fg-dark);
-  --fg-muted: var(--fg-muted-dark);
-  --fg-subtle: var(--fg-subtle-dark);
-  --fg-inverse: var(--fg-inverse-dark);
-  --primary: var(--primary-dark);
-  --primary-hover: var(--primary-hover-dark);
-  --primary-pressed: var(--primary-pressed-dark);
-  --primary-soft: var(--primary-soft-dark);
-  --primary-fg: var(--primary-fg-dark);
-  --accent: var(--accent-dark);
-  --accent-hover: var(--accent-hover-dark);
-  --accent-pressed: var(--accent-pressed-dark);
-  --accent-soft: var(--accent-soft-dark);
-  --gold-deep: var(--gold-deep-dark);
-  --success: var(--success-dark);
-  --success-soft: var(--success-soft-dark);
-  --success-fg: var(--success-fg-dark);
-  --warning: var(--warning-dark);
-  --warning-soft: var(--warning-soft-dark);
-  --warning-fg: var(--warning-fg-dark);
-  --error: var(--error-dark);
-  --error-soft: var(--error-soft-dark);
-  --error-fg: var(--error-fg-dark);
-  --info: var(--info-dark);
-  --info-soft: var(--info-soft-dark);
-  --info-fg: var(--info-fg-dark);
-  --border: var(--border-dark);
-  --border-hover: var(--border-hover-dark);
-  --border-strong: var(--border-strong-dark);
-  --border-focus: var(--primary-dark);
-  --surface: var(--surface-dark);
-  --surface-hover: var(--surface-hover-dark);
-  --surface-pressed: var(--surface-pressed-dark);
-  --surface-elevated: var(--surface-elevated-dark);
-  --lift: var(--lift-dark);
+  --bg: 220 15% 7%;
+  --bg-elevated: 220 15% 10%;
+  --bg-hover: 220 10% 12%;
+  --bg-pressed: 220 10% 15%;
+  --fg: 220 10% 90%;
+  --fg-muted: 220 10% 58%;
+  --fg-subtle: 220 10% 40%;
+  --fg-inverse: 220 15% 7%;
+  --primary: 197 91% 50%;
+  --primary-hover: 197 92% 45%;
+  --primary-pressed: 197 92% 40%;
+  --primary-soft: 197 91% 15%;
+  --primary-fg: 220 15% 7%;
+  --accent: 38 92% 50%;
+  --accent-hover: 38 92% 45%;
+  --accent-pressed: 38 92% 40%;
+  --accent-soft: 38 92% 15%;
+  --accent-fg: 220 15% 7%;
+  --gold-deep: 30 60% 30%;
+  --success: 163 79% 45%;
+  --success-soft: 163 79% 15%;
+  --success-fg: 163 79% 10%;
+  --warning: 38 92% 50%;
+  --warning-soft: 38 92% 15%;
+  --warning-fg: 220 15% 7%;
+  --error: 356 85% 60%;
+  --error-soft: 356 85% 15%;
+  --error-fg: 356 85% 10%;
+  --info: 197 91% 50%;
+  --info-soft: 197 91% 15%;
+  --info-fg: 197 91% 10%;
+  --border: 220 15% 20%;
+  --border-hover: 220 10% 32%;
+  --border-strong: 220 10% 40%;
+  --border-focus: 197 91% 50%;
+  --surface: 220 15% 10%;
+  --surface-hover: 220 10% 12%;
+  --surface-pressed: 220 10% 15%;
+  --surface-elevated: 220 15% 14%;
+  --lift: 0 1px 2px rgb(0 0 0 / 0.6), 0 12px 32px -8px rgb(0 0 0 / 0.5);
 }
 
-/* ============================================================
-  Explicit dark override (kept in sync with the block above)
-  ====================================================================== */
 .dark {
-  --bg: var(--bg-dark);
-  --bg-elevated: var(--bg-elevated-dark);
-  --bg-hover: var(--bg-hover-dark);
-  --bg-pressed: var(--bg-pressed-dark);
-  --fg: var(--fg-dark);
-  --fg-muted: var(--fg-muted-dark);
-  --fg-subtle: var(--fg-subtle-dark);
-  --fg-inverse: var(--fg-inverse-dark);
-  --primary: var(--primary-dark);
-  --primary-hover: var(--primary-hover-dark);
-  --primary-pressed: var(--primary-pressed-dark);
-  --primary-soft: var(--primary-soft-dark);
-  --primary-fg: var(--primary-fg-dark);
-  --accent: var(--accent-dark);
-  --accent-hover: var(--accent-hover-dark);
-  --accent-pressed: var(--accent-pressed-dark);
-  --accent-soft: var(--accent-soft-dark);
-  --gold-deep: var(--gold-deep-dark);
-  --success: var(--success-dark);
-  --success-soft: var(--success-soft-dark);
-  --success-fg: var(--success-fg-dark);
-  --warning: var(--warning-dark);
-  --warning-soft: var(--warning-soft-dark);
-  --warning-fg: var(--warning-fg-dark);
-  --error: var(--error-dark);
-  --error-soft: var(--error-soft-dark);
-  --error-fg: var(--error-fg-dark);
-  --info: var(--info-dark);
-  --info-soft: var(--info-soft-dark);
-  --info-fg: var(--info-fg-dark);
-  --border: var(--border-dark);
-  --border-hover: var(--border-hover-dark);
-  --border-strong: var(--border-strong-dark);
-  --border-focus: var(--primary-dark);
-  --surface: var(--surface-dark);
-  --surface-hover: var(--surface-hover-dark);
-  --surface-pressed: var(--surface-pressed-dark);
-  --surface-elevated: var(--surface-elevated-dark);
-  --lift: var(--lift-dark);
+  --bg: 220 15% 7%;
+  --bg-elevated: 220 15% 10%;
+  --bg-hover: 220 10% 12%;
+  --bg-pressed: 220 10% 15%;
+  --fg: 220 10% 90%;
+  --fg-muted: 220 10% 58%;
+  --fg-subtle: 220 10% 40%;
+  --fg-inverse: 220 15% 7%;
+  --primary: 197 91% 50%;
+  --primary-hover: 197 92% 45%;
+  --primary-pressed: 197 92% 40%;
+  --primary-soft: 197 91% 15%;
+  --primary-fg: 220 15% 7%;
+  --accent: 38 92% 50%;
+  --accent-hover: 38 92% 45%;
+  --accent-pressed: 38 92% 40%;
+  --accent-soft: 38 92% 15%;
+  --accent-fg: 220 15% 7%;
+  --gold-deep: 30 60% 30%;
+  --success: 163 79% 45%;
+  --success-soft: 163 79% 15%;
+  --success-fg: 163 79% 10%;
+  --warning: 38 92% 50%;
+  --warning-soft: 38 92% 15%;
+  --warning-fg: 220 15% 7%;
+  --error: 356 85% 60%;
+  --error-soft: 356 85% 15%;
+  --error-fg: 356 85% 10%;
+  --info: 197 91% 50%;
+  --info-soft: 197 91% 15%;
+  --info-fg: 197 91% 10%;
+  --border: 220 15% 20%;
+  --border-hover: 220 10% 32%;
+  --border-strong: 220 10% 40%;
+  --border-focus: 197 91% 50%;
+  --surface: 220 15% 10%;
+  --surface-hover: 220 10% 12%;
+  --surface-pressed: 220 10% 15%;
+  --surface-elevated: 220 15% 14%;
+  --lift: 0 1px 2px rgb(0 0 0 / 0.6), 0 12px 32px -8px rgb(0 0 0 / 0.5);
 }
 
 /* ===== Utility Classes ===== */
