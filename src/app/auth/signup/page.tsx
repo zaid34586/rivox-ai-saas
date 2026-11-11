@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -70,14 +71,14 @@ export default function SignupPage() {
         </CardHeader>
         <CardContent>
           {success && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-emerald-50 p-3 text-emerald-700 text-sm">
+            <div className="mb-4 flex items-center gap-2 rounded-lg bg-success-soft p-3 text-success-foreground text-sm">
               <CheckCircle className="h-5 w-5 shrink-0" />
               Account created! Check your email to verify. Redirecting...
             </div>
           )}
 
           {error && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-red-50 p-3 text-red-700 text-sm">
+            <div className="mb-4 flex items-center gap-2 rounded-lg bg-error-soft p-3 text-error-foreground text-sm">
               <AlertCircle className="h-5 w-5 shrink-0" />
               {error}
             </div>
@@ -168,15 +169,12 @@ export default function SignupPage() {
         <CardFooter className="flex flex-col gap-3">
           <p className="text-sm text-muted-foreground text-center">
             Already have an account?{' '}
-            <a href="/auth/login" className="text-primary font-medium hover:underline">
+            <Link href="/auth/login" className="text-primary font-medium hover:underline">
               Sign in
-            </a>
+            </Link>
           </p>
           <p className="text-xs text-muted-foreground text-center">
-            By continuing, you agree to our{' '}
-            <a href="#" className="underline">Terms of Service</a>{' '}
-            and{' '}
-            <a href="#" className="underline">Privacy Policy</a>
+            By continuing, you agree to our Terms of Service and Privacy Policy.
           </p>
         </CardFooter>
       </Card>

@@ -96,12 +96,15 @@ export default function DashboardPage() {
     setLoading(false)
   }
 
+  // `fg` is the icon colour that keeps >=4.5:1 against the tile colour —
+  // white on brass (bg-gold) is only ~2:1, so the dark accent-fg is used there.
   const statCards = [
     {
       name: 'Products',
       value: stats.totalProducts,
       icon: ShoppingBag,
       color: 'bg-primary',
+      fg: 'text-primary-foreground',
       href: '/dashboard/products',
       change: '+2 this week',
     },
@@ -110,6 +113,7 @@ export default function DashboardPage() {
       value: stats.totalAds,
       icon: Video,
       color: 'bg-primary',
+      fg: 'text-primary-foreground',
       href: '/dashboard/ads',
       change: '+5 this week',
     },
@@ -118,6 +122,7 @@ export default function DashboardPage() {
       value: formatNumber(stats.totalClicks),
       icon: MousePointer,
       color: 'bg-primary',
+      fg: 'text-primary-foreground',
       href: '/dashboard/analytics',
       change: '+12% vs last week',
     },
@@ -126,16 +131,17 @@ export default function DashboardPage() {
       value: formatCurrency(stats.totalCommission),
       icon: DollarSign,
       color: 'bg-gold',
-      href: '/dashboard/analytics',
+      fg: 'text-gold-foreground',
+      href: '/dashboard/earnings',
       change: formatCurrency(stats.approvedCommission) + ' approved',
     },
   ]
 
   const quickActions = [
-    { name: 'Add Product', href: '/dashboard/products?add=true', icon: Plus, color: 'bg-primary' },
-    { name: 'Create Ads', href: '/dashboard/ads?create=true', icon: Video, color: 'bg-primary' },
-    { name: 'View Calendar', href: '/dashboard/calendar', icon: Target, color: 'bg-primary' },
-    { name: 'Run Autopilot', href: '/dashboard/autopilot', icon: Zap, color: 'bg-gold' },
+    { name: 'Add Product', href: '/dashboard/products?add=true', icon: Plus, color: 'bg-primary', fg: 'text-primary-foreground' },
+    { name: 'Create Ads', href: '/dashboard/ads?create=true', icon: Video, color: 'bg-primary', fg: 'text-primary-foreground' },
+    { name: 'View Calendar', href: '/dashboard/calendar', icon: Target, color: 'bg-primary', fg: 'text-primary-foreground' },
+    { name: 'Run Autopilot', href: '/dashboard/optimizer', icon: Zap, color: 'bg-gold', fg: 'text-gold-foreground' },
   ]
 
   return (
@@ -169,18 +175,20 @@ export default function DashboardPage() {
       {/* Stats Grid */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => (
-          <Card key={stat.name} className="border-border/50 hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{stat.name}</CardTitle>
-              <div className={`h-10 w-10 rounded-lg ${stat.color} flex items-center justify-center`}>
-                <stat.icon className="h-5 w-5 text-white" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">{stat.change}</p>
-            </CardContent>
-          </Card>
+          <Link key={stat.name} href={stat.href} className="group block">
+            <Card className="h-full border-border/50 transition-all duration-200 group-hover:border-primary/40 group-hover:shadow-md">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">{stat.name}</CardTitle>
+                <div className={`h-10 w-10 rounded-lg ${stat.color} flex items-center justify-center`}>
+                  <stat.icon className={`h-5 w-5 ${stat.fg}`} aria-hidden="true" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stat.value}</div>
+                <p className="text-xs text-muted-foreground">{stat.change}</p>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
 
@@ -204,8 +212,8 @@ export default function DashboardPage() {
                   asChild
                 >
                   <Link href={action.href}>
-                    <div className={`h-9 w-9 rounded-lg ${action.color} flex items-center justify-center`}>
-                      <action.icon className="h-5 w-5 text-white" />
+                    <div className={`h-9 w-9 shrink-0 rounded-lg ${action.color} flex items-center justify-center`}>
+                      <action.icon className={`h-5 w-5 ${action.fg}`} aria-hidden="true" />
                     </div>
                     <span>{action.name}</span>
                   </Link>

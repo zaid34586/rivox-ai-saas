@@ -33,12 +33,12 @@ const NETWORKS = [
 ]
 
 const NETWORK_BADGES: Record<string, string> = {
-  amazon: 'bg-orange-100 text-orange-700',
-  flipkart: 'bg-blue-100 text-blue-700',
-  clickbank: 'bg-purple-100 text-purple-700',
-  meesho: 'bg-pink-100 text-pink-700',
-  cuelinks: 'bg-indigo-100 text-indigo-700',
-  custom: 'bg-gray-100 text-gray-700',
+  amazon: 'bg-warning-soft text-warning-foreground',
+  flipkart: 'bg-info-soft text-info-foreground',
+  clickbank: 'bg-muted text-muted-foreground',
+  meesho: 'bg-muted text-muted-foreground',
+  cuelinks: 'bg-info-soft text-info-foreground',
+  custom: 'bg-muted text-muted-foreground',
 }
 
 async function callImport(payload: Record<string, unknown>): Promise<any> {
@@ -112,7 +112,7 @@ export default function ImportPage() {
   }
 
   const scoreColor = (s: number) =>
-    s >= 70 ? 'bg-emerald-100 text-emerald-700' : s >= 40 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'
+    s >= 70 ? 'bg-success-soft text-success-foreground' : s >= 40 ? 'bg-warning-soft text-warning-foreground' : 'bg-error-soft text-error-foreground'
 
   return (
     <div className="space-y-6">
@@ -195,7 +195,7 @@ export default function ImportPage() {
           )}
 
           {error && (
-            <div className="flex items-start gap-2 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+            <div className="flex items-start gap-2 rounded-lg border border-warning/40 bg-warning-soft p-3 text-sm text-amber-800">
               <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{error}</span>
             </div>

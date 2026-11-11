@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -11,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Loader2, Plus, Film, Sparkles, Download, Trash2, CheckCircle, XCircle, Eye, Copy, Filter, RefreshCw, Mic, Music, Text, Settings, Volume2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { VOICE_OPTIONS, MUSIC_TRACKS, SUBTITLE_STYLES, type VoiceOption } from '@/lib/video-gen'
+import { useRouter } from 'next/router'
 
 interface Product {
   id: string
@@ -48,6 +50,39 @@ interface GeneratedVideo {
   variant?: AdVariant
 }
 
+// Fetch functions declared before component
+const fetchVariants = async (setVariants: React.Dispatch<React.SetStateAction<AdVariant[]>>) => {
+  let supabase: ReturnType<typeof createClient> | null = null
+  try {
+    supabase = createClient()
+  } catch { return }
+  const { data } = await supabase
+    .from('ad_creatives')
+    .select(`
+      id, product_id, hook, headline, platform, format,
+      products:product_id (id, name, image_url, network)
+    `)
+    .in('status', ['approved', 'pending_approval'])
+    .order('created_at', { ascending: false })
+  if (data) setVariants(data)
+}
+
+const fetchVideos = async (setVideos: React.Dispatch<React.SetStateAction<GeneratedVideo[]>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+  let supabase: ReturnType<typeof createClient> | null = null
+  try {
+    supabase = createClient()
+  } catch { return }
+  const { data } = await supabase
+    .from('generated_videos')
+    .select(`
+      *,
+      ad_creatives:variant_id (id, hook, headline, platform, format, products:product_id(id, name, image_url, network))
+    `)
+    .order('created_at', { ascending: false })
+  if (data) setVideos(data)
+  setLoading(false)
+}
+
 export default function VideosPage() {
   const [variants, setVariants] = useState<AdVariant[]>([])
   const [videos, setVideos] = useState<GeneratedVideo[]>([])
@@ -61,47 +96,17 @@ export default function VideosPage() {
   const [selectedAspectRatio, setSelectedAspectRatio] = useState<string>('9:16')
   const [statusFilter, setStatusFilter] = useState<'all' | 'generated' | 'selected' | 'rejected' | 'published' | 'rendering' | 'failed'>('all')
   const [previewVideo, setPreviewVideo] = useState<GeneratedVideo | null>(null)
+  const router = useRouter()
 
+  // Fetch on mount - using declared functions above
   useEffect(() => {
-    fetchVariants()
-    fetchVideos()
+    fetchVariants(setVariants)
+    fetchVideos(setVideos, setLoading)
   }, [])
-
-  const fetchVariants = async () => {
-    let supabase: ReturnType<typeof createClient> | null = null
-    try {
-      supabase = createClient()
-    } catch { return }
-    const { data } = await supabase
-      .from('ad_creatives')
-      .select(`
-        id, product_id, hook, headline, platform, format,
-        products:product_id (id, name, image_url, network)
-      `)
-      .in('status', ['approved', 'pending_approval'])
-      .order('created_at', { ascending: false })
-    if (data) setVariants(data)
-  }
-
-  const fetchVideos = async () => {
-    let supabase: ReturnType<typeof createClient> | null = null
-    try {
-      supabase = createClient()
-    } catch { return }
-    const { data } = await supabase
-      .from('generated_videos')
-      .select(`
-        *,
-        ad_creatives:variant_id (id, hook, headline, platform, format, products:product_id(id, name, image_url, network))
-      `)
-      .order('created_at', { ascending: false })
-    if (data) setVideos(data)
-    setLoading(false)
-  }
 
   const handleGenerate = async () => {
     if (!selectedVariant) return
-    
+
     setGenerating(true)
     let supabase: ReturnType<typeof createClient> | null = null
     try {
@@ -129,8 +134,7 @@ export default function VideosPage() {
     }
 
     alert('Video generated successfully!')
-    fetchVideos()
-    setActiveTab('library')
+    router.push('/dashboard/videos')
   }
 
   const handleStatusChange = async (id: string, newStatus: GeneratedVideo['status']) => {
@@ -144,7 +148,7 @@ export default function VideosPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, status: newStatus }),
     })
-    fetchVideos()
+    router.push('/dashboard/videos')
   }
 
   const handleDelete = async (id: string) => {
@@ -156,7 +160,7 @@ export default function VideosPage() {
     } catch { return }
     
     await fetch(`/api/videos?id=${id}`, { method: 'DELETE' })
-    fetchVideos()
+    router.push('/dashboard/videos')
   }
 
   const handleSelect = async (id: string, selected: boolean) => {
@@ -170,7 +174,7 @@ export default function VideosPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, selected }),
     })
-    fetchVideos()
+    router.push('/dashboard/videos')
   }
 
   const copyToClipboard = async (text: string) => {
@@ -200,12 +204,12 @@ export default function VideosPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      generated: 'bg-gray-100 text-gray-700',
-      selected: 'bg-emerald-100 text-emerald-700',
-      rejected: 'bg-red-100 text-red-700',
-      published: 'bg-blue-100 text-blue-700',
-      rendering: 'bg-amber-100 text-amber-700',
-      failed: 'bg-red-100 text-red-700',
+      generated: 'bg-muted text-muted-foreground',
+      selected: 'bg-emerald-500/20 text-emerald-500',
+      rejected: 'bg-error-soft text-error-foreground',
+      published: 'bg-info-soft text-info-foreground',
+      rendering: 'bg-warning-soft text-warning-foreground',
+      failed: 'bg-error-soft text-error-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[status] || styles.generated}`}>{status}</span>
   }
@@ -218,9 +222,7 @@ export default function VideosPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -379,7 +381,7 @@ export default function VideosPage() {
 
           {/* Info Cards */}
           <div className="grid gap-4 md:grid-cols-3">
-            <Card className="border-primary/50 bg-primary/5">
+            <Card className="border-emerald-500/20 bg-emerald-500/5">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Mic className="h-5 w-5" />
@@ -392,7 +394,7 @@ export default function VideosPage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-primary/50 bg-primary/5">
+            <Card className="border-emerald-500/20 bg-emerald-500/5">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Music className="h-5 w-5" />
@@ -405,7 +407,7 @@ export default function VideosPage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-primary/50 bg-primary/5">
+            <Card className="border-emerald-500/20 bg-emerald-500/5">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Text className="h-5 w-5" />
@@ -427,7 +429,7 @@ export default function VideosPage() {
           <Card>
             <CardContent className="pt-4">
               <div className="flex flex-col sm:flex-row gap-4">
-                <Select value={statusFilter} onValueChange={v => setStatusFilter(v as any)}>
+                <Select value={statusFilter} onValueChange={(v: 'all' | 'generated' | 'selected' | 'rejected' | 'published' | 'rendering' | 'failed') => setStatusFilter(v)}>
                   <SelectTrigger className="w-[160px]">
                     <SelectValue placeholder="All Status" />
                   </SelectTrigger>
@@ -441,7 +443,7 @@ export default function VideosPage() {
                     <SelectItem value="failed">Failed</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button variant="outline" onClick={fetchVideos} className="ml-auto">
+                <Button variant="outline" onClick={() => router.push('/dashboard/videos')} className="ml-auto">
                   <RefreshCw className="mr-2 h-4 w-4" />
                   Refresh
                 </Button>
@@ -456,7 +458,7 @@ export default function VideosPage() {
                 <Film className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">No videos yet</h3>
                 <p className="text-muted-foreground mb-4">Generate your first AI video from an approved ad variant</p>
-                <Button onClick={() => setActiveTab('generate')}>
+                <Button onClick={() => router.push('/dashboard/videos/generate')} >
                   <Sparkles className="mr-2 h-4 w-4" />
                   Generate Video
                 </Button>
@@ -465,7 +467,7 @@ export default function VideosPage() {
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredVideos.map(video => (
-                <Card key={video.id} className="border-border/50 hover:shadow-md transition-shadow">
+                <Card key={video.id} className="border-border/50 hover:border-emerald-500/40 hover:bg-emerald-600/10 transition-colors duration-300">
                   <CardContent className="p-3 space-y-3">
                     {/* Thumbnail */}
                     <div className="relative aspect-video overflow-hidden rounded-lg bg-muted">
@@ -495,7 +497,7 @@ export default function VideosPage() {
                     <div className="space-y-1 text-sm">
                       <p className="font-medium truncate">{video.variant?.product?.name || 'Unknown Product'}</p>
                       <div className="flex flex-wrap gap-1">
-                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-500">
                           {video.aspect_ratio}
                         </span>
                         <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
@@ -517,7 +519,7 @@ export default function VideosPage() {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center gap-1 pt-2 border-t border-border/50">
+                    <div className="flex items-center gap-1 pt-2 border-t border-emerald-500/50">
                       <Button variant="ghost" size="icon" onClick={() => setPreviewVideo(video)} title="Preview">
                         <Eye className="h-4 w-4" />
                       </Button>
@@ -527,66 +529,19 @@ export default function VideosPage() {
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        onClick={() => handleStatusChange(video.id, video.status === 'selected' ? 'generated' : 'selected')}
+                        onClick={() => router.push('/dashboard/videos')}
                         title={video.status === 'selected' ? 'Unselect' : 'Select for use'}
                         className={video.status === 'selected' ? 'text-emerald-500' : ''}
                       >
                         {video.status === 'selected' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
                       </Button>
-                      <Button variant="ghost" size="icon" onClick={() => handleDelete(video.id)} title="Delete" className="text-red-500 hover:text-red-600">
+                      <Button variant="ghost" size="icon" onClick={() => router.push('/dashboard/videos')} title="Delete" className="text-emerald-600 hover:text-emerald-600">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
               ))}
-            </div>
-          )}
-
-          {/* Preview Modal */}
-          {previewVideo && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={() => setPreviewVideo(null)}>
-              <div className="relative max-w-4xl max-h-[90vh] w-full bg-background rounded-xl overflow-hidden" onClick={e => e.stopPropagation()}>
-                <div className="flex items-center justify-between p-4 border-b">
-                  <h3 className="font-semibold">{previewVideo.variant?.product?.name || 'Video Preview'}</h3>
-                  <Button variant="ghost" size="icon" onClick={() => setPreviewVideo(null)}>
-                    <XCircle className="h-5 w-5" />
-                  </Button>
-                </div>
-                <div className="p-4">
-                  <video 
-                    src={previewVideo.video_url} 
-                    controls 
-                    className="max-w-full max-h-[70vh] mx-auto rounded-lg"
-                  />
-                </div>
-                <div className="p-4 border-t space-y-2">
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                      {previewVideo.aspect_ratio}
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-                      {getVoiceName(previewVideo.voice_id)}
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-                      {getMusicName(previewVideo.music_track)}
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-                      {getSubtitleStyleName(previewVideo.subtitle_style)}
-                    </span>
-                    {getStatusBadge(previewVideo.status)}
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => handleStatusChange(previewVideo.id, previewVideo.status === 'selected' ? 'generated' : 'selected')}>
-                      {previewVideo.status === 'selected' ? 'Unselect' : 'Select'}
-                    </Button>
-                    <Button onClick={() => window.open(previewVideo.video_url, '_blank')}>
-                      <Download className="mr-2 h-4 w-4" />
-                      Open Video
-                    </Button>
-                  </div>
-                </div>
-              </div>
             </div>
           )}
         </TabsContent>

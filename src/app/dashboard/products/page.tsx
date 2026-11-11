@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -408,30 +409,28 @@ export default function ProductsPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      active: 'bg-emerald-100 text-emerald-700',
-      paused: 'bg-amber-100 text-amber-700',
-      archived: 'bg-gray-100 text-gray-700',
+      active: 'bg-success-soft text-success-foreground',
+      paused: 'bg-warning-soft text-warning-foreground',
+      archived: 'bg-muted text-muted-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[status] || styles.active}`}>{status}</span>
   }
 
   const getNetworkBadge = (network: string) => {
     const colors: Record<string, string> = {
-      amazon: 'bg-orange-100 text-orange-700',
-      flipkart: 'bg-blue-100 text-blue-700',
-      clickbank: 'bg-purple-100 text-purple-700',
-      meesho: 'bg-pink-100 text-pink-700',
-      cuelinks: 'bg-indigo-100 text-indigo-700',
-      custom: 'bg-gray-100 text-gray-700',
+      amazon: 'bg-warning-soft text-warning-foreground',
+      flipkart: 'bg-info-soft text-info-foreground',
+      clickbank: 'bg-muted text-muted-foreground',
+      meesho: 'bg-muted text-muted-foreground',
+      cuelinks: 'bg-info-soft text-info-foreground',
+      custom: 'bg-muted text-muted-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${colors[network] || colors.custom}`}>{network}</span>
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -540,9 +539,9 @@ export default function ProductsPage() {
                     value={formData.name}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Wireless Headphones"
-                    className={formErrors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}
+                    className={formErrors.name ? 'border-error focus:border-error focus:ring-error' : ''}
                   />
-                  {formErrors.name && <p className="text-sm text-red-500">{formErrors.name}</p>}
+                  {formErrors.name && <p className="text-sm text-error">{formErrors.name}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -573,9 +572,9 @@ export default function ProductsPage() {
                     value={formData.affiliate_url}
                     onChange={e => setFormData({ ...formData, affiliate_url: e.target.value })}
                     placeholder="https://amazon.in/dp/B0XXXXX?tag=yourtag-21"
-                    className={formErrors.affiliate_url ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}
+                    className={formErrors.affiliate_url ? 'border-error focus:border-error focus:ring-error' : ''}
                   />
-                  {formErrors.affiliate_url && <p className="text-sm text-red-500">{formErrors.affiliate_url}</p>}
+                  {formErrors.affiliate_url && <p className="text-sm text-error">{formErrors.affiliate_url}</p>}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -617,9 +616,9 @@ export default function ProductsPage() {
                     value={formData.commission_rate}
                     onChange={e => setFormData({ ...formData, commission_rate: parseFloat(e.target.value) || 0 })}
                     placeholder={formData.commission_type === 'percentage' ? '8.5' : '50'}
-                    className={formErrors.commission_rate ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}
+                    className={formErrors.commission_rate ? 'border-error focus:border-error focus:ring-error' : ''}
                   />
-                  {formErrors.commission_rate && <p className="text-sm text-red-500">{formErrors.commission_rate}</p>}
+                  {formErrors.commission_rate && <p className="text-sm text-error">{formErrors.commission_rate}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -726,10 +725,10 @@ export default function ProductsPage() {
                           Smart Score Analysis
                         </span>
                         <span className={`px-3 py-1 rounded-full text-sm font-bold ${
-                          scoreBreakdown.total >= 80 ? 'bg-emerald-100 text-emerald-700' :
-                          scoreBreakdown.total >= 60 ? 'bg-blue-100 text-blue-700' :
-                          scoreBreakdown.total >= 40 ? 'bg-amber-100 text-amber-700' :
-                          'bg-red-100 text-red-700'
+                          scoreBreakdown.total >= 80 ? 'bg-success-soft text-success-foreground' :
+                          scoreBreakdown.total >= 60 ? 'bg-info-soft text-info-foreground' :
+                          scoreBreakdown.total >= 40 ? 'bg-warning-soft text-warning-foreground' :
+                          'bg-error-soft text-error-foreground'
                         }`}>
                           {scoreBreakdown.total}/100
                         </span>
@@ -759,7 +758,7 @@ export default function ProductsPage() {
                         </div>
                         <div className="flex justify-between py-1 font-semibold text-lg">
                           <span>Total</span>
-                          <span className={`text-primary ${scoreBreakdown.total >= 80 ? 'text-emerald-600' : ''}`}>
+                          <span className={`text-primary ${scoreBreakdown.total >= 80 ? 'text-success' : ''}`}>
                             {scoreBreakdown.total}/100
                           </span>
                         </div>
@@ -831,9 +830,9 @@ export default function ProductsPage() {
                       <td className="p-4">
                         <span className={cn(
                           'px-2 py-0.5 rounded-full text-xs font-medium',
-                          product.smart_score >= 70 ? 'bg-emerald-100 text-emerald-700' :
-                          product.smart_score >= 40 ? 'bg-amber-100 text-amber-700' :
-                          'bg-red-100 text-red-700'
+                          product.smart_score >= 70 ? 'bg-success-soft text-success-foreground' :
+                          product.smart_score >= 40 ? 'bg-warning-soft text-warning-foreground' :
+                          'bg-error-soft text-error-foreground'
                         )}>
                           {product.smart_score}/100
                         </span>
@@ -845,7 +844,7 @@ export default function ProductsPage() {
                             <Edit className="h-4 w-4" />
                           </Button>
                           <Button variant="ghost" size="icon" onClick={() => handleDelete(product.id)}>
-                            <Trash2 className="h-4 w-4 text-red-500" />
+                            <Trash2 className="h-4 w-4 text-error" />
                           </Button>
                         </div>
                       </td>

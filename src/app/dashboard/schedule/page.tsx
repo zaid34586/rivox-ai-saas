@@ -1,5 +1,7 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -161,9 +163,7 @@ export default function SchedulePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -176,10 +176,10 @@ export default function SchedulePage() {
           <p className="text-muted-foreground">Schedule an approved ad creative for publishing</p>
         </div>
         <Button asChild variant="outline">
-          <a href="/dashboard/calendar">
+          <Link href="/dashboard/calendar">
             <Calendar className="mr-2 h-4 w-4" />
             View Calendar
-          </a>
+          </Link>
         </Button>
       </div>
 
@@ -192,7 +192,7 @@ export default function SchedulePage() {
           {creatives.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <AlertCircle className="h-8 w-8 mx-auto mb-2 text-muted-foreground/50" />
-              <p>No approved/draft ad creatives found. Create some in <a href="/dashboard/ads" className="text-primary underline">Ad Studio</a>.</p>
+              <p>No approved/draft ad creatives found. Create some in <Link href="/dashboard/ads" className="text-primary underline">Ad Studio</Link>.</p>
             </div>
           ) : (
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -276,7 +276,7 @@ export default function SchedulePage() {
                     </Select>
                     {getAccountsForPlatform(formData.platform).length === 0 && (
                       <p className="text-sm text-muted-foreground">
-                        No connected accounts for this platform. <a href="/dashboard/social-accounts" className="text-primary underline">Connect one</a>.
+                        No connected accounts for this platform. <Link href="/dashboard/social-accounts" className="text-primary underline">Connect one</Link>.
                       </p>
                     )}
                     {errors.account_id && <p className="text-sm text-destructive">{errors.account_id}</p>}

@@ -1,32 +1,15 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
-import { 
-  Zap, 
-  Target, 
-  BarChart3, 
-  Bell, 
-  Wallet, 
-  Loader2, 
-  Plus,
-  Shield,
-  AlertTriangle,
-  TrendingUp,
-  TrendingDown,
-  Clock,
-  Brain,
-  Settings,
-  ArrowRight,
-  CheckCircle,
-  XCircle,
-  Zap as ZapIcon
-} from 'lucide-react'
+import { Zap, Target, BarChart3, Bell, Wallet, Plus, Shield, AlertTriangle, TrendingUp, TrendingDown, Clock, Brain, Settings, ArrowRight, CheckCircle, XCircle, Zap as ZapIcon } from 'lucide-react'
 import { format, isToday, isYesterday } from 'date-fns'
 
 interface OptimizerRule {
@@ -116,17 +99,17 @@ const ACTION_LABELS: Record<string, string> = {
 }
 
 const SEVERITY_COLORS: Record<string, string> = {
-  low: 'bg-blue-100 text-blue-700',
-  medium: 'bg-amber-100 text-amber-700',
-  high: 'bg-orange-100 text-orange-700',
-  critical: 'bg-red-100 text-red-700',
+  low: 'bg-info-soft text-info-foreground',
+  medium: 'bg-warning-soft text-warning-foreground',
+  high: 'bg-warning-soft text-warning-foreground',
+  critical: 'bg-error-soft text-error-foreground',
 }
 
 const PACE_COLORS: Record<string, string> = {
-  on_track: 'bg-green-100 text-green-700',
-  under_pacing: 'bg-blue-100 text-blue-700',
-  over_pacing: 'bg-amber-100 text-amber-700',
-  exhausted: 'bg-red-100 text-red-700',
+  on_track: 'bg-success-soft text-success-foreground',
+  under_pacing: 'bg-info-soft text-info-foreground',
+  over_pacing: 'bg-warning-soft text-warning-foreground',
+  exhausted: 'bg-error-soft text-error-foreground',
 }
 
 export default function OptimizerPage() {
@@ -207,9 +190,7 @@ export default function OptimizerPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -230,10 +211,10 @@ export default function OptimizerPage() {
           <p className="text-muted-foreground">Auto-pause losers, scale winners, daily briefings, and trend alerts</p>
         </div>
         <Button asChild>
-          <a href="/dashboard/optimizer/rules/new">
+          <Link href="/dashboard/optimizer/rules/new">
             <Plus className="mr-2 h-4 w-4" />
             Create Rule
-          </a>
+          </Link>
         </Button>
       </div>
 
@@ -252,7 +233,7 @@ export default function OptimizerPage() {
         <Card className="border-border/50">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Actions (24h)</CardTitle>
-            <Target className="h-4 w-4 text-amber-500" />
+            <Target className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{actions.length}</div>
@@ -312,7 +293,7 @@ export default function OptimizerPage() {
                   {(todayBriefing.top_performers?.length || 0) > 0 && (
                     <div>
                       <h4 className="font-medium mb-2 flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-green-500" />
+                        <TrendingUp className="h-4 w-4 text-success" />
                         Top Performers
                       </h4>
                       <ul className="space-y-1">
@@ -402,7 +383,7 @@ export default function OptimizerPage() {
             <Card className="border-border/50 border-warning/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 text-amber-500" />
+                  <AlertTriangle className="h-5 w-5 text-warning" />
                   Budget Warnings ({overPacingBudgets})
                 </CardTitle>
               </CardHeader>
@@ -435,22 +416,22 @@ export default function OptimizerPage() {
             </CardHeader>
             <CardContent className="grid gap-3 sm:grid-cols-3">
               <Button variant="outline" asChild onClick={() => setActiveTab('rules')}>
-                <a href="/dashboard/optimizer/rules/new">
+                <Link href="/dashboard/optimizer/rules/new">
                   <Plus className="mr-2 h-4 w-4" />
                   Create Optimizer Rule
-                </a>
+                </Link>
               </Button>
               <Button variant="outline" asChild onClick={() => setActiveTab('briefings')}>
-                <a href="/dashboard/optimizer/briefings">
+                <Link href="/dashboard/optimizer/briefings">
                   <Brain className="mr-2 h-4 w-4" />
                   Generate Daily Briefing
-                </a>
+                </Link>
               </Button>
               <Button variant="outline" asChild onClick={() => setActiveTab('alerts')}>
-                <a href="/dashboard/optimizer/alerts">
+                <Link href="/dashboard/optimizer/alerts">
                   <Bell className="mr-2 h-4 w-4" />
                   Manage Alerts
-                </a>
+                </Link>
               </Button>
             </CardContent>
           </Card>
@@ -461,10 +442,10 @@ export default function OptimizerPage() {
           <div className="flex items-center justify-between">
             <CardTitle>Optimizer Rules</CardTitle>
             <Button asChild>
-              <a href="/dashboard/optimizer/rules/new">
+              <Link href="/dashboard/optimizer/rules/new">
                 <Plus className="mr-2 h-4 w-4" />
                 Create Rule
-              </a>
+              </Link>
             </Button>
           </div>
 
@@ -475,10 +456,10 @@ export default function OptimizerPage() {
                 <h3 className="text-xl font-semibold mb-2">No optimizer rules yet</h3>
                 <p className="text-muted-foreground mb-6">Create rules to auto-pause losers, scale winners, and manage budgets automatically.</p>
                 <Button asChild>
-                  <a href="/dashboard/optimizer/rules/new">
+                  <Link href="/dashboard/optimizer/rules/new">
                     <Plus className="mr-2 h-4 w-4" />
                     Create Your First Rule
-                  </a>
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
@@ -491,7 +472,7 @@ export default function OptimizerPage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 flex-wrap">
                           <h4 className="font-medium truncate">{rule.name}</h4>
-                          <Badge variant="secondary" className={rule.is_active ? 'bg-green-100 text-green-700' : 'bg-muted text-muted-foreground'}>
+                          <Badge variant="secondary" className={rule.is_active ? 'bg-success-soft text-success-foreground' : 'bg-muted text-muted-foreground'}>
                             {rule.is_active ? 'Active' : 'Inactive'}
                           </Badge>
                           <Badge variant="outline">{TRIGGER_LABELS[rule.trigger_type] || rule.trigger_type}</Badge>
@@ -511,14 +492,14 @@ export default function OptimizerPage() {
                           variant="ghost"
                           size="icon"
                           onClick={() => handleRuleToggle(rule)}
-                          className={rule.is_active ? 'text-green-500' : ''}
+                          className={rule.is_active ? 'text-success' : ''}
                         >
                           <Shield className="h-4 w-4" />
                         </Button>
                         <Button variant="ghost" size="icon" asChild>
-                          <a href={`/dashboard/optimizer/rules/${rule.id}`}>
+                          <Link href={`/dashboard/optimizer/rules/${rule.id}`}>
                             <Settings className="h-4 w-4" />
-                          </a>
+                          </Link>
                         </Button>
                       </div>
                     </div>
@@ -631,7 +612,7 @@ export default function OptimizerPage() {
                         
                         {(briefing.top_performers?.length || 0) > 0 && (
                           <div className="text-sm">
-                            <span className="font-medium text-green-500">Top: </span>
+                            <span className="font-medium text-success">Top: </span>
                             {briefing.top_performers.slice(0, 2).map((p: any, i: number) => (
                               <span key={i} className="mr-3">{p.product_name || p.name} (EPC: {p.epc}, ROI: {p.roi}%)</span>
                             ))}
@@ -732,10 +713,10 @@ export default function OptimizerPage() {
           <div className="flex items-center justify-between">
             <CardTitle>Budget Tracking</CardTitle>
             <Button asChild>
-              <a href="/dashboard/optimizer/budgets/new">
+              <Link href="/dashboard/optimizer/budgets">
                 <Plus className="mr-2 h-4 w-4" />
                 Set Budget
-              </a>
+              </Link>
             </Button>
           </div>
 
@@ -746,10 +727,10 @@ export default function OptimizerPage() {
                 <h3 className="text-xl font-semibold mb-2">No budgets set</h3>
                 <p className="text-muted-foreground mb-6">Set daily, weekly, or monthly budgets to track spending and auto-pause campaigns.</p>
                 <Button asChild>
-                  <a href="/dashboard/optimizer/budgets/new">
+                  <Link href="/dashboard/optimizer/budgets">
                     <Plus className="mr-2 h-4 w-4" />
                     Set Budget
-                  </a>
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
@@ -787,10 +768,10 @@ export default function OptimizerPage() {
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <Button variant="ghost" size="sm" asChild>
-                          <a href={`/dashboard/optimizer/budgets/${budget.id}`}>
+                          <Link href="/dashboard/optimizer/budgets">
                             <Settings className="mr-2 h-4 w-4" />
-                            Edit
-                          </a>
+                            Manage
+                          </Link>
                         </Button>
                       </div>
                     </div>

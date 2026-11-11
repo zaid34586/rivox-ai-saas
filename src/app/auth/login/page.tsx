@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
@@ -54,14 +55,14 @@ function LoginPageContent() {
         </CardHeader>
         <CardContent>
           {verified && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-emerald-50 p-3 text-emerald-700 text-sm">
+            <div className="mb-4 flex items-center gap-2 rounded-lg bg-success-soft p-3 text-success-foreground text-sm">
               <CheckCircle className="h-5 w-5 shrink-0" />
               Email verified! Please sign in.
             </div>
           )}
 
           {error && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-red-50 p-3 text-red-700 text-sm">
+            <div className="mb-4 flex items-center gap-2 rounded-lg bg-error-soft p-3 text-error-foreground text-sm">
               <AlertCircle className="h-5 w-5 shrink-0" />
               {error}
             </div>
@@ -88,9 +89,6 @@ function LoginPageContent() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <a href="/auth/forgot-password" className="text-sm text-primary hover:underline">
-                  Forgot password?
-                </a>
               </div>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -122,9 +120,9 @@ function LoginPageContent() {
         <CardFooter className="flex flex-col gap-3">
           <p className="text-sm text-muted-foreground text-center">
             Don&apos;t have an account?{' '}
-            <a href="/auth/signup" className="text-primary font-medium hover:underline">
+            <Link href="/auth/signup" className="text-primary font-medium hover:underline">
               Sign up
-            </a>
+            </Link>
           </p>
         </CardFooter>
       </Card>

@@ -1,14 +1,15 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase'
+import { useRouter } from 'next/router'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Plus, Building2, Users, Settings, ChevronRight, Loader2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { Plus, Building2, ChevronRight } from 'lucide-react'
 
 interface Team {
   team_id: string
@@ -25,11 +26,9 @@ export default function TeamListPage() {
   const [newTeamName, setNewTeamName] = useState('')
   const [newTeamSlug, setNewTeamSlug] = useState('')
   const [creating, setCreating] = useState(false)
+  const router = useRouter()
 
-  useEffect(() => {
-    fetchTeams()
-  }, [])
-
+  // Fetch teams function - declared before useEffect
   const fetchTeams = async () => {
     setLoading(true)
     try {
@@ -38,12 +37,19 @@ export default function TeamListPage() {
       if (data.success) {
         setTeams(data.teams)
       }
-    } catch (error) {
-      console.error('Failed to fetch teams:', error)
+    } catch {
+      setLoading(false)
     } finally {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    const run = async () => {
+      await fetchTeams()
+    }
+    run()
+  }, [])
 
   const handleCreateTeam = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -62,7 +68,7 @@ export default function TeamListPage() {
         setNewTeamName('')
         setNewTeamSlug('')
         fetchTeams()
-        window.location.href = `/dashboard/team/${data.team.id}`
+        router.push(`/dashboard/team/${data.team.id}`)
       } else {
         alert(data.error || 'Failed to create team')
       }
@@ -75,9 +81,7 @@ export default function TeamListPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -116,18 +120,18 @@ export default function TeamListPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {teams.map(team => (
-            <Card key={team.team_id} className="border-border/50 hover:shadow-md transition-shadow group">
+            <Card key={team.team_id} className="border-border/60 bg-card/50 hover:border-emerald-500/40 hover:bg-emerald-600/10 transition-colors duration-300 group">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <Building2 className="h-6 w-6 text-primary" />
+                    <div className="h-12 w-12 rounded-xl bg-emerald-600/10 flex items-center justify-center">
+                      <Building2 className="h-6 w-6 text-emerald-500" />
                     </div>
                     <div>
                       <CardTitle className="text-lg">{team.name}</CardTitle>
                       <CardDescription>
-                        {team.role === 'owner' ? 'Owner' : team.role === 'admin' ? 'Admin' : 'Member'}
-                        {team.is_owner && <span className="ml-2 px-2 py-0.5 text-xs bg-gold/20 text-gold-deep rounded-full">Owner</span>}
+        {team.role === 'owner' ? 'Owner' : team.role === 'admin' ? 'Admin' : 'Member'}
+        {team.is_owner && <span className="ml-2 px-2 py-0.5 text-xs bg-emerald-500/20 text-emerald-500 rounded-full">Owner</span>}
                       </CardDescription>
                     </div>
                   </div>
@@ -139,10 +143,10 @@ export default function TeamListPage() {
                   variant="outline"
                   className="w-full justify-between"
                 >
-                  <a href={`/dashboard/team/${team.team_id}`}>
+                  <Link href={`/dashboard/team/${team.team_id}`}>
                     <span>Open Workspace</span>
                     <ChevronRight className="h-4 w-4 ml-auto" />
-                  </a>
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
@@ -172,7 +176,7 @@ export default function TeamListPage() {
               <div className="space-y-2">
                 <Label htmlFor="team_slug">Slug (URL)</Label>
                 <div className="flex items-center gap-2">
-                  <span className="text-muted-foreground px-3 py-2 bg-muted rounded-lg">
+                  <span className="text-muted-foreground px-3 py-2 bg-emerald-600/10 rounded-lg">
                     affipilot.com/team/
                   </span>
                   <Input
@@ -183,8 +187,8 @@ export default function TeamListPage() {
                     required
                     pattern="[a-z0-9-]+"
                   />
+                  <p className="text-xs text-muted-foreground">Lowercase letters, numbers, and hyphens only</p>
                 </div>
-                <p className="text-xs text-muted-foreground">Lowercase letters, numbers, and hyphens only</p>
               </div>
             </div>
             <DialogFooter>

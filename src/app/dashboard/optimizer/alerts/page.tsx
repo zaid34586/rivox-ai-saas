@@ -1,21 +1,13 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { 
-  Bell, 
-  Loader2, 
-  CheckCircle, 
-  XCircle, 
-  AlertTriangle,
-  Filter,
-  TrendingUp,
-  Zap
-} from 'lucide-react'
+import { Bell, CheckCircle, XCircle, AlertTriangle, Filter, TrendingUp, Zap } from 'lucide-react'
 import { format } from 'date-fns'
 import { 
   Select, 
@@ -38,10 +30,10 @@ interface TrendAlert {
 }
 
 const SEVERITY_COLORS: Record<string, string> = {
-  low: 'bg-blue-100 text-blue-700',
-  medium: 'bg-amber-100 text-amber-700',
-  high: 'bg-orange-100 text-orange-700',
-  critical: 'bg-red-100 text-red-700',
+  low: 'bg-info-soft text-info-foreground',
+  medium: 'bg-warning-soft text-warning-foreground',
+  high: 'bg-warning-soft text-warning-foreground',
+  critical: 'bg-error-soft text-error-foreground',
 }
 
 const ALERT_TYPE_LABELS: Record<string, string> = {
@@ -108,9 +100,7 @@ export default function AlertsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 

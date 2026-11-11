@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
@@ -70,9 +71,7 @@ export default function BriefingsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -134,7 +133,7 @@ export default function BriefingsPage() {
                     
                     {(briefing.top_performers?.length || 0) > 0 && (
                       <div className="text-sm mb-2">
-                        <span className="font-medium text-green-500">Top: </span>
+                        <span className="font-medium text-success">Top: </span>
                         {briefing.top_performers.slice(0, 2).map((p: any, i: number) => (
                           <span key={i} className="mr-3">{p.product_name || p.name} (EPC: {p.epc}, ROI: {p.roi}%)</span>
                         ))}

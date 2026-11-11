@@ -57,7 +57,7 @@ export function CardSkeleton({
         <Skeleton variant="text" width="40%" height="1.5rem" />
         <Skeleton variant="text" width="60%" height="1rem" />
         {Array.from({ length: lines - 2 }).map((_, i) => (
-          <Skeleton key={i} variant="text" width={`${70 + Math.random() * 20}%`} height="1rem" />
+          <Skeleton key={i} variant="text" width="90%" height="1rem" />
         ))}
       </div>
       {showFooter && (
@@ -76,7 +76,7 @@ export function TableRowSkeleton({ columns = 5 }: { columns?: number } = {}) {
     <tr>
       {Array.from({ length: columns }).map((_, i) => (
         <td key={i} className="p-4">
-          <Skeleton variant="text" width={`${60 + Math.random() * 30}%`} height="1rem" />
+          <Skeleton variant="text" width="80%" height="1rem" />
         </td>
       ))}
     </tr>
@@ -229,7 +229,7 @@ export function ListItemSkeleton({
       <div className="flex-1 min-w-0 space-y-2">
         <Skeleton variant="text" width="40%" height="1.25rem" />
         {Array.from({ length: lines - 1 }).map((_, i) => (
-          <Skeleton key={i} variant="text" width={`${70 + Math.random() * 20}%`} height="1rem" />
+          <Skeleton key={i} variant="text" width="90%" height="1rem" />
         ))}
       </div>
       {showAction && <Skeleton variant="rectangular" width="100px" height="36px" />}

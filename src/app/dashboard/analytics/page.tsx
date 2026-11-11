@@ -1,10 +1,11 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Loader2, MousePointer, Globe, Monitor, Smartphone, TrendingUp, DollarSign, BarChart3 } from 'lucide-react'
+import { MousePointer, Globe, Monitor, Smartphone, TrendingUp, DollarSign, BarChart3 } from 'lucide-react'
 import { formatCurrency, formatNumber } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 
@@ -242,9 +243,7 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 

@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState, useEffect, useMemo } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -129,10 +130,10 @@ export default function CalendarPage() {
           <p className="text-muted-foreground">Schedule and manage your social media posts</p>
         </div>
         <Button asChild>
-          <a href="/dashboard/ads?create=true">
+          <Link href="/dashboard/ads?create=true">
             <Plus className="mr-2 h-4 w-4" />
             Schedule New Post
-          </a>
+          </Link>
         </Button>
       </div>
 

@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -189,9 +190,9 @@ export default function LinksPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      active: 'bg-emerald-100 text-emerald-700',
-      paused: 'bg-amber-100 text-amber-700',
-      expired: 'bg-gray-100 text-gray-700',
+      active: 'bg-success-soft text-success-foreground',
+      paused: 'bg-warning-soft text-warning-foreground',
+      expired: 'bg-muted text-muted-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[status] || styles.active}`}>{status}</span>
   }
@@ -201,9 +202,7 @@ export default function LinksPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -362,7 +361,7 @@ export default function LinksPage() {
                             className="h-7 w-7"
                           >
                             {copiedId === link.id ? (
-                              <CheckCircle className="h-4 w-4 text-emerald-500" />
+                              <CheckCircle className="h-4 w-4 text-success" />
                             ) : (
                               <Copy className="h-4 w-4" />
                             )}
@@ -392,16 +391,16 @@ export default function LinksPage() {
                             className="h-7 w-7"
                           >
                             {link.status === 'active' ? (
-                              <span className="text-amber-500">⏸</span>
+                              <span className="text-warning">⏸</span>
                             ) : (
-                              <span className="text-emerald-500">▶</span>
+                              <span className="text-success">▶</span>
                             )}
                           </Button>
                           <Button
                             variant="ghost"
                             size="icon"
                             onClick={() => handleDelete(link.id)}
-                            className="h-7 w-7 text-red-500"
+                            className="h-7 w-7 text-error"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>

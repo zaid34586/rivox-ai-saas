@@ -1,13 +1,14 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { Plus, Shield, Edit, Trash2, Loader2, Zap } from 'lucide-react'
-
+import { Plus, Shield, Edit, Trash2, Zap } from 'lucide-react'
 interface OptimizerRule {
   id: string
   name: string
@@ -92,9 +93,7 @@ export default function RulesPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -109,10 +108,10 @@ export default function RulesPage() {
           <p className="text-muted-foreground">Manage automated optimization rules</p>
         </div>
         <Button asChild>
-          <a href="/dashboard/optimizer/rules/new">
+          <Link href="/dashboard/optimizer/rules/new">
             <Plus className="mr-2 h-4 w-4" />
             Create Rule
-          </a>
+          </Link>
         </Button>
       </div>
 
@@ -123,10 +122,10 @@ export default function RulesPage() {
             <h3 className="text-xl font-semibold mb-2">No rules yet</h3>
             <p className="text-muted-foreground mb-6">Create your first optimization rule to start automating.</p>
             <Button asChild>
-              <a href="/dashboard/optimizer/rules/new">
+              <Link href="/dashboard/optimizer/rules/new">
                 <Plus className="mr-2 h-4 w-4" />
                 Create Rule
-              </a>
+              </Link>
             </Button>
           </CardContent>
         </Card>
@@ -139,7 +138,7 @@ export default function RulesPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 flex-wrap">
                       <h4 className="font-medium truncate">{rule.name}</h4>
-                      <Badge variant={rule.is_active ? 'default' : 'secondary'} className={rule.is_active ? 'bg-green-100 text-green-700' : 'bg-muted text-muted-foreground'}>
+                      <Badge variant={rule.is_active ? 'default' : 'secondary'} className={rule.is_active ? 'bg-success-soft text-success-foreground' : 'bg-muted text-muted-foreground'}>
                         {rule.is_active ? 'Active' : 'Inactive'}
                       </Badge>
                       <Badge variant="outline">Trigger: {rule.trigger_operator} {rule.trigger_value}</Badge>
@@ -159,12 +158,12 @@ export default function RulesPage() {
                       size="icon"
                       onClick={() => handleToggle(rule)}
                     >
-                      <Shield className={cn('h-4 w-4', rule.is_active ? 'text-green-500' : '')} />
+                      <Shield className={cn('h-4 w-4', rule.is_active ? 'text-success' : '')} />
                     </Button>
                     <Button variant="ghost" size="icon" asChild>
-                      <a href={`/dashboard/optimizer/rules/${rule.id}`}>
+                      <Link href={`/dashboard/optimizer/rules/${rule.id}`}>
                         <Edit className="h-4 w-4" />
-                      </a>
+                      </Link>
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(rule.id)} className="text-destructive hover:text-destructive">
                       <Trash2 className="h-4 w-4" />

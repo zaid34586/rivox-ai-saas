@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Plus, Users, ChevronDown, Settings, LogOut, Building2, UserCheck, Crown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useRouter } from 'next/router'
 
 interface Team {
   team_id: string
@@ -29,11 +30,9 @@ export function TeamSwitcher() {
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [newTeamName, setNewTeamName] = useState('')
   const [newTeamSlug, setNewTeamSlug] = useState('')
+  const router = useRouter()
 
-  useEffect(() => {
-    fetchTeams()
-  }, [])
-
+  // Fetch teams function - declared before useEffect
   const fetchTeams = async () => {
     setLoading(true)
     try {
@@ -56,6 +55,13 @@ export function TeamSwitcher() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    const run = async () => {
+      await fetchTeams()
+    }
+    run()
+  }, [])
 
   const handleCreateTeam = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -88,7 +94,7 @@ export function TeamSwitcher() {
   const handleSwitchTeam = (teamId: string) => {
     setCurrentTeamId(teamId)
     localStorage.setItem('currentTeamId', teamId)
-    window.location.reload()
+    router.push(`/dashboard/team/${teamId}`)
   }
 
   const currentTeam = teams.find(t => t.team_id === currentTeamId)
@@ -119,13 +125,13 @@ export function TeamSwitcher() {
             onClick={() => handleSwitchTeam(team.team_id)}
             className={cn(
               'flex items-center gap-2',
-              currentTeamId === team.team_id && 'bg-primary/10'
+              currentTeamId === team.team_id && 'bg-emerald-600/10'
             )}
             inset={currentTeamId === team.team_id}
           >
-            <Building2 className={cn('h-4 w-4', currentTeamId === team.team_id && 'text-primary')} />
+            <Building2 className={cn('h-4 w-4', currentTeamId === team.team_id && 'text-emerald-500')} />
             <span className="flex-1 truncate">{team.name}</span>
-            {currentTeamId === team.team_id && <UserCheck className="h-4 w-4 text-primary" />}
+            {currentTeamId === team.team_id && <UserCheck className="h-4 w-4 text-emerald-500" />}
             {team.is_owner && (
               <span title="Owner" className="cursor-help">
                 <Crown className="h-3 w-3 text-gold" />
@@ -142,7 +148,7 @@ export function TeamSwitcher() {
         {currentTeam && (
           <>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => window.location.href = `/dashboard/team/${currentTeam.team_id}`}>
+            <DropdownMenuItem onClick={() => router.push(`/dashboard/team/${currentTeam.team_id}`)}>
               <Settings className="h-4 w-4 mr-2" />
               Team Settings
             </DropdownMenuItem>
@@ -157,6 +163,7 @@ export function TeamCreateDialog({ isOpen, onClose }: { isOpen: boolean; onClose
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -174,7 +181,7 @@ export function TeamCreateDialog({ isOpen, onClose }: { isOpen: boolean; onClose
         onClose()
         setName('')
         setSlug('')
-        window.location.reload()
+        router.push('/dashboard')
       } else {
         alert(data.error || 'Failed to create team')
       }

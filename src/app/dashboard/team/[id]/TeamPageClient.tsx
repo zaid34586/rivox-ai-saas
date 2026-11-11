@@ -695,7 +695,7 @@ export default function TeamPageClient({
                 </div>
               </div>
               <div className="mt-4 p-4 rounded-lg bg-warning/5 border border-warning/20">
-                <p className="text-sm text-amber-700">
+                <p className="text-sm text-warning-foreground">
                   Plan upgrades and billing management coming soon.
                 </p>
               </div>

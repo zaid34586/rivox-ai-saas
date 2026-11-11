@@ -14,12 +14,13 @@ import {
   Video,
   Calendar,
   BarChart3,
-  Settings,
   LogOut,
   Users,
   Zap,
   ChevronLeft,
   ChevronRight,
+  Menu,
+  X,
   Search,
   Send,
   Globe,
@@ -49,8 +50,6 @@ const navigation = [
   { name: 'Social Accounts', href: '/dashboard/social-accounts', icon: Globe },
   { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
   { name: 'Team', href: '/dashboard/team', icon: Users },
-  { name: 'Autopilot', href: '/dashboard/autopilot', icon: Zap },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ]
 
 export default function DashboardLayoutClient({
@@ -60,6 +59,7 @@ export default function DashboardLayoutClient({
 }) {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
   const [user, setUser] = useState<UserInfo | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -96,6 +96,11 @@ export default function DashboardLayoutClient({
     return () => subscription.unsubscribe()
   }, [])
 
+  // Close the mobile drawer on navigation.
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname])
+
   const handleLogout = async () => {
     try {
       const supabase = createClient()
@@ -106,40 +111,66 @@ export default function DashboardLayoutClient({
     window.location.href = '/auth/login'
   }
 
+  const activeItem = navigation.find(
+    (item) => pathname === item.href || pathname.startsWith(item.href + '/')
+  )
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" aria-hidden="true" />
+        <span className="sr-only">Loading…</span>
       </div>
     )
   }
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Mobile drawer backdrop */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       <aside
         className={cn(
-          'fixed left-0 top-0 z-40 h-screen border-r border-border bg-card transition-all duration-300',
-          collapsed ? 'w-16' : 'w-64'
+          'fixed left-0 top-0 z-50 h-screen overflow-y-auto border-r border-border bg-card transition-all duration-300',
+          // Desktop: static rail (collapsible). Mobile: slide-in drawer.
+          'max-lg:-translate-x-full',
+          mobileOpen && 'translate-x-0',
+          collapsed ? 'w-64 lg:w-16' : 'w-64'
         )}
       >
         <div className="flex h-16 items-center justify-between border-b border-border px-4">
-          {!collapsed && (
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                <Zap className="h-5 w-5 text-gold" />
-              </div>
-              <span className="font-bold text-lg">AffiPilot</span>
-            </Link>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setCollapsed(!collapsed)}
-            className="text-muted-foreground hover:text-foreground"
-            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          </Button>
+          <Link href="/dashboard" className="flex items-center gap-2" aria-label="AffiPilot home">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary">
+              <Zap className="h-5 w-5 text-gold" aria-hidden="true" />
+            </span>
+            {!collapsed && <span className="font-bold text-lg">AffiPilot</span>}
+          </Link>
+          <div className="flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setCollapsed(!collapsed)}
+              className="hidden text-muted-foreground hover:text-foreground lg:inline-flex"
+              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            >
+              {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setMobileOpen(false)}
+              className="text-muted-foreground hover:text-foreground lg:hidden"
+              aria-label="Close menu"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         <nav className="flex-1 space-y-1 p-3" aria-label="Main navigation">
@@ -154,9 +185,10 @@ export default function DashboardLayoutClient({
                   isActive
                     ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
-                  collapsed && 'justify-center'
+                  collapsed && 'justify-center lg:px-3'
                 )}
                 title={collapsed ? item.name : undefined}
+                aria-current={isActive ? 'page' : undefined}
               >
                 <item.icon className="h-5 w-5 shrink-0" aria-hidden="true" />
                 {!collapsed && <span>{item.name}</span>}
@@ -186,20 +218,34 @@ export default function DashboardLayoutClient({
           collapsed ? 'lg:ml-16' : 'lg:ml-64'
         )}
       >
-        <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur bg-background/60">
-          <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-4">
-              <TeamSwitcher />
-              <ThemeToggle />
-              <h1 className="text-xl font-semibold truncate">
-                {navigation.find(item => pathname === item.href || pathname.startsWith(item.href + '/'))?.name || 'Dashboard'}
+        <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur">
+          <div className="flex h-16 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+            <div className="flex min-w-0 items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="shrink-0 text-muted-foreground hover:text-foreground lg:hidden"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Open menu"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+              <div className="hidden md:block">
+                <TeamSwitcher />
+              </div>
+              <h1 className="truncate text-lg font-semibold sm:text-xl">
+                {activeItem?.name || 'Dashboard'}
               </h1>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 rounded-lg bg-muted px-3 py-1.5 text-sm text-muted-foreground">
+              <ThemeToggle />
+              <div className="hidden items-center gap-2 rounded-lg bg-muted px-3 py-1.5 text-sm sm:flex">
                 <span className="font-medium text-foreground">{user?.name || 'User'}</span>
               </div>
-              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-medium">
+              <div
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-primary font-medium text-primary-foreground"
+                title={user?.email}
+              >
                 {user?.email?.charAt(0).toUpperCase() || 'U'}
               </div>
             </div>
@@ -212,18 +258,4 @@ export default function DashboardLayoutClient({
       </main>
     </div>
   )
-}
-
-interface UserInfo {
-  email: string
-  name?: string
-}
-
-interface Session {
-  user?: {
-    email?: string
-    user_metadata?: {
-      full_name?: string
-    }
-  }
 }

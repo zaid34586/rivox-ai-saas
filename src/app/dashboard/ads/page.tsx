@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -182,25 +183,25 @@ export default function AdsPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      draft: 'bg-gray-100 text-gray-700',
-      pending_approval: 'bg-amber-100 text-amber-700',
-      approved: 'bg-emerald-100 text-emerald-700',
-      rejected: 'bg-red-100 text-red-700',
-      scheduled: 'bg-blue-100 text-blue-700',
-      published: 'bg-violet-100 text-violet-700',
-      failed: 'bg-red-100 text-red-700',
+      draft: 'bg-muted text-muted-foreground',
+      pending_approval: 'bg-warning-soft text-warning-foreground',
+      approved: 'bg-success-soft text-success-foreground',
+      rejected: 'bg-error-soft text-error-foreground',
+      scheduled: 'bg-info-soft text-info-foreground',
+      published: 'bg-muted text-muted-foreground',
+      failed: 'bg-error-soft text-error-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[status] || styles.draft}`}>{status.replace('_', ' ')}</span>
   }
 
   const getPlatformBadge = (platform: string) => {
     const colors: Record<string, string> = {
-      instagram: 'bg-purple-100 text-purple-700',
-      youtube: 'bg-red-100 text-red-700',
-      pinterest: 'bg-red-100 text-red-700',
+      instagram: 'bg-muted text-muted-foreground',
+      youtube: 'bg-error-soft text-error-foreground',
+      pinterest: 'bg-error-soft text-error-foreground',
       x: 'bg-sky-100 text-sky-700',
-      facebook: 'bg-blue-100 text-blue-700',
-      tiktok: 'bg-pink-100 text-pink-700',
+      facebook: 'bg-info-soft text-info-foreground',
+      tiktok: 'bg-muted text-muted-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${colors[platform] || colors.instagram}`}>{platform}</span>
   }
@@ -217,17 +218,15 @@ export default function AdsPage() {
   }
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-emerald-600 bg-emerald-100'
-    if (score >= 60) return 'text-blue-600 bg-blue-100'
-    if (score >= 40) return 'text-amber-600 bg-amber-100'
-    return 'text-red-600 bg-red-100'
+    if (score >= 80) return 'text-success bg-success-soft'
+    if (score >= 60) return 'text-info bg-info-soft'
+    if (score >= 40) return 'text-warning bg-warning-soft'
+    return 'text-error bg-error-soft'
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -387,7 +386,7 @@ export default function AdsPage() {
                           onChange={e => setUseAI(e.target.checked)}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-ring peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-ring peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                       </label>
                     </div>
 
@@ -439,7 +438,7 @@ export default function AdsPage() {
                 <Card className="border-warning/50 bg-warning/5">
                   <CardContent className="pt-6">
                     <div className="flex items-center gap-3">
-                      <Brain className="h-6 w-6 text-amber-500" />
+                      <Brain className="h-6 w-6 text-warning" />
                       <div>
                         <h4 className="font-semibold">AI Generation Unavailable</h4>
                         <p className="text-sm text-muted-foreground">
@@ -489,11 +488,11 @@ export default function AdsPage() {
                 Pro Tips for Better Ads
               </h4>
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-500" /> Products with images get 3x more engagement</li>
-                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-500" /> Higher Smart Score products convert better</li>
-                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-500" /> Mix hook categories (curiosity + problem + social proof)</li>
-                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-500" /> Reels/Shorts get 5x more reach than static posts</li>
-                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-500" /> Always include #ad for compliance</li>
+                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success" /> Products with images get 3x more engagement</li>
+                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success" /> Higher Smart Score products convert better</li>
+                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success" /> Mix hook categories (curiosity + problem + social proof)</li>
+                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success" /> Reels/Shorts get 5x more reach than static posts</li>
+                <li className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-success" /> Always include #ad for compliance</li>
               </ul>
             </CardContent>
           </Card>
@@ -596,9 +595,9 @@ export default function AdsPage() {
                         <Copy className="h-4 w-4" />
                       </Button>
                       <Button variant="ghost" size="icon" onClick={() => handleStatusChange(variant.id, variant.status === 'approved' ? 'draft' : 'approved')} title={variant.status === 'approved' ? 'Unapprove' : 'Approve'}>
-                        {variant.status === 'approved' ? <XCircle className="h-4 w-4 text-amber-500" /> : <CheckCircle className="h-4 w-4 text-emerald-500" />}
+                        {variant.status === 'approved' ? <XCircle className="h-4 w-4 text-warning" /> : <CheckCircle className="h-4 w-4 text-success" />}
                       </Button>
-                      <Button variant="ghost" size="icon" onClick={() => handleDelete(variant.id)} title="Delete" className="text-red-500 hover:text-red-600">
+                      <Button variant="ghost" size="icon" onClick={() => handleDelete(variant.id)} title="Delete" className="text-error hover:text-error">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>

@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -179,23 +180,23 @@ export default function EarningsPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      pending: 'bg-amber-100 text-amber-700',
-      approved: 'bg-blue-100 text-blue-700',
-      paid: 'bg-emerald-100 text-emerald-700',
-      rejected: 'bg-red-100 text-red-700',
-      cancelled: 'bg-gray-100 text-gray-700',
+      pending: 'bg-warning-soft text-warning-foreground',
+      approved: 'bg-info-soft text-info-foreground',
+      paid: 'bg-success-soft text-success-foreground',
+      rejected: 'bg-error-soft text-error-foreground',
+      cancelled: 'bg-muted text-muted-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[status] || styles.pending}`}>{status}</span>
   }
 
   const getNetworkBadge = (network: string) => {
     const colors: Record<string, string> = {
-      amazon: 'bg-orange-100 text-orange-700',
-      flipkart: 'bg-blue-100 text-blue-700',
-      clickbank: 'bg-purple-100 text-purple-700',
-      meesho: 'bg-pink-100 text-pink-700',
-      cuelinks: 'bg-indigo-100 text-indigo-700',
-      custom: 'bg-gray-100 text-gray-700',
+      amazon: 'bg-warning-soft text-warning-foreground',
+      flipkart: 'bg-info-soft text-info-foreground',
+      clickbank: 'bg-muted text-muted-foreground',
+      meesho: 'bg-muted text-muted-foreground',
+      cuelinks: 'bg-info-soft text-info-foreground',
+      custom: 'bg-muted text-muted-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${colors[network] || colors.custom}`}>{network}</span>
   }
@@ -320,9 +321,7 @@ export default function EarningsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 

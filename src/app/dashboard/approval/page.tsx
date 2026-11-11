@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -8,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Loader2, Plus, Sparkles, CheckCircle, XCircle, Eye, RotateCcw, Filter, RefreshCw, AlertTriangle, Clock, Zap, Gavel, ListChecks } from 'lucide-react'
+import { Plus, Sparkles, CheckCircle, XCircle, Eye, RotateCcw, Filter, RefreshCw, AlertTriangle, Clock, Zap, Gavel, ListChecks } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type ApprovalItem, type ApprovalRule, getStatusBadge } from '@/lib/approval'
 
@@ -122,19 +123,17 @@ export default function ApprovalPage() {
 
   const getRuleActionBadge = (action: string) => {
     const styles: Record<string, string> = {
-      auto_approve: 'bg-emerald-100 text-emerald-700',
-      auto_reject: 'bg-red-100 text-red-700',
-      require_review: 'bg-amber-100 text-amber-700',
-      flag: 'bg-blue-100 text-blue-700',
+      auto_approve: 'bg-success-soft text-success-foreground',
+      auto_reject: 'bg-error-soft text-error-foreground',
+      require_review: 'bg-warning-soft text-warning-foreground',
+      flag: 'bg-info-soft text-info-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[action] || styles.flag}`}>{action.replace('_', ' ')}</span>
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -207,7 +206,7 @@ export default function ApprovalPage() {
                         <CheckCircle className="mr-2 h-4 w-4" />
                         Approve
                       </Button>
-                      <Button variant="outline" size="sm" onClick={() => handleBulkAction('reject')} disabled={processing === 'bulk'} className="text-red-500 border-red-500 hover:bg-red-50">
+                      <Button variant="outline" size="sm" onClick={() => handleBulkAction('reject')} disabled={processing === 'bulk'} className="text-error border-error hover:bg-error-soft">
                         <XCircle className="mr-2 h-4 w-4" />
                         Reject
                       </Button>
@@ -276,23 +275,23 @@ export default function ApprovalPage() {
                             </p>
                           </td>
                           <td className="p-4">
-                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${item.type === 'ad' ? 'bg-purple-100 text-purple-700' : item.type === 'image' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}`}>
+                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${item.type === 'ad' ? 'bg-muted text-muted-foreground' : item.type === 'image' ? 'bg-success-soft text-success-foreground' : 'bg-info-soft text-info-foreground'}`}>
                               {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
                             </span>
                           </td>
                           <td className="p-4">
                             <span className={cn(
                               'px-2 py-0.5 rounded-full text-xs font-medium',
-                              item.quality_score >= 80 ? 'bg-emerald-100 text-emerald-700' :
-                              item.quality_score >= 60 ? 'bg-blue-100 text-blue-700' :
-                              item.quality_score >= 40 ? 'bg-amber-100 text-amber-700' :
-                              'bg-red-100 text-red-700'
+                              item.quality_score >= 80 ? 'bg-success-soft text-success-foreground' :
+                              item.quality_score >= 60 ? 'bg-info-soft text-info-foreground' :
+                              item.quality_score >= 40 ? 'bg-warning-soft text-warning-foreground' :
+                              'bg-error-soft text-error-foreground'
                             )}>
                               {item.quality_score}/100
                             </span>
                           </td>
                           <td className="p-4">
-                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${item.status === 'pending' ? 'bg-amber-100 text-amber-700' : item.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : item.status === 'rejected' ? 'bg-red-100 text-red-700' : item.status === 'needs_revision' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}`}>
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${item.status === 'pending' ? 'bg-warning-soft text-warning-foreground' : item.status === 'approved' ? 'bg-success-soft text-success-foreground' : item.status === 'rejected' ? 'bg-error-soft text-error-foreground' : item.status === 'needs_revision' ? 'bg-info-soft text-info-foreground' : 'bg-muted text-muted-foreground'}`}>
                               {item.status.replace('_', ' ')}
                             </span>
                           </td>
@@ -302,12 +301,12 @@ export default function ApprovalPage() {
                           <td className="p-4">
                             <div className="flex items-center gap-1">
                               <Button variant="ghost" size="icon" onClick={() => handleSingleAction(item, 'approve')} disabled={processing === item.id} title="Approve">
-                                <CheckCircle className="h-4 w-4 text-emerald-500" />
+                                <CheckCircle className="h-4 w-4 text-success" />
                               </Button>
-                              <Button variant="ghost" size="icon" onClick={() => handleSingleAction(item, 'reject')} disabled={processing === item.id} title="Reject" className="text-red-500 hover:text-red-600">
+                              <Button variant="ghost" size="icon" onClick={() => handleSingleAction(item, 'reject')} disabled={processing === item.id} title="Reject" className="text-error hover:text-error">
                                 <XCircle className="h-4 w-4" />
                               </Button>
-                              <Button variant="ghost" size="icon" onClick={() => handleSingleAction(item, 'request_revision')} disabled={processing === item.id} title="Request Revision" className="text-blue-500 hover:text-blue-600">
+                              <Button variant="ghost" size="icon" onClick={() => handleSingleAction(item, 'request_revision')} disabled={processing === item.id} title="Request Revision" className="text-info hover:text-info">
                                 <RotateCcw className="h-4 w-4" />
                               </Button>
                               <Button variant="ghost" size="icon" onClick={() => window.open(item.preview_url, '_blank')} title="Preview">
@@ -363,7 +362,7 @@ export default function ApprovalPage() {
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${rule.action === 'auto_approve' ? 'bg-emerald-100 text-emerald-700' : rule.action === 'auto_reject' ? 'bg-red-100 text-red-700' : rule.action === 'require_review' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${rule.action === 'auto_approve' ? 'bg-success-soft text-success-foreground' : rule.action === 'auto_reject' ? 'bg-error-soft text-error-foreground' : rule.action === 'require_review' ? 'bg-warning-soft text-warning-foreground' : 'bg-info-soft text-info-foreground'}`}>
                             {rule.action.replace('_', ' ')}
                           </span>
                           <Button variant="outline" size="sm" onClick={() => { setEditingRule(rule); setShowRuleModal(true); }}>
@@ -404,26 +403,26 @@ export default function ApprovalPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                  <CheckCircle className="h-4 w-4 text-emerald-600" />
+                <div className="w-8 h-8 rounded-full bg-success-soft flex items-center justify-center">
+                  <CheckCircle className="h-4 w-4 text-success" />
                 </div>
                 <p className="text-sm text-muted-foreground"><strong>Auto-Approve:</strong> Content matching rules is approved instantly and moves to "Ready to Publish"</p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
-                  <AlertTriangle className="h-4 w-4 text-amber-600" />
+                <div className="w-8 h-8 rounded-full bg-warning-soft flex items-center justify-center">
+                  <AlertTriangle className="h-4 w-4 text-warning" />
                 </div>
                 <p className="text-sm text-muted-foreground"><strong>Flag for Review:</strong> Content meets criteria but needs human check (e.g., TikTok/Reels)</p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
-                  <XCircle className="h-4 w-4 text-red-600" />
+                <div className="w-8 h-8 rounded-full bg-error-soft flex items-center justify-center">
+                  <XCircle className="h-4 w-4 text-error" />
                 </div>
                 <p className="text-sm text-muted-foreground"><strong>Auto-Reject:</strong> Blocked keywords (guaranteed, miracle, scam, etc.) are rejected immediately</p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-                  <Zap className="h-4 w-4 text-purple-600" />
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                  <Zap className="h-4 w-4 text-muted-foreground" />
                 </div>
                 <p className="text-sm text-muted-foreground"><strong>Auto-Approved badge:</strong> Shows in queue with purple badge — you can still override</p>
               </div>

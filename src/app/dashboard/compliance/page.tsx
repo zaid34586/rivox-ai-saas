@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -8,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Loader2, Plus, Sparkles, CheckCircle, XCircle, RotateCcw, Filter, RefreshCw, AlertTriangle, Clock, Zap, Gavel, Shield, FileText } from 'lucide-react'
+import { Plus, Sparkles, CheckCircle, XCircle, RotateCcw, Filter, RefreshCw, AlertTriangle, Clock, Zap, Gavel, Shield, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { checkCompliance, autoFixCompliance, type ComplianceReport, type ComplianceViolation } from '@/lib/compliance'
 
@@ -99,18 +100,16 @@ export default function CompliancePage() {
 
   const getSeverityBadge = (severity: string) => {
     const styles: Record<string, string> = {
-      error: 'bg-red-100 text-red-700',
-      warning: 'bg-amber-100 text-amber-700',
-      info: 'bg-blue-100 text-blue-700',
+      error: 'bg-error-soft text-error-foreground',
+      warning: 'bg-warning-soft text-warning-foreground',
+      info: 'bg-info-soft text-info-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[severity] || styles.error}`}>{severity}</span>
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -275,13 +274,13 @@ export default function CompliancePage() {
               <CardContent>
                 {testResult ? (
                   <div className="space-y-4">
-                    <div className={`p-4 rounded-lg ${testResult.overallPassed ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
+                    <div className={`p-4 rounded-lg ${testResult.overallPassed ? 'bg-success-soft border-success/30' : 'bg-error-soft border-error/30'}`}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           {testResult.overallPassed ? (
-                            <CheckCircle className="h-6 w-6 text-emerald-600" />
+                            <CheckCircle className="h-6 w-6 text-success" />
                           ) : (
-                            <XCircle className="h-6 w-6 text-red-600" />
+                            <XCircle className="h-6 w-6 text-error" />
                           )}
                         </div>
                         <div>
@@ -303,7 +302,7 @@ export default function CompliancePage() {
                         <h4 className="font-semibold">Violations</h4>
                         <div className="space-y-2">
                           {testResult.violations.map((v, i) => (
-                            <Card key={i} className={`border-l-4 ${v.severity === 'error' ? 'border-red-500' : v.severity === 'warning' ? 'border-amber-500' : 'border-blue-500'}`}>
+                            <Card key={i} className={`border-l-4 ${v.severity === 'error' ? 'border-error' : v.severity === 'warning' ? 'border-warning' : 'border-info'}`}>
                               <CardContent className="pt-4">
                                 <div className="flex items-start justify-between gap-2">
                                   <div className="flex-1">
@@ -354,7 +353,7 @@ export default function CompliancePage() {
             <Card className="border-border/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-emerald-600" /> FTC Disclosure
+                  <Shield className="h-5 w-5 text-success" /> FTC Disclosure
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
@@ -369,7 +368,7 @@ export default function CompliancePage() {
             <Card className="border-border/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <XCircle className="h-5 w-5 text-red-600" /> Banned Claims
+                  <XCircle className="h-5 w-5 text-error" /> Banned Claims
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
@@ -393,7 +392,7 @@ export default function CompliancePage() {
             <Card className="border-border/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Gavel className="h-5 w-5 text-blue-600" /> Platform Policies
+                  <Gavel className="h-5 w-5 text-info" /> Platform Policies
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
@@ -424,7 +423,7 @@ export default function CompliancePage() {
             <Card className="border-border/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Zap className="h-5 w-5 text-purple-600" /> Network Policies
+                  <Zap className="h-5 w-5 text-muted-foreground" /> Network Policies
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
@@ -451,7 +450,7 @@ export default function CompliancePage() {
             <Card className="border-border/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <AlertTriangle className="h-5 w-5 text-amber-600" /> Category-Specific Rules
+                  <AlertTriangle className="h-5 w-5 text-warning" /> Category-Specific Rules
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
@@ -483,7 +482,7 @@ export default function CompliancePage() {
             <Card className="border-border/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-gray-600" /> Character Limits
+                  <FileText className="h-5 w-5 text-muted-foreground" /> Character Limits
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">

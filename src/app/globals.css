@@ -1,23 +1,19 @@
-@import "tailwindcss";
-
-/* Radix dialog/dropdown/select/tabs enter-exit animations (animate-in,
-   fade-in-0, zoom-in-95, slide-in-from-*). */
-@plugin "tailwindcss-animate";
-
-/*
+/*!
   ============================================================
-  Tailwind v4 theme tokens
-  ------------------------------------------------------------
-  The raw palette below lives in :root as plain HSL triplets
-  (e.g. --bg: 220 25% 5%) so it can be composed as
-  hsl(var(--bg) / 0.5) with alpha. Tailwind v4 only generates
-  utilities for tokens declared inside @theme, so every semantic
-  class (bg-background, text-muted-foreground, border-border,
+  Tailwind v4 theme tokens — "Ledger" Design System v3.0
+  AffiPilot — AI Affiliate Marketing Autopilot
+  Design System v3.0: "Ledger" — Light-first, warm, precise
+  Concept: A modern ledger for digital affiliate marketers.
+  Warm porcelain paper, bottle-green ink, brass/gold for revenue.
+  Clean, legible, purposeful — not decorative.
+  ============================================================
+
+  Tailwind v4 only generates utilities for tokens declared inside @theme.
+  Every semantic class (bg-background, text-foreground, border-border,
   text-gold, ...) is mapped here. `inline` is required so the
   hsl(var(--x)) wrapper is emitted directly into the utility —
   that keeps opacity modifiers (bg-primary/10) valid and lets
   the light/dark overrides below cascade correctly.
-  ============================================================
 */
 @theme inline {
   /* Surfaces & text */
@@ -27,15 +23,14 @@
   --color-card-foreground: hsl(var(--fg));
   --color-popover: hsl(var(--surface));
   --color-popover-foreground: hsl(var(--fg));
-  --color-muted: hsl(var(--bg-hover));
+  --color-muted: hsl(var(--bg-muted));
   --color-muted-foreground: hsl(var(--fg-muted));
-
-  /* Borders, inputs, focus */
   --color-border: hsl(var(--border));
   --color-border-hover: hsl(var(--border-hover));
   --color-border-strong: hsl(var(--border-strong));
   --color-input: hsl(var(--border));
   --color-ring: hsl(var(--primary));
+  --color-radius: var(--radius-md);
 
   /* Brand */
   --color-primary: hsl(var(--primary));
@@ -43,6 +38,13 @@
   --color-primary-soft: hsl(var(--primary-soft));
   --color-primary-hover: hsl(var(--primary-hover));
   --color-primary-pressed: hsl(var(--primary-pressed));
+
+  /* Accent — Warm Brass/Gold (revenue, premium, highlights) */
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-fg));
+  --color-accent-soft: hsl(var(--accent-soft));
+  --color-accent-hover: hsl(var(--accent-hover));
+  --color-accent-pressed: hsl(var(--accent-pressed));
 
   /* Neutral interactive accent (sidebar/menu hover) */
   --color-accent: hsl(var(--surface-hover));
@@ -84,15 +86,9 @@
   --shadow-gold: 0 0 0 1px hsl(var(--accent) / 0.3), 0 8px 28px hsl(var(--accent) / 0.2);
 }
 
-/*
-  AffiPilot — AI Affiliate Marketing Autopilot
-  Design System v3.0: "Ledger" — Light-first, warm, precise
-  ---------------------------------------------------------
-  Concept: A modern ledger for digital affiliate marketers.
-  Warm porcelain paper, bottle-green ink, brass/gold for revenue.
-  Clean, legible, purposeful — not decorative.
-*/
-
+/* ============================================================
+  Light theme — Warm porcelain base (primary)
+  ============================================================ */
 :root {
   /* ===== Color Primitives ===== */
   /* Light theme — Warm porcelain base (primary) */
@@ -100,99 +96,61 @@
   --bg-elevated: 0 0% 100%;      /* #FFFFFF - Pure white cards */
   --bg-hover: 38 35% 92%;        /* #EBE4D8 - Subtle warm hover */
   --bg-pressed: 38 30% 88%;      /* #E0D8C8 - Active/pressed */
-  
+
   --fg: 220 25% 8%;              /* #0D0F11 - Deep charcoal (near-black) */
   --fg-muted: 220 15% 40%;       /* #4E5A6E - Secondary text */
   --fg-subtle: 220 10% 55%;      /* #7A8A9A - Tertiary/hint text */
   --fg-inverse: 0 0% 100%;       /* #FFFFFF - Text on dark */
-  
+
   /* Brand — Bottle Green (trust, growth, action) */
   --primary: 152 65% 28%;        /* #1B7A4A - Bottle green */
   --primary-hover: 152 65% 24%;  /* #15663D */
   --primary-pressed: 152 65% 20%; /* #0F5230 */
   --primary-soft: 152 50% 92%;   /* #D4F5E3 - Light tint */
   --primary-fg: 0 0% 100%;       /* #FFFFFF */
-  
+
   /* Accent — Warm Brass/Gold (revenue, premium, highlights) */
   --accent: 38 85% 42%;          /* #D4A01A - Warm brass */
   --accent-hover: 38 85% 38%;    /* #C49218 */
   --accent-pressed: 38 85% 34%;  /* #B48416 */
   --accent-soft: 38 70% 94%;     /* #FDF4E6 - Light tint */
   --accent-fg: 30 40% 10%;       /* #261F0A - Text on accent */
+
   --gold-deep: 30 60% 30%;       /* Deep brass — readable on gold-soft */
-  
+
   /* Semantic — Only for data/feedback, never decoration */
   --success: 142 65% 32%;        /* #10A35B */
   --success-soft: 142 50% 94%;   /* #D1FAE5 */
   --success-fg: 142 50% 10%;
-  
+
   --warning: 38 85% 42%;         /* #D4A01A (same as accent) */
   --warning-soft: 38 70% 94%;
   --warning-fg: 30 40% 10%;
-  
+
   --error: 0 75% 48%;            /* #D93A3A */
   --error-soft: 0 50% 94%;       /* #FEF2F2 */
   --error-fg: 0 60% 12%;
-  
+
   --info: 199 75% 40%;           /* #06A8C8 */
   --info-soft: 199 50% 94%;
   --info-fg: 199 50% 10%;
-  
+
   /* Borders & Dividers — Subtle, warm */
   --border: 38 25% 85%;          /* #DCD5C9 */
   --border-hover: 38 25% 78%;    /* #CBC2B4 */
   --border-strong: 38 25% 70%;   /* #B8AD9F */
   --border-focus: 152 65% 28%;   /* Primary for focus */
-  
+
   /* Surface variants */
   --surface: 0 0% 100%;          /* Pure white */
   --surface-hover: 38 35% 92%;   /* #EBE4D8 */
   --surface-pressed: 38 30% 88%; /* #E0D8C8 */
   --surface-elevated: 0 0% 100%; /* White with shadow */
-  
-  /* ===== Dark palette (applied by default — see :root:not(.light)) ===== */
-  --bg-dark: 220 25% 5%;          /* #0A0C0F - Near-black base */
-  --bg-elevated-dark: 220 20% 8%; /* #121519 - Elevated panels */
-  --bg-hover-dark: 220 18% 11%;   /* #1A1F26 - Hover fill */
-  --bg-pressed-dark: 220 16% 14%; /* #222831 - Pressed fill */
-  --fg-dark: 210 20% 95%;         /* #F0F2F5 - Primary text */
-  --fg-muted-dark: 215 15% 65%;   /* #98A2B3 - Secondary text (AA on bg-dark) */
-  --fg-subtle-dark: 215 12% 50%;  /* #6E7C8E - Hint text */
-  --fg-inverse-dark: 220 25% 5%;  /* Text on light fills */
-  --primary-dark: 152 55% 45%;    /* #34C76E - Emerald */
-  --primary-hover-dark: 152 55% 52%;
-  --primary-pressed-dark: 152 55% 40%;
-  --primary-soft-dark: 152 40% 12%;
-  --primary-fg-dark: 220 25% 5%;  /* Dark ink on bright emerald (AA) */
-  --accent-dark: 38 85% 52%;      /* #F5A623 - Brass */
-  --accent-hover-dark: 38 85% 58%;
-  --accent-pressed-dark: 38 85% 46%;
-  --accent-soft-dark: 38 40% 15%; /* Warm dark tint */
-  --gold-deep-dark: 38 90% 70%;   /* Readable brass on gold-soft-dark */
-  --success-dark: 142 60% 45%;
-  --success-soft-dark: 142 35% 13%;
-  --success-fg-dark: 142 55% 75%;
-  --warning-dark: 38 85% 55%;
-  --warning-soft-dark: 38 40% 15%;
-  --warning-fg-dark: 38 90% 75%;
-  --error-dark: 0 72% 55%;
-  --error-soft-dark: 0 40% 14%;
-  --error-fg-dark: 0 80% 80%;
-  --info-dark: 199 70% 55%;
-  --info-soft-dark: 199 40% 14%;
-  --info-fg-dark: 199 65% 78%;
-  --border-dark: 220 15% 18%;     /* #2A2F36 */
-  --border-hover-dark: 220 15% 26%;
-  --border-strong-dark: 220 15% 34%;
-  --surface-dark: 220 20% 8%;
-  --surface-hover-dark: 220 18% 11%;
-  --surface-pressed-dark: 220 16% 14%;
-  --surface-elevated-dark: 220 18% 10%;
-  
+
   /* ===== Typography Scale ===== */
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
-  
+
   /* Fluid type scale (clamp) — Based on 1.25 modular scale */
   --text-xs: clamp(0.6875rem, 0.65rem + 0.18vw, 0.75rem);      /* 11-12px */
   --text-sm: clamp(0.8125rem, 0.78rem + 0.16vw, 0.875rem);     /* 13-14px */
@@ -203,19 +161,19 @@
   --text-3xl: clamp(1.875rem, 1.7rem + 0.88vw, 2.5rem);        /* 30-40px */
   --text-4xl: clamp(2.25rem, 2rem + 1.25vw, 3.5rem);           /* 36-56px */
   --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 5rem);               /* 48-80px */
-  
+
   /* Font weights */
   --weight-normal: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
-  
+
   /* Line heights */
   --leading-tight: 1.1;
   --leading-snug: 1.375;
   --leading-normal: 1.6;
   --leading-relaxed: 1.75;
-  
+
   /* ===== Spacing Scale (4px base) ===== */
   --space-0: 0;
   --space-1: 0.25rem;   /* 4px */
@@ -230,14 +188,14 @@
   --space-16: 4rem;     /* 64px */
   --space-20: 5rem;     /* 80px */
   --space-24: 6rem;     /* 96px */
-  
+
   /* Half-step spacing for tight layouts */
   --space-half: 0.125rem;   /* 2px */
   --space-1half: 0.375rem;  /* 6px */
   --space-2half: 0.625rem;  /* 10px */
   --space-3half: 0.875rem;  /* 14px */
   --space-4half: 1.125rem;  /* 18px */
-  
+
   /* ===== Border Radius ===== */
   --radius-none: 0;
   --radius-xs: 0.25rem;    /* 4px */
@@ -247,7 +205,7 @@
   --radius-xl: 1rem;       /* 16px */
   --radius-2xl: 1.5rem;    /* 24px */
   --radius-full: 9999px;
-  
+
   /* ===== Shadows & Elevation — Layered, warm ===== */
   --shadow-xs: 0 1px 2px hsl(38 25% 15% / 0.04);
   --shadow-sm: 0 1px 3px hsl(38 25% 15% / 0.06), 0 1px 2px hsl(38 25% 15% / 0.04);
@@ -255,7 +213,7 @@
   --shadow-lg: 0 12px 24px hsl(38 25% 15% / 0.08), 0 4px 8px hsl(38 25% 15% / 0.04);
   --shadow-xl: 0 20px 40px hsl(38 25% 15% / 0.1), 0 8px 16px hsl(38 25% 15% / 0.05);
   --shadow-2xl: 0 32px 64px hsl(38 25% 15% / 0.12), 0 12px 24px hsl(38 25% 15% / 0.06);
-  
+
   /* Colored shadows — sparing use */
   --shadow-primary: 0 8px 24px hsl(152 65% 28% / 0.2), 0 4px 12px hsl(152 65% 28% / 0.1);
   --shadow-accent: 0 8px 24px hsl(38 85% 42% / 0.25), 0 4px 12px hsl(38 85% 42% / 0.15);
@@ -264,10 +222,10 @@
   --lift: 0 1px 2px rgb(0 0 0 / 0.05), 0 12px 32px -8px rgb(0 0 0 / 0.12);
   --lift-dark: 0 1px 2px rgb(0 0 0 / 0.45), 0 20px 44px -12px rgb(0 0 0 / 0.6);
   --glow: 0 0 0 1px hsl(var(--primary) / 0.35), 0 8px 28px hsl(var(--primary) / 0.18);
-  
+
   /* Inner shadows for pressed states */
   --shadow-inner: inset 0 2px 4px hsl(38 25% 15% / 0.06);
-  
+
   /* ===== Transitions ===== */
   --duration-instant: 50ms;
   --duration-fast: 120ms;
@@ -277,7 +235,7 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  
+
   /* ===== Z-Index Scale ===== */
   --z-dropdown: 100;
   --z-sticky: 200;
@@ -285,14 +243,14 @@
   --z-popover: 400;
   --z-tooltip: 500;
   --z-toast: 600;
-  
+
   /* ===== Breakpoints ===== */
   --bp-sm: 640px;
   --bp-md: 768px;
   --bp-lg: 1024px;
   --bp-xl: 1280px;
   --bp-2xl: 1536px;
-  
+
   /* ===== Container Widths ===== */
   --container-sm: 640px;
   --container-md: 768px;
@@ -301,14 +259,15 @@
   --container-2xl: 1400px;
 }
 
-/* ===== Theme selection =================================================
+/* ============================================================
+  Dark palette (applied by default — see :root:not(.light))
    Dark is the DEFAULT theme: :root holds the warm light palette, and
-   `:root:not(.light)` swaps every token to its dark counterpart.
-   ThemeToggle adds either `.light` or `.dark` to <html>, so:
-     no class / .dark  → dark palette
-     .light            → light palette (from :root above)
-   The `.dark` block below is kept as an explicit, identical override.
-   ====================================================================== */
+  `:root:not(.light)` swaps every token to its dark counterpart.
+  ThemeToggle adds either `.light` or `.dark` to <html>, so:
+    no class / .dark  → dark palette
+    .light            → light palette (from :root above)
+  The `.dark` block below is kept as an explicit, identical override.
+  ====================================================================== */
 :root:not(.light) {
   --bg: var(--bg-dark);
   --bg-elevated: var(--bg-elevated-dark);
@@ -351,7 +310,9 @@
   --lift: var(--lift-dark);
 }
 
-/* ===== Explicit dark override (kept in sync with the block above) ===== */
+/* ============================================================
+  Explicit dark override (kept in sync with the block above)
+  ====================================================================== */
 .dark {
   --bg: var(--bg-dark);
   --bg-elevated: var(--bg-elevated-dark);
@@ -429,7 +390,7 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
+
   /* Glass morphism */
   .glass {
     background: hsl(var(--surface) / 0.8);
@@ -442,7 +403,7 @@
     backdrop-filter: blur(24px);
     border: 1px solid hsl(var(--border) / 0.3);
   }
-  
+
   /* Focus styles */
   .focus-ring {
     outline: none;
@@ -451,7 +412,7 @@
     ring-offset: 2px;
     ring-offset-color: hsl(var(--bg));
   }
-  
+
   /* Scrollbar */
   .scrollbar-thin {
     scrollbar-width: thin;
@@ -475,7 +436,7 @@
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background-color: hsl(var(--border-strong));
   }
-  
+
   /* Text clamp */
   .text-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
   .text-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -837,7 +798,7 @@ body {
     color: hsl(var(--fg));
     margin-bottom: var(--space-1half);
   }
-  
+
   /* Badge */
   .badge {
     display: inline-flex;
@@ -885,7 +846,7 @@ body {
     border: 1px solid hsl(var(--border));
     color: hsl(var(--fg-muted));
   }
-  
+
   /* Avatar */
   .avatar {
     display: inline-flex;
@@ -911,7 +872,7 @@ body {
     height: 100%;
     object-fit: cover;
   }
-  
+
   /* Dropdown */
   .dropdown {
     position: relative;
@@ -964,7 +925,7 @@ body {
     background: hsl(var(--border));
     margin: var(--space-1half) 0;
   }
-  
+
   /* Tooltip */
   .tooltip {
     position: relative;
@@ -1006,7 +967,7 @@ body {
     border: 4px solid transparent;
     border-top-color: hsl(var(--fg));
   }
-  
+
   /* Tabs */
   .tabs {
     display: flex;
@@ -1047,7 +1008,7 @@ body {
     outline: none;
     box-shadow: 0 0 0 2px hsl(var(--primary));
   }
-  
+
   /* Table */
   .table-container {
     overflow-x: auto;
@@ -1090,7 +1051,7 @@ body {
   .table tbody tr:last-child td {
     border-bottom: none;
   }
-  
+
   /* Modal */
   .modal-overlay {
     position: fixed;
@@ -1161,7 +1122,7 @@ body {
     background: hsl(var(--surface));
     color: hsl(var(--fg));
   }
-  
+
   /* Toast */
   .toast {
     position: fixed;
@@ -1195,7 +1156,7 @@ body {
   .toast-info {
     border-left: 4px solid hsl(var(--info));
   }
-  
+
   /* Skeleton */
   .skeleton {
     background: linear-gradient(
@@ -1208,7 +1169,7 @@ body {
     animation: shimmer 1.5s ease-in-out infinite;
     border-radius: var(--radius-md);
   }
-  
+
   /* Divider */
   .divider {
     height: 1px;
@@ -1220,7 +1181,7 @@ body {
     height: 100%;
     background: hsl(var(--border));
   }
-  
+
   /* Progress */
   .progress {
     height: 0.5rem;
@@ -1235,7 +1196,7 @@ body {
     background: hsl(var(--primary));
     transition: width var(--duration-slow) var(--ease-out);
   }
-  
+
   /* Separator text */
   .separator {
     display: flex;

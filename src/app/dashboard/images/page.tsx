@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -216,31 +217,29 @@ export default function ImagesPage() {
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      generated: 'bg-gray-100 text-gray-700',
-      selected: 'bg-emerald-100 text-emerald-700',
-      rejected: 'bg-red-100 text-red-700',
-      published: 'bg-blue-100 text-blue-700',
+      generated: 'bg-muted text-muted-foreground',
+      selected: 'bg-success-soft text-success-foreground',
+      rejected: 'bg-error-soft text-error-foreground',
+      published: 'bg-info-soft text-info-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${styles[status] || styles.generated}`}>{status}</span>
   }
 
   const getPlatformBadge = (platform: string) => {
     const colors: Record<string, string> = {
-      instagram: 'bg-purple-100 text-purple-700',
-      youtube: 'bg-red-100 text-red-700',
-      pinterest: 'bg-red-100 text-red-700',
+      instagram: 'bg-muted text-muted-foreground',
+      youtube: 'bg-error-soft text-error-foreground',
+      pinterest: 'bg-error-soft text-error-foreground',
       x: 'bg-sky-100 text-sky-700',
-      facebook: 'bg-blue-100 text-blue-700',
-      tiktok: 'bg-pink-100 text-pink-700',
+      facebook: 'bg-info-soft text-info-foreground',
+      tiktok: 'bg-muted text-muted-foreground',
     }
     return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${colors[platform] || colors.instagram}`}>{platform}</span>
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 
@@ -537,8 +536,8 @@ export default function ImagesPage() {
                         onClick={() => setPreviewImage(img)}
                       />
                       {img.selected && (
-                        <div className="absolute inset-0 bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center">
-                          <CheckCircle className="h-8 w-8 text-emerald-500" />
+                        <div className="absolute inset-0 bg-emerald-500/20 border-2 border-success flex items-center justify-center">
+                          <CheckCircle className="h-8 w-8 text-success" />
                         </div>
                       )}
                     </div>
@@ -570,11 +569,11 @@ export default function ImagesPage() {
                         size="icon" 
                         onClick={() => handleStatusChange(img.id, img.status === 'selected' ? 'generated' : 'selected')}
                         title={img.status === 'selected' ? 'Unselect' : 'Select for use'}
-                        className={img.status === 'selected' ? 'text-emerald-500' : ''}
+                        className={img.status === 'selected' ? 'text-success' : ''}
                       >
                         {img.status === 'selected' ? <XCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
                       </Button>
-                      <Button variant="ghost" size="icon" onClick={() => handleDelete(img.id)} title="Delete" className="text-red-500 hover:text-red-600">
+                      <Button variant="ghost" size="icon" onClick={() => handleDelete(img.id)} title="Delete" className="text-error hover:text-error">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>

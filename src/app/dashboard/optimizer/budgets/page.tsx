@@ -1,5 +1,6 @@
 'use client'
 
+import { PageSkeleton } from '@/components/ui/skeleton'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
@@ -10,16 +11,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { 
-  Wallet, 
-  Loader2, 
-  Plus, 
-  Settings, 
-  Trash2, 
-  AlertTriangle,
-  TrendingUp,
-  TrendingDown
-} from 'lucide-react'
+import { Wallet, Plus, Settings, Trash2, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react'
 import { format } from 'date-fns'
 
 interface BudgetTracking {
@@ -37,10 +29,10 @@ interface BudgetTracking {
 }
 
 const PACE_COLORS: Record<string, string> = {
-  on_track: 'bg-green-100 text-green-700',
-  under_pacing: 'bg-blue-100 text-blue-700',
-  over_pacing: 'bg-amber-100 text-amber-700',
-  exhausted: 'bg-red-100 text-red-700',
+  on_track: 'bg-success-soft text-success-foreground',
+  under_pacing: 'bg-info-soft text-info-foreground',
+  over_pacing: 'bg-warning-soft text-warning-foreground',
+  exhausted: 'bg-error-soft text-error-foreground',
 }
 
 export default function BudgetsPage() {
@@ -141,9 +133,7 @@ export default function BudgetsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <PageSkeleton />
     )
   }
 

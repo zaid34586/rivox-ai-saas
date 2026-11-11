@@ -1,3 +1,4 @@
+import Link from 'next/link'
 "use client"
 
 import { Component, ReactNode } from 'react'
@@ -80,7 +81,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 Try Again
               </Button>
               <Button onClick={this.handleReload} variant="outline" asChild>
-                <a href="/dashboard"><Home className="mr-2 h-4 w-4" />Go to Dashboard</a>
+                <Link href="/dashboard"><Home className="mr-2 h-4 w-4" />Go to Dashboard</Link>
               </Button>
             </div>
           </div>
