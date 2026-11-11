@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Space_Grotesk, Geist_Mono } from 'next/font/google'
 import { QueryProvider } from '@/lib/query-client'
 import './globals.css'
 
-const geistSans = Geist({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-geist-sans',
+  variable: '--font-space-grotesk',
+  weight: ['400', '500', '600', '700'],
 })
 
 const geistMono = Geist_Mono({
@@ -14,21 +15,21 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'AffiPilot — AI Affiliate Marketing Autopilot',
-  description: 'Find winning products, create UGC ads with AI, auto-post to social media, and track commissions — all on autopilot.',
-  keywords: ['affiliate marketing', 'AI marketing', 'autopilot', 'UGC ads', 'commission tracking'],
-  authors: [{ name: 'AffiPilot' }],
+  title: 'NexaFlow — Automate the repeat. Ship the new.',
+  description: 'AI workflow builder for creators — connect apps, generate content, publish across platforms from one canvas.',
+  keywords: ['AI workflow', 'automation', 'creator tools', 'content generation', 'NexaFlow'],
+  authors: [{ name: 'NexaFlow' }],
   openGraph: {
-    title: 'AffiPilot — AI Affiliate Marketing Autopilot',
-    description: 'Find winning products, create UGC ads with AI, auto-post to social media, and track commissions — all on autopilot.',
+    title: 'NexaFlow — Automate the repeat. Ship the new.',
+    description: 'AI workflow builder for creators — connect apps, generate content, publish across platforms from one canvas.',
     type: 'website',
     locale: 'en_US',
-    siteName: 'AffiPilot',
+    siteName: 'NexaFlow',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AffiPilot — AI Affiliate Marketing Autopilot',
-    description: 'Find winning products, create UGC ads with AI, auto-post to social media, and track commissions.',
+    title: 'NexaFlow — Automate the repeat. Ship the new.',
+    description: 'AI workflow builder for creators — connect apps, generate content, publish across platforms from one canvas.',
   },
   robots: {
     index: true,
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0c' },
   ],
   width: 'device-width',
   initialScale: 1,
@@ -52,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${geistMono.variable} antialiased`}>
       <body className="min-h-screen bg-background font-sans">
         <QueryProvider>{children}</QueryProvider>
       </body>
