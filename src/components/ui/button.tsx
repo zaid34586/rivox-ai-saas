@@ -81,7 +81,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-disabled={disabled || loading || undefined}
         {...props}
       >
-        {loading && (
+        {asChild ? (
+          // Slot requires exactly one element child — no spinner node here.
+          children
+        ) : (
+          <>
+            {loading && (
           <svg
             className="animate-spin"
             xmlns="http://www.w3.org/2000/svg"
@@ -105,8 +110,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               />
             </path>
           </svg>
+            )}
+            {children}
+          </>
         )}
-        {children}
       </Comp>
     )
   }
