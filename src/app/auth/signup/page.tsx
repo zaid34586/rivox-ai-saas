@@ -7,8 +7,10 @@ import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card'
 import { Loader2, Mail, Lock, User, AlertCircle, CheckCircle } from 'lucide-react'
+
+export const dynamic = 'force-dynamic'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -60,123 +62,124 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4 py-12">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
-            <User className="h-7 w-7 text-gold" />
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 py-12">
+      <Card className="w-full max-w-md border border-border">
+        <div className="flex items-center justify-between p-6">
+          <div>
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary mb-3">
+              <span className="text-primary-foreground text-lg font-bold">N</span>
+            </div>
+            <CardTitle className="text-2xl font-display">Create your account</CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Start building with NexaFlow
+            </CardDescription>
           </div>
-          <CardTitle className="text-2xl">Create your account</CardTitle>
-          <CardDescription>Start your affiliate autopilot journey</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {success && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-success-soft p-3 text-success-foreground text-sm">
-              <CheckCircle className="h-5 w-5 shrink-0" />
-              Account created! Check your email to verify. Redirecting...
-            </div>
-          )}
+        </div>
 
-          {error && (
-            <div className="mb-4 flex items-center gap-2 rounded-lg bg-error-soft p-3 text-error-foreground text-sm">
-              <AlertCircle className="h-5 w-5 shrink-0" />
-              {error}
-            </div>
-          )}
+        {success && (
+          <div className="mx-6 mb-4 flex items-center gap-2 rounded-lg bg-success-soft px-3 py-2 text-xs font-medium text-success-foreground">
+            <CheckCircle className="h-4 w-4 shrink-0" />
+            Account created! Redirecting…
+          </div>
+        )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="fullName"
-                  type="text"
-                  placeholder="John Doe"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="pl-10"
-                  required
-                  disabled={loading || success}
-                />
-              </div>
-            </div>
+        {error && (
+          <div className="mx-6 mb-4 flex items-center gap-2 rounded-lg bg-error-soft px-3 py-2 text-xs font-medium text-error-foreground">
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            {error}
+          </div>
+        )}
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
-                  required
-                  disabled={loading || success}
-                />
-              </div>
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="fullName">Full name</Label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="fullName"
+                type="text"
+                placeholder="John Doe"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="pl-10"
+                required
+                disabled={loading || success}
+              />
             </div>
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
-                  required
-                  minLength={8}
-                  disabled={loading || success}
-                />
-              </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email address</Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="pl-10"
+                required
+                disabled={loading || success}
+              />
             </div>
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="pl-10"
-                  required
-                  disabled={loading || success}
-                />
-              </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="pl-10"
+                required
+                minLength={8}
+                disabled={loading || success}
+              />
             </div>
+          </div>
 
-            <Button type="submit" className="w-full" size="lg" disabled={loading}>
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating account...
-                </>
-              ) : (
-                'Create Account'
-              )}
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-3">
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirm password</Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="pl-10"
+                required
+                disabled={loading || success}
+              />
+            </div>
+          </div>
+
+          <Button type="submit" className="w-full" size="lg" disabled={loading || success} variant="primary">
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Creating account…
+              </>
+            ) : (
+              'Create account'
+            )}
+          </Button>
+        </form>
+
+        <div className="px-6 pb-6">
           <p className="text-sm text-muted-foreground text-center">
             Already have an account?{' '}
             <Link href="/auth/login" className="text-primary font-medium hover:underline">
               Sign in
             </Link>
           </p>
-          <p className="text-xs text-muted-foreground text-center">
-            By continuing, you agree to our Terms of Service and Privacy Policy.
-          </p>
-        </CardFooter>
+        </div>
       </Card>
     </div>
   )

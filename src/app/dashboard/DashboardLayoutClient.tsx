@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -58,6 +58,7 @@ export default function DashboardLayoutClient({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [user, setUser] = useState<UserInfo | null>(null)
@@ -108,7 +109,7 @@ export default function DashboardLayoutClient({
     } catch {
       // Ignore
     }
-    window.location.href = '/auth/login'
+    router.push('/auth/login')
   }
 
   const activeItem = navigation.find(
@@ -138,18 +139,17 @@ export default function DashboardLayoutClient({
       <aside
         className={cn(
           'fixed left-0 top-0 z-50 h-screen overflow-y-auto border-r border-border bg-card transition-all duration-300',
-          // Desktop: static rail (collapsible). Mobile: slide-in drawer.
           'max-lg:-translate-x-full',
           mobileOpen && 'translate-x-0',
           collapsed ? 'w-64 lg:w-16' : 'w-64'
         )}
       >
         <div className="flex h-16 items-center justify-between border-b border-border px-4">
-          <Link href="/dashboard" className="flex items-center gap-2" aria-label="AffiPilot home">
+          <Link href="/dashboard" className="flex items-center gap-2" aria-label="NexaFlow home">
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary">
-              <Zap className="h-5 w-5 text-gold" aria-hidden="true" />
+              <span className="text-primary-foreground text-lg font-bold">N</span>
             </span>
-            {!collapsed && <span className="font-bold text-lg">AffiPilot</span>}
+            {!collapsed && <span className="font-bold text-lg font-display">NexaFlow</span>}
           </Link>
           <div className="flex items-center">
             <Button
@@ -233,7 +233,7 @@ export default function DashboardLayoutClient({
               <div className="hidden md:block">
                 <TeamSwitcher />
               </div>
-              <h1 className="truncate text-lg font-semibold sm:text-xl">
+              <h1 className="truncate text-lg font-semibold sm:text-xl font-display">
                 {activeItem?.name || 'Dashboard'}
               </h1>
             </div>

@@ -10,14 +10,12 @@ import {
   ShoppingBag,
   Video,
   MousePointer,
-  TrendingUp,
   DollarSign,
   ArrowUpRight,
   Clock,
   Plus,
   Zap,
   Target,
-  CheckCircle,
 } from 'lucide-react'
 
 interface Stats {
@@ -96,8 +94,6 @@ export default function DashboardPage() {
     setLoading(false)
   }
 
-  // `fg` is the icon colour that keeps >=4.5:1 against the tile colour —
-  // white on brass (bg-gold) is only ~2:1, so the dark accent-fg is used there.
   const statCards = [
     {
       name: 'Products',
@@ -130,8 +126,8 @@ export default function DashboardPage() {
       name: 'Total Earnings',
       value: formatCurrency(stats.totalCommission),
       icon: DollarSign,
-      color: 'bg-gold',
-      fg: 'text-gold-foreground',
+      color: 'bg-accent',
+      fg: 'text-accent-foreground',
       href: '/dashboard/earnings',
       change: formatCurrency(stats.approvedCommission) + ' approved',
     },
@@ -141,18 +137,18 @@ export default function DashboardPage() {
     { name: 'Add Product', href: '/dashboard/products?add=true', icon: Plus, color: 'bg-primary', fg: 'text-primary-foreground' },
     { name: 'Create Ads', href: '/dashboard/ads?create=true', icon: Video, color: 'bg-primary', fg: 'text-primary-foreground' },
     { name: 'View Calendar', href: '/dashboard/calendar', icon: Target, color: 'bg-primary', fg: 'text-primary-foreground' },
-    { name: 'Run Autopilot', href: '/dashboard/optimizer', icon: Zap, color: 'bg-gold', fg: 'text-gold-foreground' },
+    { name: 'Run Autopilot', href: '/dashboard/optimizer', icon: Zap, color: 'bg-accent', fg: 'text-accent-foreground' },
   ]
 
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="rounded-2xl bg-gradient-to-br from-primary/10 via-background to-gold/10 p-6 sm:p-8 border border-border/50 shadow-lift">
+      <div className="rounded-2xl bg-primary/10 p-6 sm:p-8 border border-border shadow-lift">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Welcome back</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight font-display">Welcome back</h1>
             <p className="mt-1 text-muted-foreground">
-              Here&apos;s what&apos;s happening with your affiliate autopilot today.
+              Here&apos;s what&apos;s happening with your NexaFlow workspace today.
             </p>
           </div>
           <div className="flex gap-3">
@@ -176,7 +172,7 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => (
           <Link key={stat.name} href={stat.href} className="group block">
-            <Card className="h-full border-border/50 transition-all duration-200 group-hover:border-primary/40 group-hover:shadow-md">
+            <Card className="h-full border border-border transition-all duration-200 group-hover:border-primary/40 group-hover:shadow-md">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">{stat.name}</CardTitle>
                 <div className={`h-10 w-10 rounded-lg ${stat.color} flex items-center justify-center`}>
@@ -195,10 +191,10 @@ export default function DashboardPage() {
       {/* Quick Actions + Earnings Breakdown */}
       <div className="grid gap-4 lg:grid-cols-3">
         {/* Quick Actions */}
-        <Card className="lg:col-span-1 border-border/50">
+        <Card className="lg:col-span-1 border border-border">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Zap className="h-5 w-5 text-gold" />
+              <Zap className="h-5 w-5 text-accent" />
               Quick Actions
             </CardTitle>
           </CardHeader>
@@ -224,29 +220,29 @@ export default function DashboardPage() {
         </Card>
 
         {/* Earnings Breakdown */}
-        <Card className="lg:col-span-2 border-border/50">
+        <Card className="lg:col-span-2 border border-border">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-gold" />
+              <DollarSign className="h-5 w-5 text-accent" />
               Earnings Overview
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-3 gap-4">
-              <div className="rounded-lg bg-gold-soft p-4 border border-gold/20">
-                <div className="text-sm text-gold-deep">Pending</div>
-                <div className="text-2xl font-bold text-gold-deep num">{formatCurrency(stats.pendingCommission)}</div>
-                <div className="text-xs text-gold/80">Awaiting approval</div>
+              <div className="rounded-lg bg-accent/10 p-4 border border-accent/20">
+                <div className="text-sm text-accent">Pending</div>
+                <div className="text-2xl font-bold text-accent-foreground num">{formatCurrency(stats.pendingCommission)}</div>
+                <div className="text-xs text-accent/60">Awaiting approval</div>
               </div>
               <div className="rounded-lg bg-primary/10 p-4 border border-primary/20">
                 <div className="text-sm text-primary">Approved</div>
-                <div className="text-2xl font-bold text-primary num">{formatCurrency(stats.approvedCommission)}</div>
-                <div className="text-xs text-primary/80">Ready for payout</div>
+                <div className="text-2xl font-bold text-primary-foreground num">{formatCurrency(stats.approvedCommission)}</div>
+                <div className="text-xs text-primary/60">Ready for payout</div>
               </div>
-              <div className="rounded-lg bg-gold-soft p-4 border border-gold/20">
-                <div className="text-sm text-gold-deep">Total</div>
-                <div className="text-2xl font-bold text-gold-deep num">{formatCurrency(stats.totalCommission)}</div>
-                <div className="text-xs text-gold/80">All time earnings</div>
+              <div className="rounded-lg bg-accent/10 p-4 border border-accent/20">
+                <div className="text-sm text-accent">Total</div>
+                <div className="text-2xl font-bold text-accent-foreground num">{formatCurrency(stats.totalCommission)}</div>
+                <div className="text-xs text-accent/60">All time earnings</div>
               </div>
             </div>
           </CardContent>
@@ -259,12 +255,12 @@ export default function DashboardPage() {
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
               <div className="mx-auto h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <CheckCircle className="h-8 w-8 text-primary" />
+                <span className="h-8 w-8 text-primary">⚡</span>
               </div>
               <div>
                 <h3 className="text-lg font-semibold">Ready to start earning?</h3>
                 <p className="text-muted-foreground mt-1">
-                  Add your first affiliate product and let AI create winning ads for you.
+                  Add your first product and let AI create winning workflows for you.
                 </p>
               </div>
               <Button size="lg" asChild>
