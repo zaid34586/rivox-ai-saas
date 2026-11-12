@@ -125,6 +125,11 @@ export default function DashboardLayoutClient({
     )
   }
 
+  if (!user) {
+    router.push('/auth/login')
+    return null
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Mobile drawer backdrop */}
