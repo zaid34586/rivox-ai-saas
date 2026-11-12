@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -58,7 +58,6 @@ export default function DashboardLayoutClient({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [user, setUser] = useState<UserInfo | null>(null)
@@ -73,11 +72,11 @@ export default function DashboardLayoutClient({
       return
     }
 
-    supabase.auth.getSession().then(({ data: { session: sessionData } }: { data: { session: Session | null } }) => {
-      if (sessionData?.user) {
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
+      if (data.session?.user) {
         setUser({
-          email: sessionData.user.email || '',
-          name: sessionData.user.user_metadata?.full_name,
+          email: data.session.user.email || '',
+          name: data.session.user.user_metadata?.full_name,
         })
       }
       setLoading(false)
@@ -109,7 +108,7 @@ export default function DashboardLayoutClient({
     } catch {
       // Ignore
     }
-    router.push('/auth/login')
+    window.location.href = '/auth/login'
   }
 
   const activeItem = navigation.find(
@@ -126,8 +125,26 @@ export default function DashboardLayoutClient({
   }
 
   if (!user) {
-    router.push('/auth/login')
-    return null
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-4">
+            <span className="text-primary-foreground text-2xl font-bold">N</span>
+          </div>
+          <h2 className="text-xl font-bold font-display">Please sign in</h2>
+          <p className="mt-2 text-muted-foreground">You need to be signed in to access the dashboard.</p>
+          <Button
+            onClick={() => {
+              window.location.href = '/auth/login'
+            }}
+            className="mt-4"
+            variant="primary"
+          >
+            Sign in
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   return (

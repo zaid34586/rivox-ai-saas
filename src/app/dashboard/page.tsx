@@ -11,8 +11,6 @@ import {
   Video,
   MousePointer,
   DollarSign,
-  ArrowUpRight,
-  Clock,
   Plus,
   Zap,
   Target,
@@ -47,6 +45,7 @@ export default function DashboardPage() {
     approvedCommission: 0,
   })
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchStats()
@@ -58,40 +57,51 @@ export default function DashboardPage() {
       supabase = createClient()
     } catch {
       setLoading(false)
+      setError('Unable to connect to database. Please try again later.')
       return
     }
 
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    if (userError || !user) {
       setLoading(false)
+      setError('Please sign in to view your dashboard.')
       return
     }
 
-    const [products, ads, links, commissions] = await Promise.all([
-      supabase.from('products').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
-      supabase.from('ad_creatives').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
-      supabase.from('affiliate_links').select('clicks, commission_earned').eq('user_id', user.id),
-      supabase.from('commissions').select('amount, status').eq('user_id', user.id),
-    ])
+    try {
+      const [products, ads, links, commissions] = await Promise.all([
+        supabase.from('products').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
+        supabase.from('ad_creatives').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
+        supabase.from('affiliate_links').select('clicks, commission_earned').eq('user_id', user.id),
+        supabase.from('commissions').select('amount, status').eq('user_id', user.id),
+      ])
 
-    const totalClicks = (links.data || []).reduce((sum: number, l: LinkData) => sum + l.clicks, 0)
-    const totalCommission = (commissions.data || []).reduce((sum: number, c: CommissionData) => sum + c.amount, 0)
-    const pendingCommission = (commissions.data || [])
-      .filter((c: CommissionData) => c.status === 'pending')
-      .reduce((sum: number, c: CommissionData) => sum + c.amount, 0)
-    const approvedCommission = (commissions.data || [])
-      .filter((c: CommissionData) => c.status === 'approved')
-      .reduce((sum: number, c: CommissionData) => sum + c.amount, 0)
+      if (products.error || ads.error || links.error || commissions.error) {
+        throw new Error('Failed to load dashboard data')
+      }
 
-    setStats({
-      totalProducts: products.count || 0,
-      totalAds: ads.count || 0,
-      totalClicks,
-      totalCommission,
-      pendingCommission,
-      approvedCommission,
-    })
-    setLoading(false)
+      const totalClicks = (links.data || []).reduce((sum: number, l: LinkData) => sum + l.clicks, 0)
+      const totalCommission = (commissions.data || []).reduce((sum: number, c: CommissionData) => sum + c.amount, 0)
+      const pendingCommission = (commissions.data || [])
+        .filter((c: CommissionData) => c.status === 'pending')
+        .reduce((sum: number, c: CommissionData) => sum + c.amount, 0)
+      const approvedCommission = (commissions.data || [])
+        .filter((c: CommissionData) => c.status === 'approved')
+        .reduce((sum: number, c: CommissionData) => sum + c.amount, 0)
+
+      setStats({
+        totalProducts: products.count || 0,
+        totalAds: ads.count || 0,
+        totalClicks,
+        totalCommission,
+        pendingCommission,
+        approvedCommission,
+      })
+    } catch {
+      setError('Failed to load dashboard data. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const statCards = [
@@ -140,10 +150,33 @@ export default function DashboardPage() {
     { name: 'Run Autopilot', href: '/dashboard/optimizer', icon: Zap, color: 'bg-accent', fg: 'text-accent-foreground' },
   ]
 
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        <p className="mt-4 text-sm text-muted-foreground">Loading dashboard…</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] text-center">
+        <div className="flex items-center gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs font-medium text-accent-foreground mb-6">
+          <span className="h-4 w-4 shrink-0" />
+          {error}
+        </div>
+        <Button onClick={() => window.location.reload()} variant="primary">
+          Try again
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="rounded-2xl bg-primary/10 p-6 sm:p-8 border border-border shadow-lift">
+      <div className="rounded-xl border border-border bg-primary/10 p-6 sm:p-8 shadow-lift">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight font-display">Welcome back</h1>
