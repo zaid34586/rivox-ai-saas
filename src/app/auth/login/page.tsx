@@ -12,7 +12,7 @@ import { Loader2, Mail, Lock, AlertCircle } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
-function LoginPageContent() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const verified = searchParams.get('verified') === 'true'
@@ -50,7 +50,7 @@ function LoginPageContent() {
       <Card className="w-full max-w-md border border-border">
         <div className="flex items-center justify-between p-6">
           <div>
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary mb-3">
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary mb-3">
               <span className="text-primary-foreground text-lg font-bold">N</span>
             </div>
             <CardTitle className="text-2xl font-display">Welcome back</CardTitle>
@@ -59,15 +59,15 @@ function LoginPageContent() {
             </CardDescription>
           </div>
           {verified && (
-            <div className="flex items-center gap-2 rounded-lg bg-success-soft px-3 py-2 text-xs font-medium text-success-foreground">
-              <span className="h-3 w-3 rounded-full bg-success-foreground" />
+            <div className="flex items-center gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs font-medium text-accent-foreground">
+              <span className="h-3 w-3 rounded-full bg-accent" />
               Email verified
             </div>
           )}
         </div>
 
         {error && (
-          <div className="mx-6 mb-4 flex items-center gap-2 rounded-lg bg-error-soft px-3 py-2 text-xs font-medium text-error-foreground">
+          <div className="mx-6 mb-4 flex items-center gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs font-medium text-accent-foreground">
             <AlertCircle className="h-4 w-4 shrink-0" />
             {error}
           </div>
@@ -145,7 +145,7 @@ export default function LoginPage() {
         </div>
       </div>
     }>
-      <LoginPageContent />
+      <LoginForm />
     </Suspense>
   )
 }

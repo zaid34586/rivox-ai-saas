@@ -66,7 +66,7 @@ export default function SignupPage() {
       <Card className="w-full max-w-md border border-border">
         <div className="flex items-center justify-between p-6">
           <div>
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary mb-3">
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary mb-3">
               <span className="text-primary-foreground text-lg font-bold">N</span>
             </div>
             <CardTitle className="text-2xl font-display">Create your account</CardTitle>
@@ -77,14 +77,14 @@ export default function SignupPage() {
         </div>
 
         {success && (
-          <div className="mx-6 mb-4 flex items-center gap-2 rounded-lg bg-success-soft px-3 py-2 text-xs font-medium text-success-foreground">
+          <div className="mx-6 mb-4 flex items-center gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs font-medium text-accent-foreground">
             <CheckCircle className="h-4 w-4 shrink-0" />
             Account created! Redirecting…
           </div>
         )}
 
         {error && (
-          <div className="mx-6 mb-4 flex items-center gap-2 rounded-lg bg-error-soft px-3 py-2 text-xs font-medium text-error-foreground">
+          <div className="mx-6 mb-4 flex items-center gap-2 rounded-lg bg-accent/10 px-3 py-2 text-xs font-medium text-accent-foreground">
             <AlertCircle className="h-4 w-4 shrink-0" />
             {error}
           </div>
