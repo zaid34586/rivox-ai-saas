@@ -10,15 +10,14 @@ import {
   Video,
   BarChart3,
   Shield,
-  ArrowRight,
-  CheckCircle,
-  Sparkles,
-  Target,
   Smartphone,
   Globe,
   Users,
   Lock,
   TrendingUp,
+  Sparkles,
+  CheckCircle,
+  Target,
 } from 'lucide-react'
 
 const features = [
@@ -89,7 +88,7 @@ export default function Home() {
       const data = (await res.json().catch(() => null)) as { error?: string } | null
       if (!res.ok) throw new Error(data?.error || 'Could not join the waitlist right now. Please try again.')
       setStatus('success')
-      setMessage("You're on the list — we'll email you when your seat opens.")
+      setMessage("You&apos;re on the list — we&apos;ll email you when your seat opens.")
       setEmail('')
     } catch (err) {
       setStatus('error')
@@ -99,23 +98,23 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Announcement Bar — emerald-tinted */}
-      <div className="border-b border-emerald-600/40 bg-emerald-600/10">
+      {/* Announcement Bar — rose-tinted */}
+      <div className="border-b border-border bg-background">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-2 gap-y-1 px-4 py-2 text-center text-sm">
           <span className="font-medium text-foreground">Early access is open</span>
           <span className="hidden text-muted-foreground sm:inline">— founding-member seats at locked-in pricing.</span>
-          <a href="#waitlist" className="font-medium text-gold underline-offset-4 hover:underline">Request access</a>
+          <a href="#waitlist" className="font-medium text-accent underline-offset-4 hover:underline">Request access</a>
         </div>
       </div>
 
       {/* Navigation */}
-      <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
           <Link href="/" className="flex items-center gap-2.5">
             <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-              <Zap className="h-5 w-5 text-gold" aria-hidden="true" />
+              <span className="text-primary-foreground text-lg font-bold">N</span>
             </span>
-            <span className="text-xl font-bold tracking-tight">AffiPilot</span>
+            <span className="text-xl font-bold tracking-tight font-display">NexaFlow</span>
           </Link>
 
           <div className="hidden md:flex md:items-center md:gap-6">
@@ -126,8 +125,8 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link href="/auth/login" className="text-sm font-medium transition-colors hover:text-primary">Sign in</Link>
-            <Button size="sm" asChild>
+            <Link href="/auth/login" className="text-sm font-medium transition-colors hover:text-foreground">Sign in</Link>
+            <Button size="sm" asChild variant="accent">
               <Link href="/auth/signup">Get started</Link>
             </Button>
           </div>
@@ -135,87 +134,59 @@ export default function Home() {
       </header>
 
       <main>
-        {/* Hero Section */}
+        {/* Hero Section — Left-aligned editorial */}
         <section className="relative overflow-hidden py-20 sm:py-28">
-          {/* Ambient glows + faint grid (CSS-only) */}
+          {/* Ambient glows (CSS-only, subtle) */}
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div className="absolute -top-56 left-1/2 h-[520px] w-[860px] max-w-none -translate-x-1/2 rounded-full bg-primary/15 blur-[120px]" />
-            <div className="absolute top-1/3 -right-40 h-[420px] w-[420px] rounded-full bg-gold/10 blur-[110px]" />
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage:
-                  'linear-gradient(to right, hsl(var(--border) / 0.5) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--border) / 0.5) 1px, transparent 1px)',
-                backgroundSize: '56px 56px',
-                maskImage: 'radial-gradient(ellipse 70% 55% at 50% 0%, black 20%, transparent 75%)',
-                WebkitMaskImage: 'radial-gradient(ellipse 70% 55% at 50% 0%, black 20%, transparent 75%)',
-              }}
-            />
-
-            {/* Radial gold glow */}
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full blur-[80px] bg-gold/5 animate-[radialGlow_3s_ease_in_out_infinite]"/>
-              <div className="absolute inset-0 rounded-full bg-primary/5 animate-[pulse_2s_ease_in_out_infinite]"/>
-            </div>
+            <div className="absolute -top-40 left-1/2 h-[600px] w-[600px] max-w-none -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
+            <div className="absolute top-1/4 -right-20 h-[400px] w-[400px] rounded-full bg-accent/10 blur-[110px]" />
           </div>
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="eyebrow mb-6 flex items-center justify-center gap-2">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
-                </span>
-                AI Affiliate Autopilot — Now in Early Access
+            <div className="max-w-2xl">
+              <p className="mb-6 inline-flex items-center gap-2 rounded-lg bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                <span className="h-2 w-2 rounded-full bg-primary" />
+                AI workflow builder for creators
               </p>
 
-              <h1 className="mb-6 text-4xl font-bold tracking-[-0.03em] text-foreground sm:text-5xl lg:text-6xl">
-                Affiliate marketing on{' '}
-                <span className="relative whitespace-nowrap text-gradient-accent">
-                  Autopilot
-                  <span
-                    aria-hidden="true"
-                    className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-gradient-to-r from-gold via-gold to-gold/30"
-                  />
-                </span>
+              <h1 className="mb-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight font-display text-foreground">
+                Automate the repeat. Ship the new.
               </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                Find winning products, generate UGC ads with AI, auto-post to 6 platforms, track every commission —
-                all while you sleep. A set-and-forget affiliate workflow.
+              <p className="mb-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+                Connect your apps, generate content with AI, and publish across platforms — from one canvas. Built for creators who want to stop repeating and start creating.
               </p>
 
-              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Button size="lg" className="w-full sm:w-auto" asChild>
-                  <Link href="/auth/signup">Start free — no credit card</Link>
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-start sm:justify-start gap-4">
+                <Button size="lg" className="w-full sm:w-auto" asChild variant="accent">
+                  <Link href="/auth/signup">Get started — free</Link>
                 </Button>
                 <Button variant="outline" size="lg" className="w-full sm:w-auto" asChild>
                   <a href="#how-it-works">See how it works</a>
                 </Button>
               </div>
 
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-primary" aria-hidden="true" /> No card required</span>
+              <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+                <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-primary" aria-hidden="true" /> No credit card required</span>
                 <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-primary" aria-hidden="true" /> 14-day free trial</span>
                 <span className="flex items-center gap-1"><CheckCircle className="h-4 w-4 text-primary" aria-hidden="true" /> Cancel anytime</span>
               </div>
             </div>
 
-            {/* Hero Visual */}
-            <div className="relative mt-16">
-              <div className="overflow-hidden rounded-xl border border-border/50 bg-card/60 shadow-2xl">
-                <div className="flex items-center gap-2 border-b border-border/50 bg-muted/50 px-4 py-3">
+            {/* Hero Visual — Dashboard mock on right */}
+            <div className="mt-16 relative">
+              <div className="overflow-hidden rounded-lg border border-border bg-card shadow-lg">
+                <div className="flex items-center gap-2 border-b border-border px-4 py-3">
                   <span className="flex gap-1.5" aria-hidden="true">
                     <span className="h-3 w-3 rounded-full bg-red-500/80" />
                     <span className="h-3 w-3 rounded-full bg-yellow-500/80" />
                     <span className="h-3 w-3 rounded-full bg-green-500/80" />
                   </span>
                   <div className="ml-4 flex-1 text-center font-mono text-xs text-muted-foreground">
-                    app.affipilot.com/dashboard
+                    app.nexaflow.com/dashboard
                   </div>
                 </div>
                 <div className="space-y-4 p-4 sm:p-6">
-                  {/* Stats grid: 4 items, grid-cols-2 on mobile, sm:grid-cols-4 on tablet */}
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
                     {stats.map((stat) => (
                       <div key={stat.label} className="rounded-lg bg-muted/50 p-3 text-center sm:p-4">
@@ -230,7 +201,7 @@ export default function Home() {
                       <span className="num font-bold text-foreground">₹12,450</span>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-muted">
-                      <div className="h-full rounded-full bg-gradient-to-r from-gold to-gold/70" style={{ width: '73%' }} />
+                      <div className="h-full rounded-full bg-gradient-to-r from-accent to-accent/70" style={{ width: '73%' }} />
                     </div>
                     <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
                       {['Clicks: 1,234', 'Sales: 47', 'EPC: ₹10.1', 'CTR: 3.2%'].map((item) => (
@@ -242,16 +213,16 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Affiliate networks — in-flow strip, fully visible */}
+            {/* Networks strip */}
             <div className="mt-14 flex flex-col items-center gap-4">
-              <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                Works with the networks you already use
+              <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
+                Works with the platforms you already use
               </p>
               <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
                 {networks.map((network) => (
                   <span
                     key={network}
-                    className="rounded-lg border border-border/60 bg-card/60 px-3 py-1.5 text-xs font-medium text-muted-foreground sm:px-4 sm:text-sm hover:border-primary transition-colors">
+                    className="rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground sm:px-4 sm:text-sm hover:border-accent hover:text-accent-foreground transition-colors">
                     {network}
                   </span>
                 ))}
@@ -260,13 +231,13 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Features — bento-style grid */}
-        <section id="features" className="scroll-mt-24 border-t border-border/50 py-20 sm:py-24 lg:py-28">
+        {/* Features — bento grid */}
+        <section id="features" className="scroll-mt-24 border-t border-border py-20 sm:py-24 lg:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-16 max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Everything between product and profit</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight font-display">Everything between idea and launch</h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                Six powerful modules, one seamless workflow. No more juggling 10 tools.
+                Six modules, one canvas. No more juggling ten tools.
               </p>
             </div>
 
@@ -274,12 +245,12 @@ export default function Home() {
               {features.map((feature, i) => (
                 <Card
                   key={feature.title}
-                  className={`group border-border/60 bg-card/40 transition-colors duration-300 hover:border-emerald-500/40 hover:bg-emerald-600/10 ${
+                  className={`group border border-border bg-card transition-colors duration-200 hover:border-primary/40 group-hover:shadow-md ${
                     i === 0 || i === 3 ? 'md:col-span-2' : ''
                   }`}
                 >
-                  <CardHeader className={i === 0 || i === 3 ? 'sm:flex-row sm:items-start sm:gap-5 sm:space-y-0' : ''}>
-                    <span className="mb-4 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-emerald-500/20 bg-emerald-600/10 text-emerald-500 sm:mb-0">
+                  <CardHeader className={i === 0 || i === 3 ? 'sm:flex-row sm:items-start sm:gap-4 sm:space-y-0' : ''}>
+                    <span className="mb-4 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary sm:mb-0">
                       <feature.icon className="h-5 w-5" aria-hidden="true" />
                     </span>
                     <div className="space-y-1">
@@ -293,25 +264,24 @@ export default function Home() {
           </div>
         </section>
 
-        {/* How It Works — centered timeline */}
-        <section id="how-it-works" className="scroll-mt-24 border-t border-border/50 py-20 sm:py-24 lg:py-28">
+        {/* How It Works — numbered timeline */}
+        <section id="how-it-works" className="scroll-mt-24 border-t border-border py-20 sm:py-24 lg:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-16 max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">From zero to autopilot in 5 steps</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight font-display">From idea to launch in 5 steps</h2>
               <p className="mt-4 text-lg text-muted-foreground">
                 Set up once, let AI handle the daily grind. You approve, it executes.
               </p>
             </div>
 
             <div className="relative mx-auto max-w-4xl">
-              {/* Desktop: centered vertical line */}
               <div aria-hidden="true" className="absolute bottom-0 left-1/2 top-0 w-px bg-border transform -translate-x-1/2 lg:left-1/2 lg:-translate-x-1/2" />
 
               <ol className="space-y-10 lg:space-y-12">
                 {steps.map((step, index) => (
                   <li key={step.num} className="relative pl-12 lg:grid lg:grid-cols-2 lg:gap-14 lg:pl-0">
-                    <span className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-600/10 text-xs font-bold text-emerald-500 lg:left-1/2 lg:-translate-x-1/2">
-                      <span className="w-4 h-4 rounded-full bg-emerald-500"></span>
+                    <span className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-xs font-bold text-primary lg:left-1/2 lg:-translate-x-1/2">
+                      <span className="w-4 h-4 rounded-full bg-primary"></span>
                       {step.num}
                     </span>
                     <div className={index % 2 === 0 ? 'lg:pr-4 lg:text-right' : 'lg:col-start-2 lg:pl-4'}>
@@ -325,11 +295,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Platform Integrations */}
-        <section className="border-t border-border/50 py-20 sm:py-24">
+        {/* Platforms */}
+        <section className="border-t border-border py-20 sm:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-16 max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Publish everywhere your audience lives</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight font-display">Publish everywhere your audience lives</h2>
               <p className="mt-4 text-lg text-muted-foreground">
                 Official API integrations. No gray methods, no banned accounts.
               </p>
@@ -340,16 +310,16 @@ export default function Home() {
                 { icon: Globe, name: 'Pinterest', formats: ['Pins', 'Video Pins'], color: '#E60023' },
                 { icon: Video, name: 'YouTube Shorts', formats: ['Shorts', 'Community'], color: '#FF0000' },
                 { icon: Smartphone, name: 'Instagram', formats: ['Reels', 'Stories', 'Posts'], color: '#C13584' },
-                { icon: Target, name: 'X (Twitter)', formats: ['Posts', 'Threads'], color: '#0F1419' },
                 { icon: Users, name: 'Facebook', formats: ['Posts', 'Reels', 'Groups'], color: '#1877F2' },
+                { icon: Target, name: 'X (Twitter)', formats: ['Posts', 'Threads'], color: '#0F1419' },
                 { icon: TrendingUp, name: 'TikTok', formats: ['Videos', 'Stories'], color: '#111111' },
               ].map((platform) => (
                 <Card
                   key={platform.name}
-                  className="border-border/60 bg-card/40 p-5 text-center transition-colors duration-300 hover:border-emerald-500 sm:p-6"
+                  className="border border-border bg-card p-5 text-center transition-colors duration-200 hover:border-accent hover:bg-accent/5 sm:p-6"
                 >
                   <span
-                    className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl text-white sm:h-14 sm:w-14"
+                    className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg text-white sm:h-14 sm:w-14"
                     style={{ background: platform.color }}
                   >
                     <platform.icon className="h-6 w-6 sm:h-7 sm:w-7" />
@@ -363,10 +333,10 @@ export default function Home() {
         </section>
 
         {/* Pricing */}
-        <section id="pricing" className="scroll-mt-24 border-t border-border/50 py-20 sm:py-24 lg:py-28">
+        <section id="pricing" className="scroll-mt-24 border-t border-border py-20 sm:py-24 lg:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-16 max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Simple, transparent pricing</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight font-display">Simple, transparent pricing</h2>
               <p className="mt-4 text-lg text-muted-foreground">
                 Start free. Upgrade when you&apos;re ready to scale. No hidden fees.
               </p>
@@ -387,7 +357,7 @@ export default function Home() {
                   name: 'Pro',
                   price: '₹1,999',
                   period: '/month',
-                  description: 'For serious affiliates scaling up',
+                  description: 'For serious creators scaling up',
                   features: ['Unlimited products', '500 AI ads/month', '3 social accounts', 'Auto-post + scheduler', 'AI optimizer', 'Email/Telegram alerts', 'Priority support'],
                   cta: 'Start free trial',
                   popular: true,
@@ -404,21 +374,21 @@ export default function Home() {
               ].map((plan) => (
                 <Card
                   key={plan.name}
-                  className={`relative flex flex-col ${
+                  className={`relative flex flex-col border border-border ${
                     plan.popular
-                      ? 'border-emerald-500/60 shadow-emerald-500/20 lg:-translate-y-2'
-                      : 'border-border/60'
+                      ? 'border-accent bg-accent/5 shadow-lg'
+                      : ''
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-gradient-to-r from-emerald-500 via-gold to-emerald-600 px-3 py-1 text-xs font-semibold tracking-wide text-[#1A1206] shadow-md">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-accent px-3 py-1 text-xs font-bold text-accent-foreground shadow-md">
                       Most Popular
                     </div>
                   )}
                   <CardHeader className="flex-1">
                     <CardTitle className="text-lg">{plan.name}</CardTitle>
                     <div className="mt-2 flex items-baseline gap-1">
-                      <span className="num text-4xl font-bold">{plan.price}</span>
+                      <span className="num text-4xl font-bold text-foreground">{plan.price}</span>
                       <span className="text-muted-foreground">{plan.period}</span>
                     </div>
                     <p className="mt-2 text-sm text-muted-foreground">{plan.description}</p>
@@ -427,12 +397,12 @@ export default function Home() {
                     <ul className="mb-6 flex-1 space-y-3">
                       {plan.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-2 text-sm">
-                          <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" aria-hidden="true" />
+                          <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden="true" />
                           <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
-                    <Button className="w-full" variant={plan.popular ? 'default' : 'outline'} asChild>
+                    <Button className="w-full" variant={plan.popular ? 'accent' : 'outline'} asChild>
                       <Link href="/auth/signup">{plan.cta}</Link>
                     </Button>
                   </CardContent>
@@ -443,16 +413,16 @@ export default function Home() {
         </section>
 
         {/* Waitlist / CTA */}
-        <section id="waitlist" className="scroll-mt-24 border-t border-border/50 py-20 sm:py-24 lg:py-28">
+        <section id="waitlist" className="scroll-mt-24 border-t border-border py-20 sm:py-24 lg:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl border border-border/50 bg-gradient-to-br from-emerald-600/10 via-background to-gold/15 p-8 shadow-lift md:p-16">
+            <div className="rounded-xl border border-border bg-card p-8 sm:p-12 shadow-lg">
               <div className="mx-auto max-w-2xl text-center">
-                <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-600/10 px-3 py-1 text-sm font-medium text-emerald-500">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-lg bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
                   <Sparkles className="h-4 w-4" aria-hidden="true" />
                   Early Access Program
                 </div>
-                <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-                  Be one of the first on the autopilot
+                <h2 className="mb-4 text-3xl sm:text-4xl font-bold tracking-tight font-display">
+                  Be one of the first on NexaFlow
                 </h2>
                 <p className="mb-8 text-lg text-muted-foreground">
                   Join the early-access list and lock in founding-member pricing before public launch.
@@ -470,16 +440,16 @@ export default function Home() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={status === 'loading'}
-                    className="input min-w-0 flex-1 focus:ring-emerald-500 focus:border-emerald-500"
+                    className="input min-w-0 flex-1"
                   />
-                  <Button type="submit" size="lg" loading={status === 'loading'} disabled={status === 'loading'}>
+                  <Button type="submit" size="lg" loading={status === 'loading'} disabled={status === 'loading'} variant="accent">
                     {status === 'loading' ? 'Joining…' : 'Join waitlist'}
                   </Button>
                 </form>
 
                 <p className="mt-4 text-sm text-muted-foreground" role="status" aria-live="polite">
-                  {status === 'success' && <span className="font-medium text-emerald-600">{message}</span>}
-                  {status === 'error' && <span className="font-medium text-emerald-600">{message}</span>}
+                  {status === 'success' && <span className="font-medium text-accent">{message}</span>}
+                  {status === 'error' && <span className="font-medium text-accent">{message}</span>}
                   {(status === 'idle' || status === 'loading') && 'No spam. Unsubscribe anytime. Privacy-first.'}
                 </p>
               </div>
@@ -488,18 +458,18 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="border-t border-border/50 py-12">
+        <footer className="border-t border-border py-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-8 grid grid-cols-2 gap-8 md:grid-cols-3">
               <div className="col-span-2 md:col-span-1">
                 <div className="mb-4 flex items-center gap-2.5">
                   <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                    <Zap className="h-5 w-5 text-gold" aria-hidden="true" />
+                    <span className="text-primary-foreground text-lg font-bold">N</span>
                   </span>
-                  <span className="text-xl font-bold">AffiPilot</span>
+                  <span className="text-xl font-bold font-display">NexaFlow</span>
                 </div>
                 <p className="max-w-xs text-sm text-muted-foreground">
-                  AI autopilot for affiliate marketing. Find, create, post, track, optimize — automatically.
+                  AI workflow builder for creators. Connect, generate, publish, automate.
                 </p>
               </div>
               <div>
@@ -520,8 +490,8 @@ export default function Home() {
                 </ul>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 sm:flex-row">
-              <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} AffiPilot. All rights reserved.</p>
+            <div className="flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
+              <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} NexaFlow. All rights reserved.</p>
               <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
                 <Lock className="h-4 w-4" aria-hidden="true" />
                 Your data stays yours.
